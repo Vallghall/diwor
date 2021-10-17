@@ -1,22 +1,13 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Go.gitlab-ci.yml
-
 image: golang:latest
 
 variables:
-  # Please edit to your GitLab project
+
   REPO_NAME: gitlab.com/Vallghall/diwor
 
-# The problem is that to be able to use go get, one needs to put
-# the repository in the $GOPATH. So for example if your gitlab domain
-# is gitlab.com, and that your repository is namespace/project, and
-# the default GOPATH being /go, then you'd need to have your
-# repository in /go/src/gitlab.com/namespace/project
-# Thus, making a symbolic link corrects this.
 before_script:
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
   - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
   - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
   - cd $GOPATH/src/$REPO_NAME
@@ -24,7 +15,8 @@ before_script:
 stages:
   - test
   - build
-  - deploy
+  - staging
+  - production
 
 format:
   stage: test
@@ -40,3 +32,20 @@ compile:
   artifacts:
     paths:
       - cmd/app
+
+staging:
+  stage: staging
+  image: ruby:latest
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+  only:
+    - upd
+  when: manual
+
+production:
+  stage: production
+  image: ruby:latest
+  script:
+    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+  only:
+    - main
