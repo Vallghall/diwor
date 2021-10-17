@@ -1,16 +1,20 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
+	r.LoadHTMLGlob("web/template/*.gohtml")
+	r.StaticFile("/favicon.ico", "./web/static/favicon.ico")
+	r.StaticFile("/altera", "./web/static/altera.gif")
+	r.StaticFile("/css/style.css", "web/template/css/style.css")
 	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello world",
-		})
+		c.HTML(http.StatusOK, "index.gohtml", nil)
 	})
 	log.Fatalln(r.Run())
 }
