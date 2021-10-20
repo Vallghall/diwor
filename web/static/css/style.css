@@ -1,0 +1,20 @@
+body {
+    background-color: blueviolet;
+    font-family: "Times New Roman", sans-serif;
+    color: whitesmoke;
+    font-size: 12pt;
+}
+
+.altera {
+    display: block;
+    margin-left: 80%;
+}
+
+form {
+    margin: 0 auto;
+    width:250px;
+}
+
+h1 {
+    text-align: center;
+}

@@ -1,16 +1,23 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>DIWOR</title>
-</head>
+{{template "base-head"}}
 <body>
-
-    <img class="altera" src="/altera" alt="flex">
-
+    <img class="altera" src="/image/altera.gif" alt="flex">
+    <h1>Выберите исходные данные для эксперимента</h1>
+    <h1>{{.}}</h1>
+        <form name="initial-data" method="get" action="/experiment">
+            <p><select required name="sample-a" id="sample-picker-1">
+                    <option disabled selected>Выберите первый алгоритм для сравнения</option>
+                    <option value="aes">AES-256</option>
+                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
+            </select></p>
+            <p><select required name="sample-b" id="sample-picker-2">
+                    <option disabled selected>Выберите второй алгоритм для сравнения</option>
+                    <option value="aes">AES-256</option>
+                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
+                </select></p>
+            <p><select required name="mode" id="sample-picker-3">
+                    <option disabled selected>Выберите режим работы блочных шифров</option>
+                    <option value="cfb">CFB</option>
+                </select></p>
+            <input type="submit" value="Подтвердить">
+        </form>
 </body>
-</html>
