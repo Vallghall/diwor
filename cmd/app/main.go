@@ -33,8 +33,8 @@ func main() {
 		if sampleA == sampleB {
 			c.Redirect(http.StatusTemporaryRedirect, "/?reason=equal")
 		}
-		experimentator.HoldExperiment(sampleA, sampleB, mode)
-		c.HTML(http.StatusOK, "experiment.gohtml", nil)
+		res := experimentator.HoldExperiment(sampleA, sampleB, mode)
+		c.HTML(http.StatusOK, "experiment.gohtml", res)
 	})
 
 	log.Fatalln(r.Run())

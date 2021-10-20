@@ -2,7 +2,9 @@ package experimentator
 
 import "gitlab.com/Valghall/diwor/internal/experiment"
 
-func HoldExperiment(algorithmA, algorithmB, mode string) {
+func HoldExperiment(algorithmA, algorithmB, mode string) []byte {
 	initialData := experiment.NewInitialData(algorithmA, algorithmB, mode)
-	_ = initialData.NewExperiment()
+	exp := initialData.NewExperiment()
+	exp.Start()
+	return exp.Encrypted()
 }
