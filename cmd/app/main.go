@@ -4,9 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"gitlab.com/Valghall/diwor/pkg/experimentator"
-
 	"github.com/gin-gonic/gin"
+	"gitlab.com/Valghall/diwor/pkg/experimentator"
 )
 
 func main() {
@@ -33,8 +32,8 @@ func main() {
 		if sampleA == sampleB {
 			c.Redirect(http.StatusTemporaryRedirect, "/?reason=equal")
 		}
-		res := experimentator.HoldExperiment(sampleA, sampleB, mode)
-		c.HTML(http.StatusOK, "experiment.gohtml", res)
+		_, encryptionRes := experimentator.HoldExperiment(sampleA, sampleB, mode)
+		c.HTML(http.StatusOK, "experiment.gohtml", string(encryptionRes))
 	})
 
 	log.Fatalln(r.Run())
