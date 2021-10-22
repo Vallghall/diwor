@@ -2,13 +2,12 @@ package experiment
 
 import (
 	"os"
-
-	"gitlab.com/Valghall/diwor/internal/crypto"
 )
 
 type experiment struct {
 	initialData *initialData
 	encrypted   []byte
+	decrypted   []byte
 }
 
 func (e *experiment) InitialData() *initialData {
@@ -23,8 +22,16 @@ func (e *experiment) Encrypted() []byte {
 	return e.encrypted
 }
 
+func (e *experiment) Decrypted() []byte {
+	return e.decrypted
+}
+
 func (e *experiment) SetEncrypted(encrypted []byte) {
 	e.encrypted = encrypted
+}
+
+func (e *experiment) SetDecrypted(decrypted []byte) {
+	e.decrypted = decrypted
 }
 
 func (i *initialData) NewExperiment() *experiment {
@@ -35,10 +42,11 @@ func (i *initialData) NewExperiment() *experiment {
 
 func (e *experiment) Start() {
 	plaintext, _ := os.ReadFile("./internal/experiment/original_text_sample.txt")
-	encrypted, _ := crypto.Encrypt(plaintext,
-		e.InitialData().Mode,
-		e.InitialData().SampleA.Cipher(),
-		e.InitialData().SampleA.BlockSize(),
-	)
-	e.SetEncrypted(encrypted)
+	dst := make([]byte, len(plaintext))
+	e.InitialData().Encrypt(dst, plaintext)
+	e.SetEncrypted(dst)
+
+	res := make([]byte, len(dst))
+	e.InitialData().Decrypt(res, dst)
+	e.SetDecrypted(res)
 }
