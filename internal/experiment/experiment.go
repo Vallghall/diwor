@@ -2,51 +2,36 @@ package experiment
 
 import (
 	"os"
+
+	ini "gitlab.com/Valghall/diwor/internal/initial_data"
 )
 
-type experiment struct {
-	initialData *initialData
-	encrypted   []byte
-	decrypted   []byte
-}
-
-func (e *experiment) InitialData() *initialData {
-	return e.initialData
-}
-
-func (e *experiment) SetInitialData(initialData *initialData) {
-	e.initialData = initialData
-}
-
-func (e *experiment) Encrypted() []byte {
-	return e.encrypted
-}
-
-func (e *experiment) Decrypted() []byte {
-	return e.decrypted
-}
-
-func (e *experiment) SetEncrypted(encrypted []byte) {
-	e.encrypted = encrypted
-}
-
-func (e *experiment) SetDecrypted(decrypted []byte) {
-	e.decrypted = decrypted
-}
-
-func (i *initialData) NewExperiment() *experiment {
+func NewExperiment(i *ini.InitialData) *experiment {
 	return &experiment{
 		initialData: i,
 	}
 }
 
 func (e *experiment) Start() {
-	plaintext, _ := os.ReadFile("./internal/experiment/original_text_sample.txt")
-	dst := make([]byte, len(plaintext))
-	e.InitialData().Encrypt(dst, plaintext)
-	e.SetEncrypted(dst)
+	plaintext := e.getPlainTextFromFile("./internal/experiment/original_text_sample.txt")
+	e.makeCryptography(plaintext)
+}
 
-	res := make([]byte, len(dst))
-	e.InitialData().Decrypt(res, dst)
-	e.SetDecrypted(res)
+func (e *experiment) makeCryptography(plaintext []byte) {
+	dstA := make([]byte, len(plaintext))
+	dstB := make([]byte, len(plaintext))
+	e.InitialData().SampleA.Encrypt(dstA, plaintext)
+	e.InitialData().SampleB.Encrypt(dstB, plaintext)
+	e.SetEncrypted(dstA, dstB)
+
+	resA := make([]byte, len(dstA))
+	resB := make([]byte, len(dstB))
+	e.InitialData().SampleA.Decrypt(resA, dstA)
+	e.InitialData().SampleB.Decrypt(resB, dstB)
+	e.SetDecrypted(resA)
+}
+
+func (e experiment) getPlainTextFromFile(filepath string) []byte {
+	plaintext, _ := os.ReadFile(filepath)
+	return plaintext
 }
