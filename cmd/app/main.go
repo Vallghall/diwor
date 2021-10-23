@@ -27,13 +27,17 @@ func main() {
 	})
 
 	r.GET("/experiment", func(c *gin.Context) {
-		sampleA, sampleB, mode := c.Query("sample-a"), c.Query("sample-b"), c.Query("mode")
+		sampleA, sampleB, modeA, modeB :=
+			c.Query("sample-a"),
+			c.Query("sample-b"),
+			c.Query("mode-1"),
+			c.Query("mode-2")
 
 		if sampleA == sampleB {
 			c.Redirect(http.StatusTemporaryRedirect, "/?reason=equal")
 		}
-		_, encryptionRes := experimentator.HoldExperiment(sampleA, sampleB, mode)
-		c.HTML(http.StatusOK, "experiment.gohtml", string(encryptionRes))
+		encryptionResA, _ := experimentator.HoldExperiment(sampleA, sampleB, modeA, modeB)
+		c.HTML(http.StatusOK, "experiment.gohtml", encryptionResA)
 	})
 
 	log.Fatalln(r.Run())

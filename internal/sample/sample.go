@@ -1,10 +1,10 @@
-package experiment
+package sample
 
 import (
 	"crypto/aes"
-	"crypto/cipher"
 
 	"github.com/bi-zone/ruwireguard-go/crypto/gosthopper"
+	"gitlab.com/Valghall/diwor/internal/crypto"
 )
 
 const (
@@ -13,41 +13,45 @@ const (
 	defaultSampleKey = "abcdabcdacbdacbdabcdabcdacbdacbd"
 )
 
-type sample struct {
-	algorithm string
-	blockSize int
-	cipher    cipher.Block
+func (s Sample) Encrypt(dst, src []byte) {
+	encrypted, _ := crypto.Encrypt(
+		src,
+		s.Mode(),
+		s.Cipher(),
+		s.BlockSize(),
+	)
+	copy(dst, encrypted)
 }
 
-func (s sample) Algorithm() string {
-	return s.algorithm
+func (s Sample) Decrypt(dst, src []byte) {
+	decrypted, _ := crypto.Decrypt(
+		src,
+		s.Mode(),
+		s.Cipher(),
+		s.BlockSize(),
+	)
+	copy(dst, decrypted)
 }
 
-func (s sample) BlockSize() int {
-	return s.blockSize
-}
-
-func (s sample) Cipher() cipher.Block {
-	return s.cipher
-}
-
-func createSample(algorithm string) *sample {
-	smpl := new(sample)
+func CreateSample(algorithm, mode string) *Sample {
+	smpl := new(Sample)
 	key := []byte(defaultSampleKey)
 	switch algorithm {
 	case AES:
 		block, _ := aes.NewCipher(key)
-		smpl = &sample{
+		smpl = &Sample{
 			algorithm: AES,
 			blockSize: aes.BlockSize,
 			cipher:    block,
+			mode:      mode,
 		}
 	case Grasshopper:
 		block, _ := gosthopper.NewCipher(key)
-		smpl = &sample{
+		smpl = &Sample{
 			algorithm: Grasshopper,
 			blockSize: gosthopper.BlockSize,
 			cipher:    block,
+			mode:      mode,
 		}
 	}
 	return smpl
