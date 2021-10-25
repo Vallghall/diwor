@@ -1,28 +1,7 @@
 {{template "base-head"}}
 <body>
-    <img class="altera" src="/image/altera.gif" alt="flex">
-    <h1>Выберите исходные данные для эксперимента</h1>
-    <h1>{{.}}</h1>
-        <form name="initial-data" method="get" action="/experiment">
-            <p><select required name="sample-a" id="sample-picker-1">
-                    <option disabled selected>Выберите первый алгоритм для сравнения</option>
-                    <option value="aes">AES-256</option>
-                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
-            </select>
-                <select required name="mode-1" id="mode-picker-1">
-                    <option disabled selected>Выберите режим работы</option>
-                    <option value="cfb">CFB</option>
-                </select></p>
-            <p><select required name="sample-b" id="sample-picker-2">
-                    <option disabled selected>Выберите второй алгоритм для сравнения</option>
-                    <option value="aes">AES-256</option>
-                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
-                </select>
-                <select required name="mode-2" id="mode-picker-2">
-                    <option disabled selected>Выберите режим работы</option>
-                    <option value="cfb">CFB</option>
-                </select></p>
-
-            <input type="submit" value="Подтвердить">
-        </form>
+    <img class="altera" style="margin: auto" src="/image/altera.gif" alt="flex">
+    <form class="form" action="/experiment">
+        <input class="submit" type="submit" value="Start the experiment" />
+    </form>
 </body>

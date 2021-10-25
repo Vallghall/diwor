@@ -1,8 +1,30 @@
 {{template "base-head"}}
-<title>DIWOR|Experiment</title>
 <body>
-<img class="altera" src="/image/altera.gif" alt="flex">
-<h1>Результаты эксперимента</h1>
-<h1 class = "experiment">{{.}}</h1>
+    <img class="altera" src="/image/altera.gif" alt="flex">
+    <h1>Выберите исходные данные для эксперимента</h1>
+    <h1>{{.}}</h1>
+        <form class="form" name="initial-data" method="get" action="/experiment/results">
+            <p><select class="choice formEntry" required name="sample-a" id="sample-picker-1">
+                    <option disabled selected>Выберите первый алгоритм для сравнения</option>
+                    <option value="aes">AES-256</option>
+                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
+            </select><br>
+                <select class="choice formEntry" required name="mode-1" id="mode-picker-1">
+                    <option disabled selected>Выберите режим работы</option>
+                    <option value="cfb">CFB</option>
+                </select></p>
+            <br>
+            <br>
+            <p><select class="choice formEntry" required name="sample-b" id="sample-picker-2">
+                    <option disabled selected>Выберите второй алгоритм для сравнения</option>
+                    <option value="aes">AES-256</option>
+                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
+                </select><br>
+                <select class="choice formEntry" required name="mode-2" id="mode-picker-2">
+                    <option disabled selected>Выберите режим работы</option>
+                    <option value="cfb">CFB</option>
+                </select></p>
 
+            <input class="submit" type="submit" value="Подтвердить">
+        </form>
 </body>
