@@ -2,43 +2,19 @@ package main
 
 import (
 	"log"
-	"net/http"
+	"os"
 
-	"github.com/gin-gonic/gin"
-	"gitlab.com/Valghall/diwor/pkg/experimentator"
+	"gitlab.com/Valghall/diwor/cmd"
+	"gitlab.com/Valghall/diwor/internal/handler"
 )
 
 func main() {
-	r := gin.Default()
+	handlers := new(handler.Handler)
+	server := new(cmd.Server)
 
-	r.LoadHTMLGlob("web/template/*")
-	r.StaticFile("/favicon.ico", "./web/static/favicon.ico")
-	r.Static("/css", "web/static/css")
-	r.Static("/image", "./web/static/image")
-
-	r.GET("/", func(c *gin.Context) {
-		var warning string
-
-		if _, ok := c.GetQuery("reason"); ok {
-			warning = "Алгоритмы не должны совпадать!"
-		}
-
-		c.HTML(http.StatusOK, "index.gohtml", warning)
-	})
-
-	r.GET("/experiment", func(c *gin.Context) {
-		sampleA, sampleB, modeA, modeB :=
-			c.Query("sample-a"),
-			c.Query("sample-b"),
-			c.Query("mode-1"),
-			c.Query("mode-2")
-
-		if sampleA == sampleB {
-			c.Redirect(http.StatusTemporaryRedirect, "/?reason=equal")
-		}
-		encryptionResA, _ := experimentator.HoldExperiment(sampleA, sampleB, modeA, modeB)
-		c.HTML(http.StatusOK, "experiment.gohtml", encryptionResA)
-	})
-
-	log.Fatalln(r.Run())
+	port, ok := os.LookupEnv("PORT")
+	if !ok {
+		port = "8080"
+	}
+	log.Fatalln(server.Run(port, handlers.InitRoutes()))
 }
