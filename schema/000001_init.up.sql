@@ -1,14 +1,14 @@
 CREATE TABLE "users"
 (
-    "id"            integer UNIQUE PRIMARY KEY,
+    "id"            serial UNIQUE PRIMARY KEY NOT NULL ,
     "name"          varchar        NOT NULL,
-    "experiment_id" integer unique,
-    "password_hash" varchar UNIQUE NOT NULL
+    "username"      varchar UNIQUE NOT NULL,
+    "password_hash" varchar NOT NULL
 );
 
 CREATE TABLE "experiments"
 (
-    "id"          integer PRIMARY KEY,
+    "id"          serial PRIMARY KEY NOT NULL UNIQUE,
     "user_id"     integer,
     "sample_id"   integer unique,
     "result_id"   integer unique,
@@ -18,19 +18,19 @@ CREATE TABLE "experiments"
 
 CREATE TABLE "samples"
 (
-    "id"        integer PRIMARY KEY,
+    "id"        serial PRIMARY KEY NOT NULL UNIQUE,
     "algorithm" varchar NOT NULL,
     "mode"      varchar NOT NULL
 );
 
 CREATE TABLE "results"
 (
-    "id"       integer PRIMARY KEY,
+    "id"       serial PRIMARY KEY NOT NULL UNIQUE,
     "plot_ref" varchar UNIQUE NOT NULL
 );
 
 ALTER TABLE "experiments"
-    ADD FOREIGN KEY ("user_id") REFERENCES "users" ("experiment_id");
+    ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "samples"
     ADD FOREIGN KEY ("id") REFERENCES "experiments" ("sample_id");
