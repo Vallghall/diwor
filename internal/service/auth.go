@@ -15,6 +15,10 @@ const (
 	signinhKey = "this is my custom Secret key for authentication"
 )
 
+var (
+	ErrUsernameAlreadyExists = errors.New("user with this username already exists")
+)
+
 type tokenClaims struct {
 	jwt.StandardClaims
 	UserId int `json:"user_id"`
@@ -29,6 +33,9 @@ func NewAuthService(storage storage.Authorization) *AuthService {
 }
 
 func (as *AuthService) CreateUser(user users.User) (int, error) {
+	if as.storage.LookUpUser(user.Username) {
+		return 0, ErrUsernameAlreadyExists
+	}
 	user.Password = generatePasswordHash(user.Password)
 	return as.storage.CreateUser(user)
 }

@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"database/sql"
 	"fmt"
 	"gitlab.com/Valghall/diwor/internal/users"
 
@@ -35,4 +36,14 @@ func (ap *AuthPostgress) GetUser(username, password string) (users.User, error) 
 	err := ap.db.Get(&user, query, username, password)
 
 	return user, err
+}
+
+func (ap *AuthPostgress) LookUpUser(username string) bool {
+	var user users.User
+	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1", usersTable)
+	err := ap.db.Get(&user, query, username)
+	if err == sql.ErrNoRows {
+		return false
+	}
+	return true
 }
