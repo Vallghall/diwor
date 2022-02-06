@@ -17,6 +17,13 @@ func (h *Handler) indexPage(c *gin.Context) {
 	c.HTML(http.StatusOK, "experiment.gohtml", warning)
 }
 
+func (h *Handler) startExperiment(c *gin.Context) {
+	id, _ := c.Get(userCtx)
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
+}
+
 func (h *Handler) results(c *gin.Context) {
 	sampleA, sampleB, modeA, modeB :=
 		c.Query("sample-a"),
@@ -25,7 +32,7 @@ func (h *Handler) results(c *gin.Context) {
 		c.Query("mode-2")
 
 	if sampleA == sampleB {
-		c.Redirect(http.StatusTemporaryRedirect, "/experiment/?reason=equal")
+		c.Redirect(http.StatusTemporaryRedirect, "/api/experiment/?reason=equal")
 	}
 	encryptionResA, _ := experimentator.HoldExperiment(sampleA, sampleB, modeA, modeB)
 	c.HTML(http.StatusOK, "results.gohtml", encryptionResA)
