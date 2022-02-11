@@ -7,16 +7,17 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"gitlab.com/Valghall/diwor/internal/storage"
 	"gitlab.com/Valghall/diwor/internal/users"
+	"os"
 	"time"
 )
 
 const (
-	TokenTTL   = 12 * time.Hour
-	signinhKey = "this is my custom Secret key for authentication"
+	TokenTTL = 12 * time.Hour
 )
 
 var (
 	ErrUsernameAlreadyExists = errors.New("user with this username already exists")
+	signingKey               = os.Getenv("SIGNING_KEY")
 )
 
 type tokenClaims struct {
@@ -53,7 +54,7 @@ func (as *AuthService) GenerateToken(username, password string) (string, error) 
 		},
 		UserId: user.Id,
 	})
-	return token.SignedString([]byte(signinhKey))
+	return token.SignedString([]byte(signingKey))
 }
 
 func generatePasswordHash(password string) string {
@@ -69,7 +70,7 @@ func (as *AuthService) ParseToken(accessToken string) (int, error) {
 			return nil, errors.New("invalid signing method")
 		}
 
-		return []byte(signinhKey), nil
+		return []byte(signingKey), nil
 	})
 	if err != nil {
 		return 0, err

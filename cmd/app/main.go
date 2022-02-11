@@ -51,8 +51,8 @@ func main() {
 	}
 
 	store := storage.NewStorage(db)
-	service := service.NewService(store)
-	handlers := handler.NewHandler(service)
+	services := service.NewServices(store)
+	handlers := handler.NewHandler(services)
 	server := new(cmd.Server)
 
 	port, ok := os.LookupEnv("PORT")
