@@ -1,5 +1,16 @@
-{{template "base-head"}}
+<!doctype html>
+<html lang="en">
+<head>
+    {{template "base-head"}}
+    <title>DIWOR|Homepage</title>
+</head>
+</html>
+
 <body>
+    <div id="current-user-panel">
+        <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
+        <a href="/auth/login">Войти</a>
+    </div>
     <img class="altera" style="margin: auto" src="/image/altera.gif" alt="flex">
     <form class="form" action="/api/experiment">
         <input class="submit" type="submit" value="Start the experiment" />

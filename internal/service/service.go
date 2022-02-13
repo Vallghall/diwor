@@ -8,6 +8,7 @@ import (
 // Authorization interface encapsulates logic for user registration and authentication
 type Authorization interface {
 	CreateUser(user users.User) (int, error)
+	GetUserById(id int) (users.User, error)
 	GenerateToken(username, password string) (string, error)
 	ParseToken(token string) (int, error)
 }

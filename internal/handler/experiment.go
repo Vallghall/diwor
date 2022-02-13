@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"github.com/sirupsen/logrus"
+	"gitlab.com/Valghall/diwor/internal/users"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,13 +10,14 @@ import (
 )
 
 func (h *Handler) indexPage(c *gin.Context) {
-	var warning string
 
-	if _, ok := c.GetQuery("reason"); ok {
-		warning = "Алгоритмы не должны совпадать!"
+	userInfo, ok := c.Get(userCtx)
+	if !ok {
+		logrus.Error("User context not found")
+		c.HTML(http.StatusOK, "experiment.gohtml", "Master")
+	} else {
+		c.HTML(http.StatusOK, "experiment.gohtml", userInfo.(users.User).Name)
 	}
-
-	c.HTML(http.StatusOK, "experiment.gohtml", warning)
 }
 
 func (h *Handler) startExperiment(c *gin.Context) {

@@ -2,30 +2,31 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/Valghall/diwor/internal/users"
 )
 
-func (h *Handler) signUp(ctx *gin.Context) {
+func (h *Handler) signUp(c *gin.Context) {
 	var input users.User
 
-	if err := ctx.BindJSON(&input); err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	id, err := h.service.Authorization.CreateUser(input)
 	if err != nil {
 		if err == ErrUsernameAlreadyExists {
-			newErrorResponse(ctx, http.StatusBadRequest, err.Error())
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
 			return
 		}
-		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	ctx.JSON(http.StatusOK, map[string]interface{}{
+	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
 	})
 }
@@ -35,21 +36,37 @@ type signInInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func (h *Handler) signIn(ctx *gin.Context) {
+func (h *Handler) signIn(c *gin.Context) {
 	var input signInInput
 
-	if err := ctx.BindJSON(&input); err != nil {
-		newErrorResponse(ctx, http.StatusBadRequest, err.Error())
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	token, err := h.service.Authorization.GenerateToken(input.Username, input.Password)
 	if err != nil {
-		newErrorResponse(ctx, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	ctx.JSON(http.StatusOK, map[string]interface{}{
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "diwor-access-token",
+		Value:    token,
+		Expires:  time.Now().Add(12 * time.Hour),
+		Path:     "/",
+		HttpOnly: true,
+	})
+
+	c.JSON(http.StatusOK, map[string]interface{}{
 		"token": token,
 	})
+}
+
+func (h *Handler) logIn(c *gin.Context) {
+	c.HTML(http.StatusOK, "login.gohtml", nil)
+}
+
+func (h *Handler) register(c *gin.Context) {
+	c.HTML(http.StatusOK, "register.gohtml", nil)
 }
