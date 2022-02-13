@@ -83,3 +83,11 @@ func (as *AuthService) ParseToken(accessToken string) (int, error) {
 
 	return claims.UserId, nil
 }
+
+func (as *AuthService) GetUserById(id int) (users.User, error) {
+	user, err := as.storage.GetUserById(id)
+	if err != nil {
+		return users.User{}, err
+	}
+	return user, nil
+}

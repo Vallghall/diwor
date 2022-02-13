@@ -38,6 +38,15 @@ func (ap *AuthPostgress) GetUser(username, password string) (users.User, error) 
 	return user, err
 }
 
+func (ap *AuthPostgress) GetUserById(id int) (users.User, error) {
+	user := users.User{Id: id}
+
+	query := fmt.Sprintf("SELECT name, username FROM %s WHERE id=$1", usersTable)
+	err := ap.db.Get(&user, query, id)
+
+	return user, err
+}
+
 func (ap *AuthPostgress) LookUpUser(username string) bool {
 	var user users.User
 	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1", usersTable)

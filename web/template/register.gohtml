@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{template "base-head"}}
+        <link rel="stylesheet" href="/css/form.css">
+        <title>DIWOR|Registration</title>
+        <script src="/js/json_body_query.js"></script>
+    </head>
+
+    <body>
+        <img class="altera" src="/image/altera.gif" alt="flex">
+        <h1>{{.}}</h1>
+        <form class="form" name="login-info" method="post" action="/auth/sign-up">
+            <h1>Регистрация</h1>
+            <label for="name">Имя пользователя:</label><br>
+            <input type="text" name="name" id="password">
+            <span id="name-message" style="color: white">g</span> <br><br>
+
+            <label for="username">Логин:</label><br>
+            <input type="text" name="username" id="password">
+            <span id="username-message" style="color: white">r</span> <br><br>
+
+            <label for="password">Пароль:</label><br>
+            <input type="text" name="password" id="password">
+            <span id="password-message" style="color: white">h</span> <br><br>
+
+            <label for="confirm-password">Подтверждение пароля:</label><br>
+            <input type="text" name="confirm" id="confirm-password">
+            <span id="confirm-password-message" style="color: white">r</span> <br><br>
+
+            <script src="/js/registration.js"></script>
+            <button type="submit">Подтвердить</button>
+            <a href="/auth/login">Уже зарегистрированы? Войти</a>
+        </form>
+    </body>
+</html>
+
+

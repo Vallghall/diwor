@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/sirupsen/logrus"
 	"net/http"
 
 	"gitlab.com/Valghall/diwor/internal/service"
@@ -22,19 +23,26 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router.LoadHTMLGlob("web/template/*")
 	router.StaticFile("/favicon.ico", "assets/logo/favicon.ico")
 	router.Static("/css", "web/static/css")
+	router.Static("/js", "web/static/js")
 	router.Static("/image", "assets/image")
 
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.gohtml", nil)
+		userInfo, ok := c.Get(userCtx)
+		if !ok {
+			logrus.Error("User context not found")
+		}
+		c.HTML(http.StatusOK, "index.gohtml", userInfo)
 	})
 
 	auth := router.Group("/auth")
 	{
 		auth.POST("/sign-up", h.signUp)
 		auth.POST("/sign-in", h.signIn)
+		auth.GET("/login", h.logIn)
+		auth.GET("/register", h.register)
 	}
 
-	api := router.Group("/api", h.userIdentity)
+	api := router.Group("/api", h.userIdentify)
 	{
 
 		ex := api.Group("/experiment")

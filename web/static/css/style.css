@@ -10,6 +10,18 @@ body {
     margin-left: 80%;
 }
 
+#current-user-panel {
+    display: block;
+    width: 150pt;
+    height: 100px;
+    background-color: white;
+    border-width: 3px;
+    border-color: black;
+    font-size: 18pt;
+    color: black;
+    font-family: "Times New Roman", sans-serif;
+}
+
 .form {
     border: darkorchid 5px;
     background: #fff;
@@ -52,9 +64,6 @@ body {
 
 .submit:hover {
     box-shadow: 15px 15px 15px 5px rgba(78, 72, 77, 0.219);
-    transform: translateY(-3px);
-    border-top: 5px solid #0e3750;
-    border-radius: 0%;
 }
 
 h1 {
@@ -67,9 +76,9 @@ h1 {
 
 @keyframes bounce {
     0% {
-        tranform: translate(0, 4px);
+        tranform: translate(0, 2px);
     }
     50% {
-        transform: translate(0, 8px);
+        transform: translate(0, 2px);
     }
 }

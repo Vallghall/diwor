@@ -8,6 +8,7 @@ import (
 type Authorization interface {
 	CreateUser(user users.User) (int, error)
 	GetUser(username, password string) (users.User, error)
+	GetUserById(id int) (users.User, error)
 	LookUpUser(username string) bool
 }
 
