@@ -1,18 +1,21 @@
 <!doctype html>
 <html lang="en">
-<head>
-    {{template "base-head"}}
-    <title>DIWOR|Homepage</title>
-</head>
-</html>
-
-<body>
+    <head>
+        {{template "base-head"}}
+        <title>DIWOR|Homepage</title>
+    </head>
+    <body>
     <div id="current-user-panel">
         <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
-        <a href="/auth/login">Войти</a>
+        <a href="/auth/login" methods="">Войти</a>
     </div>
     <img class="altera" style="margin: auto" src="/image/altera.gif" alt="flex">
     <form class="form" action="/api/experiment">
-        <input class="submit" type="submit" value="Start the experiment" />
+        <input class="submit" type="submit" value="Начать эксперимент" />
     </form>
-</body>
+    <p class="intro">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt distinctio eos esse facere labore, libero nobis porro reprehenderit tempora tempore. Ipsum libero perferendis qui tempora vitae. Ab alias, aspernatur consectetur consequatur corporis culpa deserunt dignissimos dolores facere facilis fuga fugit hic illo in inventore ipsa iste maxime modi neque nihil, nisi nobis omnis porro provident quas quasi quos ratione recusandae rem rerum soluta tempora voluptate voluptatibus. At, dolor dolorum ex, illo inventore iusto maxime neque quaerat quisquam repellendus repudiandae temporibus, veritatis voluptas! Ab adipisci consequuntur distinctio, expedita, fugiat impedit laboriosam laborum minima nostrum obcaecati omnis placeat, porro ullam ut vel!
+    </p>
+
+    </body>
+</html>

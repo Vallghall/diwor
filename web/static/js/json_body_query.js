@@ -8,11 +8,11 @@ function jsonBodyQuery(method, queryUrl, replaceUrl, value) {
 
             window.location.replace(replaceUrl)
         } else {
-            const response = {
-                statusCode: xhr.statusText,
-                responseInfo: JSON.parse(xhr.responseText)
-            }
-            alert(response);
+            swal(
+                xhr.statusText,
+                JSON.parse(xhr.responseText).message,
+                "warning"
+            );
         }
     };
 
