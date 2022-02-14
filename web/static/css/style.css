@@ -12,21 +12,43 @@ body {
 
 #current-user-panel {
     display: block;
+
     width: 150pt;
     height: 100px;
+
     background-color: white;
-    border-width: 3px;
-    border-color: black;
+    border: black solid 3px;
+    border-radius: 15px;
+
     font-size: 18pt;
     color: black;
     font-family: "Times New Roman", sans-serif;
+    padding: 10px;
 }
+
+#current-user-panel > img {
+    height: 80px;
+    width: 80px;
+}
+
+#current-user-panel > a{
+    position: relative;
+    bottom: 10pt;
+    left: 10pt;
+}
+
+#current-user-panel > strong {
+    position: relative;
+    bottom: 16pt;
+    left: 10pt;
+}
+
 
 .form {
     border: darkorchid 5px;
     background: #fff;
     box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
-    border-radius: 5px;
+    border-radius: 15px;
     max-width: 480px;
     margin-left: auto;
     margin-right: auto;
@@ -35,9 +57,28 @@ body {
     left: 0;
     right: 0;
     position: absolute;
-    border-top: 5px solid #0e3721;
     animation: bounce 1.5s infinite;
 }
+
+.intro {
+    background-color: white;
+    color: black;
+    font-size: 14pt;
+
+    position: absolute;
+    top: 50%;
+
+    text-align: center;
+    overflow: auto;
+    padding: 10px;
+    border-radius: 15px;
+
+    margin-left: 28%;
+    margin-right: 28%;
+
+    animation: bounce 1.5s infinite;
+}
+
 
 .choice {
     margin-left: 5%;

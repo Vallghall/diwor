@@ -1,39 +1,26 @@
-    <!doctype html>
-    <html lang="en">
+<!doctype html>
+<html lang="en">
     <head>
         {{template "base-head"}}
+        <link rel="stylesheet" href="/css/experiment-choice.css">
         <title>DIWOR|Experiment</title>
     </head>
-    </html>
+    <body>
+        <div id="current-user-panel">
+            <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
+                <strong>{{.}}</strong> <br>
+                <a href="/auth/logout" style="font-size: 12pt">Выйти</a>
+        </div>
 
-<body>
-    <div id="current-user-panel">
-        <img src="/image/van.jpg" alt="profile logo" width="50" height="50"> {{.}}
-    </div>
-    <img class="altera" src="/image/altera.gif" alt="flex">
-    <h1>Выберите исходные данные для эксперимента</h1>
-        <form class="form" name="initial-data" method="get" action="/experiment/results">
-            <p><select class="choice formEntry" required name="sample-a" id="sample-picker-1">
-                    <option disabled selected>Выберите первый алгоритм для сравнения</option>
-                    <option value="aes">AES-256</option>
-                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
-            </select><br>
-                <select class="choice formEntry" required name="mode-1" id="mode-picker-1">
-                    <option disabled selected>Выберите режим работы</option>
-                    <option value="cfb">CFB</option>
-                </select></p>
-            <br>
-            <br>
-            <p><select class="choice formEntry" required name="sample-b" id="sample-picker-2">
-                    <option disabled selected>Выберите второй алгоритм для сравнения</option>
-                    <option value="aes">AES-256</option>
-                    <option value="grasshopper">ГОСТ "Кузнечик"</option>
-                </select><br>
-                <select class="choice formEntry" required name="mode-2" id="mode-picker-2">
-                    <option disabled selected>Выберите режим работы</option>
-                    <option value="cfb">CFB</option>
-                </select></p>
+        <div id="choice-panel-wrapper">
+            <span id="choice-panel">
+                <h1>Выберите тип алгоритма для эксперимента</h1>
 
-            <input class="submit" type="submit" value="Подтвердить">
-        </form>
-</body>
+                <button class="choose-between" id="hash">Алгоритмы хэширования</button>
+                <img class="altera" src="/image/altera.gif" alt="flex">
+                <button class="choose-between" id="cipher">Алгоритмы шифрования</button>
+            </span>
+        </div>
+    </body>
+</html>
+

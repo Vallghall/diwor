@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"database/sql"
+	myerr "gitlab.com/Valghall/diwor/internal/errors"
 	"net/http"
 	"time"
 
@@ -16,14 +18,21 @@ func (h *Handler) signUp(c *gin.Context) {
 		return
 	}
 
+	ok, err := h.service.Authorization.ValidateUserCredentials(input)
+	if !ok {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
 	id, err := h.service.Authorization.CreateUser(input)
 	if err != nil {
-		if err == ErrUsernameAlreadyExists {
+		if err.Error() == myerr.ErrUsernameAlreadyExists.Error() {
 			newErrorResponse(c, http.StatusBadRequest, err.Error())
 			return
+		} else {
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
 		}
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
@@ -46,6 +55,10 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	token, err := h.service.Authorization.GenerateToken(input.Username, input.Password)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			newErrorResponse(c, http.StatusBadRequest, myerr.ErrInvalidLoginOrPassword.Error())
+			return
+		}
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -69,4 +82,19 @@ func (h *Handler) logIn(c *gin.Context) {
 
 func (h *Handler) register(c *gin.Context) {
 	c.HTML(http.StatusOK, "register.gohtml", nil)
+}
+
+func (h *Handler) logout(c *gin.Context) {
+	cookie := &http.Cookie{
+		Name:    "diwor-access-token",
+		Value:   "",
+		Path:    "/",
+		Expires: time.Unix(0, 0),
+
+		HttpOnly: true,
+	}
+
+	http.SetCookie(c.Writer, cookie)
+
+	c.Redirect(http.StatusTemporaryRedirect, "/auth/login")
 }
