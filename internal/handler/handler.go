@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"github.com/sirupsen/logrus"
 	"net/http"
+
+	"github.com/sirupsen/logrus"
 
 	"gitlab.com/Valghall/diwor/internal/service"
 
@@ -50,8 +51,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		ex := api.Group("/experiment")
 		{
 			ex.GET("/", h.indexPage)
-			ex.POST("/start", h.startExperiment)
-			ex.GET("/results", h.results)
+			ex.GET("/hashes", h.pickHashingAlgorithms)
+			ex.GET("/ciphers", h.pickCipheringAlgorithms)
+			ex.POST("/start-hash-experiment", h.researchHashAlgorithms)
 		}
 	}
 	return router

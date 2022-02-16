@@ -3,18 +3,20 @@ package service
 import (
 	"errors"
 	"fmt"
+	"os"
+	"regexp"
+	"time"
+
 	streebog "github.com/bi-zone/ruwireguard-go/crypto/gost/gost34112012256"
 	"github.com/dgrijalva/jwt-go"
 	myerr "gitlab.com/Valghall/diwor/internal/errors"
 	"gitlab.com/Valghall/diwor/internal/storage"
 	"gitlab.com/Valghall/diwor/internal/users"
-	"os"
-	"regexp"
-	"time"
 )
 
 const (
-	TokenTTL        = 12 * time.Hour
+	TokenTTL = 12 * time.Hour
+
 	NamePatternRU   = `^[а-яА-Я]+$`
 	NamePatternEN   = `^[a-zA-Z]+$`
 	PasswordPattern = `^[а-яА-Яa-zA-Z0-9]+$`

@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/jmoiron/sqlx"
-	"github.com/sirupsen/logrus"
 	"log"
 	"os"
+
+	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
@@ -19,7 +20,7 @@ import (
 )
 
 func main() {
-	logrus.SetFormatter(new(logrus.JSONFormatter))
+	logrus.SetFormatter(&logrus.JSONFormatter{})
 
 	if err := initConfigs(); err != nil {
 		logrus.Fatalf("Error while parsing configs: %v", err)

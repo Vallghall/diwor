@@ -9,4 +9,6 @@ var (
 	ErrNonAlphabetSymbols         = errors.New("имя должно состоять из символов только либо латинского либо русского алфавита")
 	ErrInvalidPasswordCharachters = errors.New("пароль может содержать только символы а-я, А-Я, a-z, A-Z, 0-9")
 	ErrInvalidLoginOrPassword     = errors.New("неверный логин или пароль")
+	ErrUserCtxNotFound            = errors.New("User context not found")
+	ErrInvalidHashAlgorithmInput  = errors.New("введен(-ы) некорректные тип(-ы) алгоритмов хэширования")
 )

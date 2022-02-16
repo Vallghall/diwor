@@ -3,6 +3,7 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+
 	"gitlab.com/Valghall/diwor/internal/users"
 
 	"github.com/jmoiron/sqlx"

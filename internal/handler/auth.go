@@ -2,9 +2,10 @@ package handler
 
 import (
 	"database/sql"
-	myerr "gitlab.com/Valghall/diwor/internal/errors"
 	"net/http"
 	"time"
+
+	myerr "gitlab.com/Valghall/diwor/internal/errors"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/Valghall/diwor/internal/users"

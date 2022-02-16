@@ -6,9 +6,12 @@
 #choice-panel {
     width: 500pt;
     height: 400pt;
+
     display: inline-block;
     text-align: center;
     background-color: mediumpurple;
+
+    border: solid black 3px;
     border-radius: 15px;
 }
 
@@ -17,7 +20,7 @@
     border-radius: 15px;
 }
 
-button {
+#choice-panel > .choose-between {
     font-family: "Times New Roman", sans-serif;
     font-size: 14pt;
     color: black;

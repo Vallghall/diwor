@@ -19,7 +19,7 @@ CREATE TABLE "experiments"
 CREATE TABLE "samples"
 (
     "id"        serial PRIMARY KEY NOT NULL UNIQUE,
-    "algorithm" varchar NOT NULL,
+    "Algorithm" varchar NOT NULL,
     "mode"      varchar NOT NULL
 );
 
