@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{template "base-head"}}
+        <title>DIWOR|Experiment</title>
+        <link rel="stylesheet" href="/css/picking-algs.css">
+    </head>
+    <body>
+        <div id="current-user-panel">
+            <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
+            <strong>{{.}}</strong> <br>
+            <a href="/auth/logout" style="font-size: 12pt">Выйти</a>
+        </div>
+
+        <img class="altera" src="/image/altera.gif" alt="flex">
+
+        <form id="hash-form" action="/api/experiment/start-hash-experiment" method="POST">
+            <h1>Выберите алгоритмы для сравнения</h1>
+                <select name="alg-1" class="select-alg">
+                    <optgroup>
+                        <option selected disabled>Выберите алгоритм хеширования</option>
+                        <option value="Streebog">Стрибог</option>
+                        <option value="SHA-224">SHA-224</option>
+                        <option value="SHA-256">SHA-256</option>
+                        <option value="SHA-384">SHA-384</option>
+                        <option value="SHA-512">SHA-512</option>
+                        <option value="RIPEMD-128">RIPEMD-128</option>
+                        <option value="RIPEMD-160">RIPEMD-160</option>
+                        <option value="RIPEMD-256">RIPEMD-256</option>
+                        <option value="RIPEMD-320">RIPEMD-320</option>
+                        <option value="MD5">MD5</option>
+                    </optgroup>
+                </select>
+        </form>
+    </body>
+</html>
+

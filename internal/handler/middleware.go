@@ -1,14 +1,17 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
 	authorizationHeader = "Authorization"
 	userCtx             = "userId"
+	userName            = "name"
+	userLogin           = "userName"
 )
 
 func (h *Handler) userIdentity(c *gin.Context) {
@@ -52,5 +55,7 @@ func (h *Handler) userIdentify(c *gin.Context) {
 		return
 	}
 
-	c.Set(userCtx, user)
+	c.Set(userCtx, user.Id)
+	c.Set(userName, user.Name)
+	c.Set(userLogin, user.Username)
 }

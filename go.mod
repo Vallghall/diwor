@@ -10,6 +10,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.4
+	github.com/maoxs2/go-ripemd v0.0.0-20200326052756-bd1759ad7d10
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.9.0
 )

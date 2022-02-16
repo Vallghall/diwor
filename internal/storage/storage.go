@@ -2,6 +2,7 @@ package storage
 
 import (
 	"github.com/jmoiron/sqlx"
+	"gitlab.com/Valghall/diwor/internal/results"
 	"gitlab.com/Valghall/diwor/internal/users"
 )
 
@@ -16,6 +17,7 @@ type Sample interface {
 }
 
 type Experiment interface {
+	SaveResults(userId int, algType string, results results.HashAlgorithmsResults)
 }
 
 type Storage struct {
@@ -27,5 +29,6 @@ type Storage struct {
 func NewStorage(db *sqlx.DB) *Storage {
 	return &Storage{
 		Authorization: NewAuthPostgress(db),
+		Experiment:    NewExperimentPostgres(db),
 	}
 }

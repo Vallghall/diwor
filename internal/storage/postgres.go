@@ -10,8 +10,6 @@ import (
 const (
 	usersTable       = "users"
 	experimentsTable = "experiments"
-	samplesTable     = "samples"
-	resultsTable     = "results"
 )
 
 type Config struct {

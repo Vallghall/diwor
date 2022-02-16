@@ -1,6 +1,7 @@
 package service
 
 import (
+	"gitlab.com/Valghall/diwor/internal/results"
 	"gitlab.com/Valghall/diwor/internal/storage"
 	"gitlab.com/Valghall/diwor/internal/users"
 )
@@ -21,12 +22,13 @@ type InitialData interface {
 
 // Result interface represents the data, accumulated during the experiment
 type Result interface {
-	Duration() int64
+	DurationMilliSeconds() int64
 }
 
 // Experiment interface encapsulates logic necessary for accumulating resulting data
 type Experiment interface {
-	Hold(ini InitialData) Result
+	ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) Result
+	SaveResults(userId int, algType string, results results.HashAlgorithmsResults)
 }
 
 type Services struct {
@@ -38,5 +40,6 @@ type Services struct {
 func NewServices(storage *storage.Storage) *Services {
 	return &Services{
 		Authorization: NewAuthService(storage.Authorization),
+		Experiment:    NewExperimentService(storage.Experiment),
 	}
 }
