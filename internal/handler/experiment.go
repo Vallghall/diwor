@@ -46,10 +46,6 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 	var results resulties.HashAlgorithmsResults
 	for _, algorithm := range initials.Algorithms {
 		res := h.service.Experiment.ResearchHashingAlgorithm(algorithm, &results)
-		if res == nil {
-			newErrorResponse(c, http.StatusBadRequest, myerr.ErrInvalidHashAlgorithmInput.Error())
-			return
-		}
 		results.Results = append(results.Results, res)
 	}
 

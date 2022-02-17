@@ -33,11 +33,11 @@ type HEVArray struct {
 func NewHEVArray(results resulties.HashAlgorithmsResults) (res HEVArray) {
 	for _, result := range results.Results {
 		res.Results = append(res.Results, HashExpValues{
-			Algorithm: result.(resulties.HashExpResult).Algorithm,
-			Duration:  result.(resulties.HashExpResult).Duration.String(),
-			Size:      result.(resulties.HashExpResult).Size,
-			BlockSize: result.(resulties.HashExpResult).BlockSize,
-			Sample:    result.(resulties.HashExpResult).Sample,
+			Algorithm: result.Algorithm,
+			Duration:  result.Duration.String(),
+			Size:      result.Size,
+			BlockSize: result.BlockSize,
+			Sample:    result.Sample,
 		})
 	}
 
@@ -76,5 +76,7 @@ func (ep *ExperimentPostgres) SaveResults(userId int, algType string, results re
 		results.FinishedAt,
 	)
 
-	logrus.Error(err)
+	if err != nil {
+		logrus.Error(err)
+	}
 }

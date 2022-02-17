@@ -11,9 +11,9 @@ type HashExpResult struct {
 }
 
 type HashAlgorithmsResults struct {
-	Results    []interface{} `json:"results"`
-	StartedAt  time.Time     `json:"started_at"`
-	FinishedAt time.Time     `json:"finished_at"`
+	Results    []HashExpResult `json:"results"`
+	StartedAt  time.Time       `json:"started_at"`
+	FinishedAt time.Time       `json:"finished_at"`
 }
 
 func (her HashExpResult) DurationMilliSeconds() int64 {

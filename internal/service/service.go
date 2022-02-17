@@ -27,7 +27,7 @@ type Result interface {
 
 // Experiment interface encapsulates logic necessary for accumulating resulting data
 type Experiment interface {
-	ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) Result
+	ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) results.HashExpResult
 	SaveResults(userId int, algType string, results results.HashAlgorithmsResults)
 }
 
