@@ -1,6 +1,11 @@
 package results
 
-import "time"
+import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
+	"time"
+)
 
 type HashExpResult struct {
 	Algorithm string        `json:"algorithm"`
@@ -16,6 +21,30 @@ type HashAlgorithmsResults struct {
 	FinishedAt time.Time       `json:"finished_at"`
 }
 
-func (her HashExpResult) DurationMilliSeconds() int64 {
-	return her.Duration.Milliseconds()
+func (h HashAlgorithmsResults) Value() (driver.Value, error) {
+	return json.Marshal(h)
+}
+
+func (h *HashAlgorithmsResults) Scan(value interface{}) error {
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+
+	return json.Unmarshal(b, &h)
+}
+
+type CipherExpResult struct {
+	Algorithm           string        `json:"algorithm"`
+	Type                string        `json:"type"`
+	CipheringDuration   time.Duration `json:"ciphering_duration"`
+	DecipheringDuration time.Duration `json:"deciphering_duration"`
+	KeyLength           int           `json:"key_length"`
+	Sample              string        `json:"sample"`
+}
+
+type CipherAlgorithmsResults struct {
+	Results    []CipherExpResult `json:"results"`
+	StartedAt  time.Time         `json:"started_at"`
+	FinishedAt time.Time         `json:"finished_at"`
 }

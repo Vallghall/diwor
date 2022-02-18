@@ -11,7 +11,7 @@ CREATE TABLE "experiments"
     "id"           serial PRIMARY KEY NOT NULL UNIQUE,
     "user_id"      integer,
     "algorithm_type" varchar NOT NULL,
-    "results"  jsonb NOT NULL,
+    "algResults"  jsonb NOT NULL,
     "started_at"   timestamp NOT NULL,
     "finished_at"  timestamp NOT NULL
 );

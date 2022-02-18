@@ -23,7 +23,7 @@ CREATE TABLE "samples"
     "mode"      varchar NOT NULL
 );
 
-CREATE TABLE "results"
+CREATE TABLE "algResults"
 (
     "id"       serial PRIMARY KEY NOT NULL UNIQUE,
     "plot_ref" varchar UNIQUE NOT NULL
@@ -36,4 +36,4 @@ ALTER TABLE "samples"
     ADD FOREIGN KEY ("id") REFERENCES "experiments" ("sample_id");
 
 ALTER TABLE "experiments"
-    ADD FOREIGN KEY ("result_id") REFERENCES "results" ("id");
+    ADD FOREIGN KEY ("result_id") REFERENCES "algResults" ("id");

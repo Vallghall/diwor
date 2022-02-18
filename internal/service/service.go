@@ -15,26 +15,19 @@ type Authorization interface {
 	ParseToken(token string) (int, error)
 }
 
-// InitialData interface represents the data, received from the user's input
-type InitialData interface {
-	AlgorithmType() string
-}
-
 // Result interface represents the data, accumulated during the experiment
-type Result interface {
-	DurationMilliSeconds() int64
-}
+type Result interface{}
 
 // Experiment interface encapsulates logic necessary for accumulating resulting data
 type Experiment interface {
 	ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) results.HashExpResult
-	SaveResults(userId int, algType string, results results.HashAlgorithmsResults)
+	ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult
+	SaveResults(userId int, algType string, results Result)
 }
 
 type Services struct {
 	Authorization
 	Experiment
-	InitialData
 }
 
 func NewServices(storage *storage.Storage) *Services {

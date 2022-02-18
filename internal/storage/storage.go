@@ -13,17 +13,14 @@ type Authorization interface {
 	LookUpUser(username string) bool
 }
 
-type Sample interface {
-}
-
 type Experiment interface {
-	SaveResults(userId int, algType string, results results.HashAlgorithmsResults)
+	SaveHashAlgorithmResults(userId int, algType string, results results.HashAlgorithmsResults)
+	SaveCipherAlgorithmResults(userId int, algType string, results results.CipherAlgorithmsResults)
 }
 
 type Storage struct {
 	Authorization
 	Experiment
-	Sample
 }
 
 func NewStorage(db *sqlx.DB) *Storage {
