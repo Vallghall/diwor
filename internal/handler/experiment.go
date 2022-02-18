@@ -3,11 +3,10 @@ package handler
 import (
 	"github.com/sirupsen/logrus"
 	myerr "gitlab.com/Valghall/diwor/internal/errors"
-	resulties "gitlab.com/Valghall/diwor/internal/results"
+	"gitlab.com/Valghall/diwor/internal/results"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gitlab.com/Valghall/diwor/pkg/experimentator"
 )
 
 const (
@@ -34,6 +33,7 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 	userId, ok := c.Get(userCtx)
 	if !ok {
 		newErrorResponse(c, http.StatusInternalServerError, myerr.ErrUserCtxNotFound.Error())
+		return
 	}
 
 	var initials HashAlgorithmsInput
@@ -43,15 +43,15 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 		return
 	}
 
-	var results resulties.HashAlgorithmsResults
+	var algResults results.HashAlgorithmsResults
 	for _, algorithm := range initials.Algorithms {
-		res := h.service.Experiment.ResearchHashingAlgorithm(algorithm, &results)
-		results.Results = append(results.Results, res)
+		res := h.service.Experiment.ResearchHashingAlgorithm(algorithm, &algResults)
+		algResults.Results = append(algResults.Results, res)
 	}
 
-	h.service.Experiment.SaveResults(userId.(int), HashAlgorithm, results)
+	h.service.Experiment.SaveResults(userId.(int), HashAlgorithm, algResults)
 
-	c.JSON(http.StatusOK, results)
+	c.JSON(http.StatusOK, algResults)
 }
 
 func (h *Handler) pickHashingAlgorithms(c *gin.Context) {
@@ -67,15 +67,5 @@ func (h *Handler) pickCipheringAlgorithms(c *gin.Context) {
 // Deprecated: Need changes
 // TODO: Fix this handler
 func (h *Handler) results(c *gin.Context) {
-	sampleA, sampleB, modeA, modeB :=
-		c.Query("sample-a"),
-		c.Query("sample-b"),
-		c.Query("mode-1"),
-		c.Query("mode-2")
-
-	if sampleA == sampleB {
-		c.Redirect(http.StatusTemporaryRedirect, "/api/experiment/?reason=equal")
-	}
-	encryptionResA, _ := experimentator.HoldExperiment(sampleA, sampleB, modeA, modeB)
-	c.HTML(http.StatusOK, "results.gohtml", encryptionResA)
+	c.HTML(http.StatusOK, "results.gohtml", nil)
 }

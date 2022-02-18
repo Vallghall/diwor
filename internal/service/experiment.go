@@ -8,35 +8,12 @@ import (
 	"github.com/maoxs2/go-ripemd"
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Valghall/diwor/internal/results"
-	"os"
 	"time"
 
 	streebog256 "github.com/bi-zone/ruwireguard-go/crypto/gost/gost34112012256"
 	streebog512 "github.com/bi-zone/ruwireguard-go/crypto/gost/gost34112012512"
 	"gitlab.com/Valghall/diwor/internal/storage"
 )
-
-const (
-	Streebog256 = "Streebog-256"
-	Streebog512 = "Streebog-512"
-	SHA224      = "SHA-224"
-	SHA256      = "SHA-256"
-	SHA384      = "SHA-384"
-	SHA512      = "SHA-512"
-	RIPEMD128   = "RIPEMD-128"
-	RIPEMD160   = "RIPEMD-160"
-	RIPEMD256   = "RIPEMD-256"
-	RIPEMD320   = "RIPEMD-320"
-	MD5         = "MD5"
-)
-
-var (
-	textForHashing []byte
-)
-
-func init() {
-	textForHashing, _ = os.ReadFile("lavkraft.txt")
-}
 
 type ExperimentService struct {
 	storage storage.Experiment
@@ -46,11 +23,18 @@ func NewExperimentService(storage storage.Experiment) *ExperimentService {
 	return &ExperimentService{storage: storage}
 }
 
-func (es *ExperimentService) SaveResults(userId int, algType string, results results.HashAlgorithmsResults) {
-	es.storage.SaveResults(userId, algType, results)
+func (es *ExperimentService) SaveResults(userId int, algType string, reses Result) {
+	switch reses.(type) {
+	case results.HashAlgorithmsResults:
+		es.storage.SaveHashAlgorithmResults(userId, algType, reses.(results.HashAlgorithmsResults))
+	case results.CipherAlgorithmsResults:
+		es.storage.SaveCipherAlgorithmResults(userId, algType, reses.(results.CipherAlgorithmsResults))
+	default:
+		logrus.Error("type err while saving results")
+	}
 }
 
-func (es *ExperimentService) ResearchHashingAlgorithm(alg string, has *results.HashAlgorithmsResults) results.HashExpResult {
+func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) results.HashExpResult {
 	var res results.HashExpResult
 	var begin time.Time
 	dur := time.Duration(0)
@@ -349,8 +333,48 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, has *results.H
 	}
 	res.Duration = dur / 200
 	logrus.Print(res.Duration)
-	has.StartedAt = begin
-	has.FinishedAt = time.Now()
+	har.StartedAt = begin
+	har.FinishedAt = time.Now()
+
+	return res
+}
+
+//TODO: Implement that initially
+func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult {
+	var res results.CipherExpResult
+	var begin time.Time
+	dur := time.Duration(0)
+
+	durChan := make(chan time.Duration)
+
+	switch alg {
+	case Grasshopper:
+		begin = time.Now()
+
+		for i := 0; i < 200; i++ {
+			go func() {
+				//key, _ := generateKey(32)
+				start := time.Now()
+
+				//var dst []byte
+				//kCipher, _ := gosthopper.NewCipher(key)
+				//kGCM, _ := cipher.NewGCM(kCipher)
+				//kGCM.Seal(dst)
+				end := time.Now()
+				durChan <- end.Sub(start)
+			}()
+		}
+
+		res = results.CipherExpResult{}
+
+	}
+
+	for i := 0; i < 200; i++ {
+		dur += <-durChan
+	}
+
+	car.StartedAt = begin
+	car.FinishedAt = time.Now()
 
 	return res
 }

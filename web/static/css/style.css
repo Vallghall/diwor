@@ -29,6 +29,7 @@ body {
 #current-user-panel > img {
     height: 80px;
     width: 80px;
+    border-radius: 15px;
 }
 
 #current-user-panel > a{
