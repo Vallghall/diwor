@@ -5,7 +5,7 @@ function jsonBodyQuery(method, queryUrl, replaceUrl, value) {
         if (xhr.status >= 200 && xhr.status < 300) {
             const response = JSON.parse(xhr.responseText);
             console.log(response);
-
+            if (replaceUrl === 'nil') {return}
             window.location.replace(replaceUrl)
         } else {
             swal(

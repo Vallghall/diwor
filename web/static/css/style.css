@@ -16,12 +16,12 @@ body {
     width: 150pt;
     height: 100px;
 
-    background-color: white;
+    background-color: mediumpurple;
     border: black solid 3px;
     border-radius: 15px;
 
     font-size: 18pt;
-    color: black;
+    color: whitesmoke;
     font-family: "Times New Roman", sans-serif;
     padding: 10px;
 }
@@ -33,6 +33,7 @@ body {
 }
 
 #current-user-panel > a{
+
     position: relative;
     bottom: 10pt;
     left: 10pt;

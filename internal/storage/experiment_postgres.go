@@ -58,3 +58,28 @@ func (ep *ExperimentPostgres) SaveCipherAlgorithmResults(userId int, algType str
 		logrus.Error(err)
 	}
 }
+
+func (ep *ExperimentPostgres) GetLastExperimentResults(userId int) (res results.HashAlgorithmsResults) {
+	query := fmt.Sprintf(
+		`SELECT results, started_at, finished_at
+	FROM %s
+	WHERE user_id=$1
+	ORDER BY started_at DESC
+	LIMIT 1;`, experimentsTable)
+
+	rows, err := ep.db.Query(
+		query,
+		userId,
+	)
+	if err != nil {
+		logrus.Error(err)
+	}
+
+	rows.Next()
+	err = rows.Scan(&res, &res.StartedAt, &res.FinishedAt)
+	if err != nil {
+		logrus.Error(err)
+	}
+
+	return
+}
