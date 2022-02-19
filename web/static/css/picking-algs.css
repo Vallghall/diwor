@@ -1,11 +1,15 @@
 #hash-form {
-    margin-left: 25%;
-    margin-right: 25%;
-    width: 50%;
-    height: 50%;
+    margin-left: 35%;
+    margin-right: 35%;
+    width: 30%;
+    height: 30%;
 
-    display: inline-block;
-    text-align: center;
+    display: grid;
+    grid-template-columns: minmax(40%, auto);
+    grid-template-rows: minmax(auto, auto);
+    grid-row-gap: 10px;
+
+    justify-content: center;
     align-content: center;
     background-color: mediumpurple;
 
@@ -16,9 +20,41 @@
 .altera {
     display: block;
     margin-left: 80%;
-    margin-top: -11%;
+    margin-top: -8%;
 }
 
-select, select > optgroup {
-    size: 18pt;
+.select-wrapper {
+    background-color: #9146ff;
+
+    border: solid 3px black;
+    border-radius: 12px;
+
+    display: inline-block;
+    justify-content: center;
+
+    margin-bottom: 10px;
+}
+
+.select-wrapper > select {
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    background-color: inherit;
+    border-radius: inherit;
+    width: 100%;
+}
+
+.select-wrapper > button, input {
+    display: inline-block;
+    cursor: pointer;
+
+    background-color: mediumpurple;
+    color: whitesmoke;
+    font-size: 18px;
+    font-weight: bold;
+
+    border-radius: inherit;
+
+    margin-left: 5%;
+    width: 40%;
 }

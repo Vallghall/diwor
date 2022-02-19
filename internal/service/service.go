@@ -23,6 +23,7 @@ type Experiment interface {
 	ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) results.HashExpResult
 	ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult
 	SaveResults(userId int, algType string, results Result)
+	GetLastExperimentResults(userId int) results.HashAlgorithmsResults
 }
 
 type Services struct {

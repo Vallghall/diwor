@@ -378,3 +378,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, car *results
 
 	return res
 }
+
+func (es *ExperimentService) GetLastExperimentResults(userId int) results.HashAlgorithmsResults {
+	return es.storage.GetLastExperimentResults(userId)
+}

@@ -32,7 +32,7 @@ func (h *Handler) indexPage(c *gin.Context) {
 func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 	userId, ok := c.Get(userCtx)
 	if !ok {
-		newErrorResponse(c, http.StatusInternalServerError, myerr.ErrUserCtxNotFound.Error())
+		newErrorResponse(c, http.StatusUnauthorized, myerr.ErrUserCtxNotFound.Error())
 		return
 	}
 
@@ -64,8 +64,17 @@ func (h *Handler) pickCipheringAlgorithms(c *gin.Context) {
 	c.HTML(http.StatusOK, "ciphers.gohtml", name)
 }
 
-// Deprecated: Need changes
-// TODO: Fix this handler
 func (h *Handler) results(c *gin.Context) {
-	c.HTML(http.StatusOK, "results.gohtml", nil)
+	name, _ := c.Get(userName)
+	userId, _ := c.Get(userCtx)
+
+	res := h.service.Experiment.GetLastExperimentResults(userId.(int))
+
+	c.HTML(http.StatusOK, "hash-results.gohtml", struct {
+		Name    string
+		Results results.HashAlgorithmsResults
+	}{
+		Name:    name.(string),
+		Results: res,
+	})
 }
