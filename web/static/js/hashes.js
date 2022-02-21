@@ -10,5 +10,5 @@ form.addEventListener('submit', (e) => {
         query.algorithms.push(datum.value)
     }
 
-    jsonBodyQuery('POST', '/api/experiment/start-hash-experiment','/api/experiment/results', query)
+    jsonBodyQuery('POST', '/api/experiment/start-hash-experiment','/api/experiment/hash-results', query)
 })

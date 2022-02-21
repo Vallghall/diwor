@@ -17,6 +17,7 @@ type Experiment interface {
 	SaveHashAlgorithmResults(userId int, algType string, results results.HashAlgorithmsResults)
 	SaveCipherAlgorithmResults(userId int, algType string, results results.CipherAlgorithmsResults)
 	GetLastExperimentResults(userId int) (res results.HashAlgorithmsResults)
+	GetRecentExperiments(id, quantity int) []results.ExperimentDigest
 }
 
 type Storage struct {

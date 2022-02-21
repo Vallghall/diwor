@@ -64,17 +64,17 @@ func (h *Handler) pickCipheringAlgorithms(c *gin.Context) {
 	c.HTML(http.StatusOK, "ciphers.gohtml", name)
 }
 
-func (h *Handler) results(c *gin.Context) {
-	name, _ := c.Get(userName)
-	userId, _ := c.Get(userCtx)
+func (h *Handler) hashResults(c *gin.Context) {
+	name := c.GetString(userName)
+	userId := c.GetInt(userCtx)
 
-	res := h.service.Experiment.GetLastExperimentResults(userId.(int))
+	res := h.service.Experiment.GetLastExperimentResults(userId)
 
 	c.HTML(http.StatusOK, "hash-results.gohtml", struct {
 		Name    string
 		Results results.HashAlgorithmsResults
 	}{
-		Name:    name.(string),
+		Name:    name,
 		Results: res,
 	})
 }

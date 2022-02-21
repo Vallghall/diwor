@@ -24,6 +24,7 @@ type Experiment interface {
 	ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult
 	SaveResults(userId int, algType string, results Result)
 	GetLastExperimentResults(userId int) results.HashAlgorithmsResults
+	GetRecentExperiments(id int) []results.ExperimentDigest
 }
 
 type Services struct {

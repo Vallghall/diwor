@@ -6,8 +6,11 @@
     </head>
     <body>
     <div id="current-user-panel">
-        <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
-        <a href="/auth/login" methods="">Войти</a>
+        <a class="img-wrapper" href="/api/profile">
+            <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
+        </a>
+        <strong>{{.}}</strong> <br>
+        <a id="logout" href="/auth/logout" style="font-size: 12pt">Выйти</a>
     </div>
     <img class="altera" style="margin: auto" src="/image/altera.gif" alt="flex">
     <form class="form" action="/api/experiment">

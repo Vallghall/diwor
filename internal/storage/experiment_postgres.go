@@ -67,19 +67,51 @@ func (ep *ExperimentPostgres) GetLastExperimentResults(userId int) (res results.
 	ORDER BY started_at DESC
 	LIMIT 1;`, experimentsTable)
 
-	rows, err := ep.db.Query(
+	row := ep.db.QueryRow(
 		query,
 		userId,
 	)
-	if err != nil {
-		logrus.Error(err)
-	}
 
-	rows.Next()
-	err = rows.Scan(&res, &res.StartedAt, &res.FinishedAt)
+	err := row.Scan(&res, &res.StartedAt, &res.FinishedAt)
 	if err != nil {
 		logrus.Error(err)
 	}
 
 	return
+}
+
+func (ep *ExperimentPostgres) GetRecentExperiments(id, quantity int) (res []results.ExperimentDigest) {
+	query := fmt.Sprintf(
+		`SELECT
+					ROW_NUMBER () OVER (ORDER BY started_at DESC) AS id,
+					algorithm_type,
+					started_at
+				FROM %s
+				WHERE user_id=$1
+				ORDER BY started_at DESC
+				LIMIT $2;`,
+		experimentsTable,
+	)
+
+	rows, err := ep.db.Query(query, id, quantity)
+	if err != nil {
+		logrus.Error(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var resultSet results.ExperimentDigest
+		err = rows.Scan(
+			&resultSet.SortedId,
+			&resultSet.AlgorithmType,
+			&resultSet.StartedAt,
+		)
+		if err != nil {
+			logrus.Error(err)
+		}
+
+		res = append(res, resultSet)
+	}
+
+	return res
 }

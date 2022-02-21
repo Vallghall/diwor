@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{template "base-head"}}
+        <title>Hash|Results</title>
+        <link rel="stylesheet" href="/css/profile.css">
+    </head>
+    <body>
+        <div id="profile-wrapper">
+
+            <div class="profile-component">
+                <img src="/image/van.jpg" alt="profile logo">
+            </div>
+
+            <div class="profile-component">
+                <br><br>
+                <strong>Имя пользователя:</strong> <br>
+                {{.Name}} <br>
+                <strong>Никнейм:</strong> <br>
+                {{.Username}} <br>
+                <button class="logout" type="button" onclick="window.location.href='/auth/logout'">Выйти</button>
+            </div>
+
+            <div id="return-wrapper">
+                <button id="return-button" type="button" onclick="window.location.href='/api/experiment/hashes'">К меню начала экспериментов</button>
+                <button disabled id="return-button" type="button" onclick="window.location.href='/api/profile/results'">Полный список экспериментов</button>
+            </div>
+
+            <div class="profile-component-footer">
+                <table>
+                    <tbody>
+                    <tr><th colspan="3">Ваши последние эксперименты</th></tr>
+                        <tr>
+                            <th>№</th>
+                            <th>Тип алгоритма</th>
+                            <th>Время начала</th>
+                        </tr>
+                        {{range $digest := .Digests}}
+                            <tr>
+                                <td>{{$digest.SortedId}}</td>
+                                <td>{{$digest.AlgorithmType}}</td>
+                                <td>{{$digest.StartedAt}}</td>
+                            </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
+

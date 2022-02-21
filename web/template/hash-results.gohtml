@@ -6,10 +6,16 @@
         <link rel="stylesheet" href="/css/results.css">
     </head>
     <body>
-        <div id="current-user-panel">
+    <div id="current-user-panel">
+        <a class="img-wrapper" href="/api/profile">
             <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
-            <strong>{{.Name}}</strong> <br>
-            <a href="/auth/logout" style="font-size: 12pt">Выйти</a>
+        </a>
+        <strong>{{.Name}}</strong> <br>
+        <a id="logout" href="/auth/logout" style="font-size: 12pt">Выйти</a>
+    </div>
+
+        <div id="return-wrapper">
+            <button id="return-button" type="button" onclick="window.location.href='/api/experiment/hashes'">К выбору алгоритмов</button>
         </div>
 
         <img class="altera" src="/image/altera.gif" alt="flex">

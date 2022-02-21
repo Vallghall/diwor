@@ -7,9 +7,11 @@
     </head>
     <body>
         <div id="current-user-panel">
-            <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
+            <a class="img-wrapper" href="/api/profile">
+                <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
+            </a>
             <strong>{{.}}</strong> <br>
-            <a href="/auth/logout" style="font-size: 12pt">Выйти</a>
+            <a id="logout" href="/auth/logout" style="font-size: 12pt">Выйти</a>
         </div>
 
         <img class="altera" src="/image/altera.gif" alt="flex">
@@ -28,6 +30,7 @@
                 <input type="submit" id="begin" style="width: 100%; margin-left: 0" value="Начать">
             </div>
 
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
             <script src="/js/json_body_query.js"></script>
             <script src="/js/hashes.js"></script>
 
