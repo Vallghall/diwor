@@ -23,6 +23,10 @@ func NewExperimentService(storage storage.Experiment) *ExperimentService {
 	return &ExperimentService{storage: storage}
 }
 
+func (es *ExperimentService) GetRecentExperiments(id int) []results.ExperimentDigest {
+	return es.storage.GetRecentExperiments(id, 5)
+}
+
 func (es *ExperimentService) SaveResults(userId int, algType string, reses Result) {
 	switch reses.(type) {
 	case results.HashAlgorithmsResults:

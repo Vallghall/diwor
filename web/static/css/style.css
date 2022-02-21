@@ -26,13 +26,22 @@ body {
     padding: 10px;
 }
 
-#current-user-panel > img {
+.img-wrapper > img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+#current-user-panel > .img-wrapper {
+    display: inline-block;
     height: 80px;
     width: 80px;
     border-radius: 15px;
+    cursor: pointer;
 }
 
-#current-user-panel > a{
+#current-user-panel > #logout{
 
     position: relative;
     bottom: 10pt;

@@ -23,6 +23,31 @@
     margin-top: -8%;
 }
 
+#return-wrapper {
+    display: block;
+    position: absolute;
+
+    border-radius: 12px;
+    width: 150pt;
+
+    margin-left: 10pt;
+    margin-top: 10pt;
+}
+
+#return-button {
+    position: relative;
+    display: block;
+    cursor: pointer;
+
+    background-color: mediumpurple;
+    color: whitesmoke;
+    font-size: 18px;
+    font-weight: bold;
+
+    border-radius: inherit;
+    width: 100%;
+}
+
 .result-wrapper {
     background-color: #9146ff;
 
@@ -43,11 +68,14 @@
 table, td, th {
     text-align: center;
     border: whitesmoke solid 1px;
+    border-collapse: collapse;
 }
 
 td, th {
     line-height: 1.8em;
 }
 
-
-
+td {
+    word-wrap: break-word;
+    max-width: 200px;
+}

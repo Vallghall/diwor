@@ -47,14 +47,22 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api", h.userIdentify)
 	{
+		prof := api.Group("/profile")
+		{
+			prof.GET("/", h.userProfile)
+			prof.GET("/results/", h.userExperimentHistory)
+		}
 
 		ex := api.Group("/experiment")
 		{
 			ex.GET("/", h.indexPage)
+
 			ex.GET("/hashes", h.pickHashingAlgorithms)
-			ex.GET("/ciphers", h.pickCipheringAlgorithms)
 			ex.POST("/start-hash-experiment", h.researchHashAlgorithms)
-			ex.GET("/results", h.results)
+
+			ex.GET("/ciphers", h.pickCipheringAlgorithms)
+
+			ex.GET("/hash-results", h.hashResults)
 		}
 	}
 	return router

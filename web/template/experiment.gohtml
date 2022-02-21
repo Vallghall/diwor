@@ -6,11 +6,13 @@
         <title>DIWOR|Experiment</title>
     </head>
     <body>
-        <div id="current-user-panel">
+    <div id="current-user-panel">
+        <a class="img-wrapper" href="/api/profile">
             <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
-                <strong>{{.}}</strong> <br>
-                <a href="/auth/logout" style="font-size: 12pt">Выйти</a>
-        </div>
+        </a>
+        <strong>{{.}}</strong> <br>
+        <a id="logout" href="/auth/logout" style="font-size: 12pt">Выйти</a>
+    </div>
 
         <div id="choice-panel-wrapper">
             <span id="choice-panel">

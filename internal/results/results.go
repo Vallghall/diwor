@@ -7,6 +7,12 @@ import (
 	"time"
 )
 
+type ExperimentDigest struct {
+	SortedId      int       `json:"sorted_id" db:"id"`
+	AlgorithmType string    `json:"algorithm_type" db:"algorithm_type"`
+	StartedAt     time.Time `json:"started_at" db:"started_at"`
+}
+
 type HashExpResult struct {
 	Algorithm string        `json:"algorithm"`
 	Duration  time.Duration `json:"duration"`
