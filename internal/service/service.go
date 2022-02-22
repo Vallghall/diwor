@@ -26,6 +26,7 @@ type Experiment interface {
 	GetLastHashExperimentResults(userId int) results.HashAlgorithmsResults
 	GetLastCipherExperimentResults(userId int) results.CipherAlgorithmsResults
 	GetRecentExperiments(id int) []results.ExperimentDigest
+	GetAllUserExperiments(id int) []results.ExperimentDigest
 }
 
 type Services struct {
