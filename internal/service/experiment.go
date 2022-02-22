@@ -345,7 +345,6 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 	return res
 }
 
-//TODO: Implement that initially
 func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult {
 	var res results.CipherExpResult
 	var begin time.Time
@@ -415,4 +414,8 @@ func (es *ExperimentService) GetLastHashExperimentResults(userId int) results.Ha
 
 func (es *ExperimentService) GetLastCipherExperimentResults(userId int) results.CipherAlgorithmsResults {
 	return es.storage.GetLastCipherExperimentResults(userId)
+}
+
+func (es *ExperimentService) GetAllUserExperiments(id int) []results.ExperimentDigest {
+	return es.storage.GetAllUserExperiments(id)
 }

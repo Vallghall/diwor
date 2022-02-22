@@ -19,6 +19,7 @@ type Experiment interface {
 	GetLastHashExperimentResults(userId int) (res results.HashAlgorithmsResults)
 	GetLastCipherExperimentResults(userId int) (res results.CipherAlgorithmsResults)
 	GetRecentExperiments(id, quantity int) []results.ExperimentDigest
+	GetAllUserExperiments(id int) []results.ExperimentDigest
 }
 
 type Storage struct {

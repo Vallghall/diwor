@@ -141,5 +141,31 @@ func (ep *ExperimentPostgres) GetRecentExperiments(id, quantity int) (res []resu
 		res = append(res, resultSet)
 	}
 
-	return res
+	return
+}
+
+func (ep *ExperimentPostgres) GetAllUserExperiments(id int) (res []results.ExperimentDigest) {
+	query := fmt.Sprintf(
+		`SELECT
+					ROW_NUMBER () OVER (ORDER BY started_at DESC) AS id,
+					algorithm_type,
+					started_at
+				FROM %s
+				WHERE user_id=$1
+				ORDER BY started_at DESC;`,
+		experimentsTable,
+	)
+
+	rows, err := ep.db.Query(query, id)
+	if err != nil {
+		logrus.Error(err)
+	}
+
+	for rows.Next() {
+		var row results.ExperimentDigest
+		rows.Scan(&row.SortedId, &row.AlgorithmType, &row.StartedAt)
+		res = append(res, row)
+	}
+
+	return
 }

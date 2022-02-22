@@ -30,5 +30,19 @@ func (h *Handler) userProfile(c *gin.Context) {
 }
 
 func (h *Handler) userExperimentHistory(c *gin.Context) {
+	name := c.GetString(userName)
+	userId := c.GetInt(userCtx)
 
+	expHistory := h.service.Experiment.GetAllUserExperiments(userId)
+
+	c.HTML(
+		http.StatusOK,
+		"results.gohtml",
+		struct {
+			Name    string
+			History []results.ExperimentDigest
+		}{
+			name,
+			expHistory,
+		})
 }
