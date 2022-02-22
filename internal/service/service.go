@@ -23,7 +23,8 @@ type Experiment interface {
 	ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) results.HashExpResult
 	ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult
 	SaveResults(userId int, algType string, results Result)
-	GetLastExperimentResults(userId int) results.HashAlgorithmsResults
+	GetLastHashExperimentResults(userId int) results.HashAlgorithmsResults
+	GetLastCipherExperimentResults(userId int) results.CipherAlgorithmsResults
 	GetRecentExperiments(id int) []results.ExperimentDigest
 }
 

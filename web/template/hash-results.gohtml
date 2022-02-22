@@ -21,7 +21,7 @@
         <img class="altera" src="/image/altera.gif" alt="flex">
 
         <div id="table-wrapper">
-        {{range $vals := .Results.Results}}
+        {{range $val := .Results.Results}}
             <div class="result-wrapper">
             <table class="table">
                     <tr class="row">
@@ -31,27 +31,27 @@
 
                     <tr class="row">
                         <td>Алгоритм</td>
-                        <td class="algorithm">{{$vals.Algorithm}}</td>
+                        <td class="algorithm">{{$val.Algorithm}}</td>
                     </tr>
 
                     <tr>
                         <td>Продолжительность</td>
-                        <td class="duration">{{$vals.Duration}}</td>
+                        <td class="duration">{{$val.Duration}}</td>
                     </tr>
 
                     <tr>
                         <td>Размер</td>
-                        <td class="size">{{$vals.Size}}</td>
+                        <td class="size">{{$val.Size}}</td>
                     </tr>
 
                     <tr>
                         <td>Размер блока</td>
-                        <td class="block-size">{{$vals.BlockSize}}</td>
+                        <td class="block-size">{{$val.BlockSize}}</td>
                     </tr>
 
                     <tr class="row">
                         <td>Пример хеша</td>
-                        <td class="sample">{{$vals.Sample}}</td>
+                        <td class="sample">{{$val.Sample}}</td>
                     </tr>
             </table>
             </div>

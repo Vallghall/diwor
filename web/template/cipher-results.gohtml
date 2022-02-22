@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        {{template "base-head"}}
+        <title>Hash|Results</title>
+        <link rel="stylesheet" href="/css/results.css">
+    </head>
+    <body>
+        <div id="current-user-panel">
+            <a class="img-wrapper" href="/api/profile">
+                <img src="/image/van.jpg" alt="profile logo" width="50" height="50">
+            </a>
+            <strong>{{.Name}}</strong> <br>
+            <a id="logout" href="/auth/logout" style="font-size: 12pt">Выйти</a>
+        </div>
+
+        <div id="return-wrapper">
+            <button id="return-button" type="button" onclick="window.location.href='/api/experiment/ciphers'">К выбору алгоритмов</button>
+        </div>
+
+        <img class="altera" src="/image/altera.gif" alt="flex">
+
+        <div id="table-wrapper">
+            {{range $val := .Results.Results}}
+                <div class="result-wrapper">
+                    <table class="table">
+                        <tr class="row">
+                            <th>Параметры</th>
+                            <th>Результаты</th>
+                        </tr>
+
+                        <tr class="row">
+                            <td>Алгоритм</td>
+                            <td class="algorithm">{{$val.Algorithm}}</td>
+                        </tr>
+
+                        <tr class="row">
+                            <td>Тип</td>
+                            <td class="algorithm">{{$val.Type}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Продолжительность шифрования</td>
+                            <td class="duration">{{$val.CipheringDuration}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Продолжительность дешифрования</td>
+                            <td class="duration">{{$val.DecipheringDuration}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Длина ключа</td>
+                            <td class="block-size">{{$val.KeyLength}}</td>
+                        </tr>
+                    </table>
+                </div>
+            {{end}}
+        </div>
+    </body>
+</html>
+
