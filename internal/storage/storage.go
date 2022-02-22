@@ -16,7 +16,8 @@ type Authorization interface {
 type Experiment interface {
 	SaveHashAlgorithmResults(userId int, algType string, results results.HashAlgorithmsResults)
 	SaveCipherAlgorithmResults(userId int, algType string, results results.CipherAlgorithmsResults)
-	GetLastExperimentResults(userId int) (res results.HashAlgorithmsResults)
+	GetLastHashExperimentResults(userId int) (res results.HashAlgorithmsResults)
+	GetLastCipherExperimentResults(userId int) (res results.CipherAlgorithmsResults)
 	GetRecentExperiments(id, quantity int) []results.ExperimentDigest
 }
 

@@ -22,7 +22,7 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func generateKey(n int) ([]byte, time.Duration) {
+func generateBytes(n int) ([]byte, time.Duration) {
 	start := time.Now()
 
 	b := make([]byte, n)

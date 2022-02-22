@@ -14,7 +14,7 @@ const (
 	CipherAlgorithm = "Алгоритм шифрования"
 )
 
-type HashAlgorithmsInput struct {
+type AlgorithmsInput struct {
 	Algorithms []string `json:"algorithms"`
 }
 
@@ -30,13 +30,9 @@ func (h *Handler) indexPage(c *gin.Context) {
 }
 
 func (h *Handler) researchHashAlgorithms(c *gin.Context) {
-	userId, ok := c.Get(userCtx)
-	if !ok {
-		newErrorResponse(c, http.StatusUnauthorized, myerr.ErrUserCtxNotFound.Error())
-		return
-	}
+	userId := c.GetInt(userCtx)
 
-	var initials HashAlgorithmsInput
+	var initials AlgorithmsInput
 	err := c.BindJSON(&initials)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -49,18 +45,39 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 		algResults.Results = append(algResults.Results, res)
 	}
 
-	h.service.Experiment.SaveResults(userId.(int), HashAlgorithm, algResults)
+	h.service.Experiment.SaveResults(userId, HashAlgorithm, algResults)
+
+	c.JSON(http.StatusOK, algResults)
+}
+
+func (h *Handler) researchCipherAlgorithm(c *gin.Context) {
+	userId := c.GetInt(userCtx)
+
+	var initials AlgorithmsInput
+	err := c.BindJSON(&initials)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	var algResults results.CipherAlgorithmsResults
+	for _, algorithm := range initials.Algorithms {
+		res := h.service.Experiment.ResearchCipheringAlgorithm(algorithm, &algResults)
+		algResults.Results = append(algResults.Results, res)
+	}
+
+	h.service.Experiment.SaveResults(userId, CipherAlgorithm, algResults)
 
 	c.JSON(http.StatusOK, algResults)
 }
 
 func (h *Handler) pickHashingAlgorithms(c *gin.Context) {
-	name, _ := c.Get(userName)
+	name := c.GetString(userName)
 	c.HTML(http.StatusOK, "hashes.gohtml", name)
 }
 
 func (h *Handler) pickCipheringAlgorithms(c *gin.Context) {
-	name, _ := c.Get(userName)
+	name := c.GetString(userName)
 	c.HTML(http.StatusOK, "ciphers.gohtml", name)
 }
 
@@ -68,11 +85,26 @@ func (h *Handler) hashResults(c *gin.Context) {
 	name := c.GetString(userName)
 	userId := c.GetInt(userCtx)
 
-	res := h.service.Experiment.GetLastExperimentResults(userId)
+	res := h.service.Experiment.GetLastHashExperimentResults(userId)
 
 	c.HTML(http.StatusOK, "hash-results.gohtml", struct {
 		Name    string
 		Results results.HashAlgorithmsResults
+	}{
+		Name:    name,
+		Results: res,
+	})
+}
+
+func (h *Handler) cipherResults(c *gin.Context) {
+	name := c.GetString(userName)
+	userId := c.GetInt(userCtx)
+
+	res := h.service.Experiment.GetLastCipherExperimentResults(userId)
+
+	c.HTML(http.StatusOK, "cipher-results.gohtml", struct {
+		Name    string
+		Results results.CipherAlgorithmsResults
 	}{
 		Name:    name,
 		Results: res,

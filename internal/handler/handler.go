@@ -59,10 +59,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			ex.GET("/hashes", h.pickHashingAlgorithms)
 			ex.POST("/start-hash-experiment", h.researchHashAlgorithms)
+			ex.POST("/start-cipher-experiment", h.researchCipherAlgorithm)
 
 			ex.GET("/ciphers", h.pickCipheringAlgorithms)
 
 			ex.GET("/hash-results", h.hashResults)
+			ex.GET("/cipher-results", h.cipherResults)
 		}
 	}
 	return router

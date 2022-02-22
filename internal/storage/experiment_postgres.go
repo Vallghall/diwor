@@ -7,6 +7,11 @@ import (
 	"gitlab.com/Valghall/diwor/internal/results"
 )
 
+const (
+	hashAlgorithm   = "Алгоритм хэширования"
+	cipherAlgorithm = "Алгоритм шифрования"
+)
+
 type ExperimentPostgres struct {
 	db *sqlx.DB
 }
@@ -59,17 +64,40 @@ func (ep *ExperimentPostgres) SaveCipherAlgorithmResults(userId int, algType str
 	}
 }
 
-func (ep *ExperimentPostgres) GetLastExperimentResults(userId int) (res results.HashAlgorithmsResults) {
+func (ep *ExperimentPostgres) GetLastHashExperimentResults(userId int) (res results.HashAlgorithmsResults) {
 	query := fmt.Sprintf(
 		`SELECT results, started_at, finished_at
 	FROM %s
-	WHERE user_id=$1
+	WHERE user_id=$1 AND algorithm_type=$2
 	ORDER BY started_at DESC
 	LIMIT 1;`, experimentsTable)
 
 	row := ep.db.QueryRow(
 		query,
 		userId,
+		hashAlgorithm,
+	)
+
+	err := row.Scan(&res, &res.StartedAt, &res.FinishedAt)
+	if err != nil {
+		logrus.Error(err)
+	}
+
+	return
+}
+
+func (ep *ExperimentPostgres) GetLastCipherExperimentResults(userId int) (res results.CipherAlgorithmsResults) {
+	query := fmt.Sprintf(
+		`SELECT results, started_at, finished_at
+	FROM %s
+	WHERE user_id=$1 AND algorithm_type=$2
+	ORDER BY started_at DESC
+	LIMIT 1;`, experimentsTable)
+
+	row := ep.db.QueryRow(
+		query,
+		userId,
+		cipherAlgorithm,
 	)
 
 	err := row.Scan(&res, &res.StartedAt, &res.FinishedAt)

@@ -46,11 +46,23 @@ type CipherExpResult struct {
 	CipheringDuration   time.Duration `json:"ciphering_duration"`
 	DecipheringDuration time.Duration `json:"deciphering_duration"`
 	KeyLength           int           `json:"key_length"`
-	Sample              string        `json:"sample"`
 }
 
 type CipherAlgorithmsResults struct {
 	Results    []CipherExpResult `json:"results"`
 	StartedAt  time.Time         `json:"started_at"`
 	FinishedAt time.Time         `json:"finished_at"`
+}
+
+func (c CipherAlgorithmsResults) Value() (driver.Value, error) {
+	return json.Marshal(c)
+}
+
+func (c *CipherAlgorithmsResults) Scan(value interface{}) error {
+	b, ok := value.([]byte)
+	if !ok {
+		return errors.New("type assertion to []byte failed")
+	}
+
+	return json.Unmarshal(b, &c)
 }

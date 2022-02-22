@@ -1,10 +1,12 @@
 package service
 
 import (
+	"crypto/cipher"
 	"crypto/md5"
 	"crypto/sha256"
 	"crypto/sha512"
 	"fmt"
+	"github.com/bi-zone/ruwireguard-go/crypto/gosthopper"
 	"github.com/maoxs2/go-ripemd"
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Valghall/diwor/internal/results"
@@ -347,42 +349,70 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult {
 	var res results.CipherExpResult
 	var begin time.Time
-	dur := time.Duration(0)
+	cipherDur := time.Duration(0)
+	decipherDur := time.Duration(0)
+	var dst []byte
 
-	durChan := make(chan time.Duration)
+	cipherDurChan := make(chan time.Duration)
+	_ = make(chan time.Duration)
 
 	switch alg {
 	case Grasshopper:
 		begin = time.Now()
+		key, _ := generateBytes(32)
 
 		for i := 0; i < 200; i++ {
 			go func() {
-				//key, _ := generateKey(32)
 				start := time.Now()
 
-				//var dst []byte
-				//kCipher, _ := gosthopper.NewCipher(key)
-				//kGCM, _ := cipher.NewGCM(kCipher)
-				//kGCM.Seal(dst)
+				kCipher, _ := gosthopper.NewCipher(key)
+				kGCM, _ := cipher.NewGCM(kCipher)
+				nonce, _ := generateBytes(kGCM.NonceSize())
+				kGCM.Seal(dst, nonce, textForCiphering, nil)
+
 				end := time.Now()
-				durChan <- end.Sub(start)
+				cipherDurChan <- end.Sub(start)
 			}()
+			/*
+				go func() {
+					start := time.Now()
+
+					kCipher, _ := gosthopper.NewCipher(key)
+					kGCM, _ := cipher.NewGCM(kCipher)
+					nonce, _ := generateBytes(kGCM.NonceSize())
+					kGCM.Seal(dst, nonce, textForCiphering, nil)
+
+					end := time.Now()
+					cipherDurChan <- end.Sub(start)
+				}()
+			*/
+
 		}
 
-		res = results.CipherExpResult{}
+		res = results.CipherExpResult{
+			Algorithm: "Кузнечик",
+			Type:      "Алгоритм шифрования симметричный",
+			KeyLength: 32,
+		}
 
 	}
 
 	for i := 0; i < 200; i++ {
-		dur += <-durChan
+		cipherDur += <-cipherDurChan
 	}
 
+	res.CipheringDuration = cipherDur / 200
+	res.DecipheringDuration = decipherDur
 	car.StartedAt = begin
 	car.FinishedAt = time.Now()
 
 	return res
 }
 
-func (es *ExperimentService) GetLastExperimentResults(userId int) results.HashAlgorithmsResults {
-	return es.storage.GetLastExperimentResults(userId)
+func (es *ExperimentService) GetLastHashExperimentResults(userId int) results.HashAlgorithmsResults {
+	return es.storage.GetLastHashExperimentResults(userId)
+}
+
+func (es *ExperimentService) GetLastCipherExperimentResults(userId int) results.CipherAlgorithmsResults {
+	return es.storage.GetLastCipherExperimentResults(userId)
 }
