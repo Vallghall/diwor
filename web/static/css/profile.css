@@ -1,3 +1,7 @@
+* {
+    background-color: #a27df3;
+}
+
 #profile-wrapper {
     display: grid;
     grid-template-columns: 250px 250px;
@@ -93,4 +97,8 @@ td, th {
 td {
     word-wrap: anywhere;
     max-width: 28px;
+}
+
+td > a {
+    color: white;
 }

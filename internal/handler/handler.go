@@ -51,6 +51,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			prof.GET("/", h.userProfile)
 			prof.GET("/results/", h.userExperimentHistory)
+
+			prof.GET("/fetch-result", h.fetchUserExperimentResult)
 		}
 
 		ex := api.Group("/experiment")
@@ -58,13 +60,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			ex.GET("/", h.indexPage)
 
 			ex.GET("/hashes", h.pickHashingAlgorithms)
-			ex.POST("/start-hash-experiment", h.researchHashAlgorithms)
-			ex.POST("/start-cipher-experiment", h.researchCipherAlgorithm)
+			ex.GET("/hash-results", h.hashResults)
 
 			ex.GET("/ciphers", h.pickCipheringAlgorithms)
-
-			ex.GET("/hash-results", h.hashResults)
 			ex.GET("/cipher-results", h.cipherResults)
+
+			ex.POST("/start-hash-experiment", h.researchHashAlgorithms)
+			ex.POST("/start-cipher-experiment", h.researchCipherAlgorithm)
 		}
 	}
 	return router

@@ -20,13 +20,14 @@ type Result interface{}
 
 // Experiment interface encapsulates logic necessary for accumulating resulting data
 type Experiment interface {
-	ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) results.HashExpResult
-	ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult
+	ResearchHashingAlgorithm(alg string) results.HashExpResult
+	ResearchCipheringAlgorithm(alg string) results.CipherExpResult
 	SaveResults(userId int, algType string, results Result)
 	GetLastHashExperimentResults(userId int) results.HashAlgorithmsResults
 	GetLastCipherExperimentResults(userId int) results.CipherAlgorithmsResults
 	GetRecentExperiments(id int) []results.ExperimentDigest
 	GetAllUserExperiments(id int) []results.ExperimentDigest
+	GetUserExperimentResultBySortedId(alg string, userId, sortedId int) (Result, error)
 }
 
 type Services struct {
