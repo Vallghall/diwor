@@ -169,3 +169,59 @@ func (ep *ExperimentPostgres) GetAllUserExperiments(id int) (res []results.Exper
 
 	return
 }
+
+func (ep *ExperimentPostgres) GetUserHashExperimentResultBySortedId(userId, sortedId int) (res results.HashAlgorithmsResults, err error) {
+	query := fmt.Sprintf(
+		`SELECT results, started_at, finished_at
+				FROM    (
+						SELECT
+							ROW_NUMBER () OVER (ORDER BY started_at DESC) AS id,
+							results,
+							started_at,
+							finished_at
+						FROM %s
+						WHERE user_id=$1
+						ORDER BY started_at DESC
+						) t
+				WHERE id=$2;`,
+		experimentsTable)
+
+	row := ep.db.QueryRow(query, userId, sortedId)
+	if err = row.Err(); err != nil {
+		return results.HashAlgorithmsResults{}, err
+	}
+
+	if err = row.Scan(&res, &res.StartedAt, &res.FinishedAt); err != nil {
+		return results.HashAlgorithmsResults{}, err
+	}
+
+	return
+}
+
+func (ep *ExperimentPostgres) GetUserCipherExperimentResultBySortedId(userId, sortedId int) (res results.CipherAlgorithmsResults, err error) {
+	query := fmt.Sprintf(
+		`SELECT results, started_at, finished_at
+				FROM    (
+						SELECT
+							ROW_NUMBER () OVER (ORDER BY started_at DESC) AS id,
+							results,
+							started_at,
+							finished_at
+						FROM %s
+						WHERE user_id=$1
+						ORDER BY started_at DESC
+						) t
+				WHERE id=$2;`,
+		experimentsTable)
+
+	row := ep.db.QueryRow(query, userId, sortedId)
+	if err = row.Err(); err != nil {
+		return results.CipherAlgorithmsResults{}, err
+	}
+
+	if err = row.Scan(&res, &res.StartedAt, &res.FinishedAt); err != nil {
+		return results.CipherAlgorithmsResults{}, err
+	}
+
+	return
+}

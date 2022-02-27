@@ -79,3 +79,7 @@ td {
     word-wrap: break-word;
     max-width: 250px;
 }
+
+td > a {
+    color: white;
+}

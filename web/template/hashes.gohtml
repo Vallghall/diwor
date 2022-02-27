@@ -14,7 +14,9 @@
             <a id="logout" href="/auth/logout" style="font-size: 12pt">Выйти</a>
         </div>
 
-        <img class="altera" src="/image/altera.gif" alt="flex">
+        <div id="return-wrapper">
+            <button id="return-button" type="button" onclick="window.location.href='/api/experiment'">К выбору алгоритмов</button>
+        </div>
 
         <form id="hash-form" action="/api/experiment/start-hash-experiment" method="post">
             <h1>Выберите алгоритмы для сравнения</h1>
@@ -37,9 +39,8 @@
             <div id="alg-1-wrapper" class="select-wrapper">
                 <select id="alg-1" class="select-alg">
                     <option selected disabled>Выберите алгоритм хеширования</option>
-                    <!--
-                    <option value="Streebog-256">Стрибог-256</option>
-                    <option value="Streebog-512">Стрибог-512</option> -->
+                    <option value="Streebog-256">Streebog-256</option>
+                    <option value="Streebog-512">Streebog-512</option>
                     <option value="SHA-224">SHA-224</option>
                     <option value="SHA-256">SHA-256</option>
                     <option value="SHA-384">SHA-384</option>

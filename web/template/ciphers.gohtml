@@ -14,7 +14,9 @@
             <a id="logout" href="/auth/logout" style="font-size: 12pt">Выйти</a>
         </div>
 
-        <img class="altera" src="/image/altera.gif" alt="flex">
+        <div id="return-wrapper">
+            <button id="return-button" type="button" onclick="window.location.href='/api/experiment'">К выбору алгоритмов</button>
+        </div>
 
         <form id="cipher-form" action="/api/experiment/start-cipher-experiment" method="post">
             <h1>Выберите алгоритмы для сравнения</h1>

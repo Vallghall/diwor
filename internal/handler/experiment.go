@@ -5,6 +5,7 @@ import (
 	myerr "gitlab.com/Valghall/diwor/internal/errors"
 	"gitlab.com/Valghall/diwor/internal/results"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,10 +41,16 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 	}
 
 	var algResults results.HashAlgorithmsResults
+	loc, _ := time.LoadLocation("Europe/Moscow")
+	begin := time.Now().In(loc)
 	for _, algorithm := range initials.Algorithms {
-		res := h.service.Experiment.ResearchHashingAlgorithm(algorithm, &algResults)
+		res := h.service.Experiment.ResearchHashingAlgorithm(algorithm)
 		algResults.Results = append(algResults.Results, res)
 	}
+	end := time.Now().In(loc)
+
+	algResults.StartedAt = begin
+	algResults.FinishedAt = end
 
 	h.service.Experiment.SaveResults(userId, HashAlgorithm, algResults)
 
@@ -61,10 +68,16 @@ func (h *Handler) researchCipherAlgorithm(c *gin.Context) {
 	}
 
 	var algResults results.CipherAlgorithmsResults
+	loc, _ := time.LoadLocation("Europe/Moscow")
+	begin := time.Now().In(loc)
 	for _, algorithm := range initials.Algorithms {
-		res := h.service.Experiment.ResearchCipheringAlgorithm(algorithm, &algResults)
+		res := h.service.Experiment.ResearchCipheringAlgorithm(algorithm)
 		algResults.Results = append(algResults.Results, res)
 	}
+	end := time.Now().In(loc)
+
+	algResults.StartedAt = begin
+	algResults.FinishedAt = end
 
 	h.service.Experiment.SaveResults(userId, CipherAlgorithm, algResults)
 

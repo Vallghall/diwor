@@ -5,12 +5,14 @@ import (
 	"crypto/md5"
 	"crypto/sha256"
 	"crypto/sha512"
+	"errors"
 	"fmt"
+	"time"
+
 	"github.com/bi-zone/ruwireguard-go/crypto/gosthopper"
 	"github.com/maoxs2/go-ripemd"
 	"github.com/sirupsen/logrus"
 	"gitlab.com/Valghall/diwor/internal/results"
-	"time"
 
 	streebog256 "github.com/bi-zone/ruwireguard-go/crypto/gost/gost34112012256"
 	streebog512 "github.com/bi-zone/ruwireguard-go/crypto/gost/gost34112012512"
@@ -20,6 +22,11 @@ import (
 type ExperimentService struct {
 	storage storage.Experiment
 }
+
+const (
+	HashAlgorithm   = "Алгоритм хэширования"
+	CipherAlgorithm = "Алгоритм шифрования"
+)
 
 func NewExperimentService(storage storage.Experiment) *ExperimentService {
 	return &ExperimentService{storage: storage}
@@ -40,28 +47,20 @@ func (es *ExperimentService) SaveResults(userId int, algType string, reses Resul
 	}
 }
 
-func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.HashAlgorithmsResults) results.HashExpResult {
+func (es *ExperimentService) ResearchHashingAlgorithm(alg string) results.HashExpResult {
 	var res results.HashExpResult
-	var begin time.Time
 	dur := time.Duration(0)
-
-	durChan := make(chan time.Duration)
 
 	switch alg {
 	case Streebog256:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := streebog256.New()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := streebog256.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := streebog256.New()
@@ -75,19 +74,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case Streebog512:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := streebog512.New()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := streebog512.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := streebog512.New()
@@ -101,19 +95,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case SHA224:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := sha256.New224()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := sha256.New224()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := sha256.New224()
@@ -127,19 +116,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case SHA256:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := sha256.New()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := sha256.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := sha256.New()
@@ -153,19 +137,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case SHA384:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := sha512.New384()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := sha512.New384()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := sha512.New384()
@@ -179,19 +158,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case SHA512:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := sha512.New()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := sha512.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := sha512.New()
@@ -205,19 +179,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case RIPEMD128:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := ripemd.New128()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := ripemd.New128()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := ripemd.New128()
@@ -231,19 +200,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case RIPEMD160:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := ripemd.New160()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := ripemd.New160()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := ripemd.New160()
@@ -257,19 +221,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case RIPEMD256:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := ripemd.New256()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := ripemd.New256()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := ripemd.New256()
@@ -283,19 +242,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case RIPEMD320:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+			hash := ripemd.New320()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-				hash := ripemd.New320()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := ripemd.New320()
@@ -309,17 +263,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 			Sample:    sum,
 		}
 	case MD5:
-		begin = time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
+			hash := md5.New()
+			hash.Write(textForHashing)
+			hash.Sum(nil)
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
-				hash := md5.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-				end := time.Now()
-				durChan <- end.Sub(start)
-			}()
+			dur += time.Since(start)
 		}
 
 		hash := md5.New()
@@ -334,58 +284,42 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, har *results.H
 		}
 	}
 
-	for i := 0; i < 200; i++ {
-		dur += <-durChan
-	}
-	res.Duration = dur / 200
-	logrus.Print(res.Duration)
-	har.StartedAt = begin
-	har.FinishedAt = time.Now()
+	res.Duration = dur / 20
 
 	return res
 }
 
-func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, car *results.CipherAlgorithmsResults) results.CipherExpResult {
+func (es *ExperimentService) ResearchCipheringAlgorithm(alg string) results.CipherExpResult {
 	var res results.CipherExpResult
-	var begin time.Time
+
 	cipherDur := time.Duration(0)
 	decipherDur := time.Duration(0)
 	var dst []byte
 
-	cipherDurChan := make(chan time.Duration)
-	_ = make(chan time.Duration)
-
 	switch alg {
 	case Grasshopper:
-		begin = time.Now()
 		key, _ := generateBytes(32)
 
-		for i := 0; i < 200; i++ {
-			go func() {
-				start := time.Now()
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-				kCipher, _ := gosthopper.NewCipher(key)
-				kGCM, _ := cipher.NewGCM(kCipher)
-				nonce, _ := generateBytes(kGCM.NonceSize())
-				kGCM.Seal(dst, nonce, textForCiphering, nil)
+			kCipher, _ := gosthopper.NewCipher(key)
+			kGCM, _ := cipher.NewGCM(kCipher)
+			nonce, _ := generateBytes(kGCM.NonceSize())
+			kGCM.Seal(dst, nonce, textForCiphering, nil)
 
-				end := time.Now()
-				cipherDurChan <- end.Sub(start)
-			}()
-			/*
-				go func() {
-					start := time.Now()
+			cipherDur += time.Since(start)
+		}
 
-					kCipher, _ := gosthopper.NewCipher(key)
-					kGCM, _ := cipher.NewGCM(kCipher)
-					nonce, _ := generateBytes(kGCM.NonceSize())
-					kGCM.Seal(dst, nonce, textForCiphering, nil)
+		for i := 0; i < 20; i++ {
+			start := time.Now()
 
-					end := time.Now()
-					cipherDurChan <- end.Sub(start)
-				}()
-			*/
+			kCipher, _ := gosthopper.NewCipher(key)
+			kGCM, _ := cipher.NewGCM(kCipher)
+			nonce, _ := generateBytes(kGCM.NonceSize())
+			kGCM.Seal(dst, nonce, textForCiphering, nil)
 
+			cipherDur += time.Since(start)
 		}
 
 		res = results.CipherExpResult{
@@ -396,14 +330,8 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, car *results
 
 	}
 
-	for i := 0; i < 200; i++ {
-		cipherDur += <-cipherDurChan
-	}
-
-	res.CipheringDuration = cipherDur / 200
-	res.DecipheringDuration = decipherDur
-	car.StartedAt = begin
-	car.FinishedAt = time.Now()
+	res.CipheringDuration = cipherDur / 20
+	res.DecipheringDuration = decipherDur / 20
 
 	return res
 }
@@ -418,4 +346,15 @@ func (es *ExperimentService) GetLastCipherExperimentResults(userId int) results.
 
 func (es *ExperimentService) GetAllUserExperiments(id int) []results.ExperimentDigest {
 	return es.storage.GetAllUserExperiments(id)
+}
+
+func (es *ExperimentService) GetUserExperimentResultBySortedId(alg string, userId, sortedId int) (Result, error) {
+	switch alg {
+	case HashAlgorithm:
+		return es.storage.GetUserHashExperimentResultBySortedId(userId, sortedId)
+	case CipherAlgorithm:
+		return es.storage.GetUserCipherExperimentResultBySortedId(userId, sortedId)
+	default:
+		return nil, errors.New("error wile fetching user user's results by sortedId")
+	}
 }

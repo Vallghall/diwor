@@ -30,7 +30,7 @@
                 </tr>
                 {{range $digest := .History}}
                     <tr>
-                        <td>{{$digest.SortedId}}</td>
+                        <td><a href="/api/profile/fetch-result?sorted-id={{$digest.SortedId}}&alg-type={{$digest.AlgorithmType}}">{{$digest.SortedId}}</a></td>
                         <td>{{$digest.AlgorithmType}}</td>
                         <td>{{$digest.StartedAt}}</td>
                     </tr>

@@ -11,20 +11,39 @@
 
     justify-content: center;
     align-content: center;
-    background-color: mediumpurple;
+    background-color: #a27df3;
 
     border: solid black 3px;
     border-radius: 15px;
 }
 
-.altera {
+#return-wrapper {
     display: block;
-    margin-left: 80%;
-    margin-top: -8%;
+    position: absolute;
+
+    border-radius: 12px;
+    width: 150pt;
+
+    margin-left: 10pt;
+    margin-top: 10pt;
+}
+
+#return-button {
+    position: relative;
+    display: block;
+    cursor: pointer;
+
+    background-color: mediumpurple;
+    color: whitesmoke;
+    font-size: 18px;
+    font-weight: bold;
+
+    border-radius: inherit;
+    width: 100%;
 }
 
 .select-wrapper {
-    background-color: #9146ff;
+    background-color: #c7a5fd;
 
     border: solid 3px black;
     border-radius: 12px;
@@ -48,7 +67,7 @@
     display: inline-block;
     cursor: pointer;
 
-    background-color: mediumpurple;
+    background-color: #a27df3;
     color: whitesmoke;
     font-size: 18px;
     font-weight: bold;

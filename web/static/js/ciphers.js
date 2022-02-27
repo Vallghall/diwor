@@ -10,5 +10,19 @@ form.addEventListener('submit', (e) => {
         query.algorithms.push(datum.value)
     }
 
-    jsonBodyQuery('POST', '/api/experiment/start-cipher-experiment','/api/experiment/cipher-results', query)
+    jsonBodyQuery('POST', '/api/experiment/start-cipher-experiment','nil', query)
+    swal({
+        title : "Данные взяты на обработку",
+        text : "Данные были приняты на обработку сервером. Вы можете ознакомиться с результатами в профиле пользователя, когда они будут готовы",
+        icon :"success",
+        buttons : {
+            cancel: "OK",
+            profile: "Профиль"
+        }
+    })
+        .then((value) => {
+            if (value === "profile") {
+                window.location.href="/api/profile"
+            }
+        })
 })
