@@ -1,6 +1,7 @@
 package service
 
 import (
+	"gitlab.com/Valghall/diwor/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/internal/results"
 	"gitlab.com/Valghall/diwor/internal/storage"
 	"gitlab.com/Valghall/diwor/internal/users"
@@ -20,8 +21,8 @@ type Result interface{}
 
 // Experiment interface encapsulates logic necessary for accumulating resulting data
 type Experiment interface {
-	ResearchHashingAlgorithm(alg string) results.HashExpResult
-	ResearchCipheringAlgorithm(alg string) results.CipherExpResult
+	ResearchHashingAlgorithm(alg string, conf plotconfig.Config) results.HashExpResult
+	ResearchCipheringAlgorithm(alg string, conf plotconfig.Config) results.CipherExpResult
 	SaveResults(userId int, algType string, results Result)
 	GetLastHashExperimentResults(userId int) results.HashAlgorithmsResults
 	GetLastCipherExperimentResults(userId int) results.CipherAlgorithmsResults

@@ -1,7 +1,5 @@
 package service
 
-import "os"
-
 const (
 	Streebog256 = "Streebog-256"
 	Streebog512 = "Streebog-512"
@@ -15,11 +13,3 @@ const (
 	RIPEMD320   = "RIPEMD-320"
 	MD5         = "MD5"
 )
-
-var (
-	textForHashing []byte
-)
-
-func init() {
-	textForHashing, _ = os.ReadFile("lavkraft.txt")
-}

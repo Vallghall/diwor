@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/sirupsen/logrus"
 	myerr "gitlab.com/Valghall/diwor/internal/errors"
+	"gitlab.com/Valghall/diwor/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/internal/results"
 	"net/http"
 	"time"
@@ -17,6 +18,7 @@ const (
 
 type AlgorithmsInput struct {
 	Algorithms []string `json:"algorithms"`
+	plotconfig.Config
 }
 
 func (h *Handler) indexPage(c *gin.Context) {
@@ -43,8 +45,9 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 	var algResults results.HashAlgorithmsResults
 	loc, _ := time.LoadLocation("Europe/Moscow")
 	begin := time.Now().In(loc)
+
 	for _, algorithm := range initials.Algorithms {
-		res := h.service.Experiment.ResearchHashingAlgorithm(algorithm)
+		res := h.service.Experiment.ResearchHashingAlgorithm(algorithm, initials.Config)
 		algResults.Results = append(algResults.Results, res)
 	}
 	end := time.Now().In(loc)
@@ -71,7 +74,7 @@ func (h *Handler) researchCipherAlgorithm(c *gin.Context) {
 	loc, _ := time.LoadLocation("Europe/Moscow")
 	begin := time.Now().In(loc)
 	for _, algorithm := range initials.Algorithms {
-		res := h.service.Experiment.ResearchCipheringAlgorithm(algorithm)
+		res := h.service.Experiment.ResearchCipheringAlgorithm(algorithm, initials.Config)
 		algResults.Results = append(algResults.Results, res)
 	}
 	end := time.Now().In(loc)
