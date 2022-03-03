@@ -45,7 +45,7 @@
 .select-wrapper {
     background-color: #c7a5fd;
 
-    border: solid 3px black;
+    border: solid 3px #c7a5fd;
     border-radius: 12px;
 
     display: inline-block;
@@ -63,7 +63,7 @@
     width: 100%;
 }
 
-.select-wrapper > button, input {
+.select-wrapper > button, #begin {
     display: inline-block;
     cursor: pointer;
 
@@ -76,4 +76,19 @@
 
     margin-left: 5%;
     width: 40%;
+}
+
+.inputs > input {
+    border-radius: 12px;
+    display: inline-block;
+    width: 23%;
+
+    font-size: 16px;
+    text-align: center;
+}
+
+strong {
+    font-size: 18px;
+    margin-left: auto;
+    margin-right: auto;
 }

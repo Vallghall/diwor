@@ -4,11 +4,21 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const data = document.getElementsByClassName("select-alg");
-    let query = {"algorithms" : []};
+    const formData = new FormData(e.target);
+    const value = Object.fromEntries(formData.entries());
+
+    let query = {
+        "from" : +value.from,
+        "to" : +value.to,
+        "step" : +value.step,
+        "num_measurements" : +value.num,
+        "algorithms": []
+    }
 
     for (const datum of data) {
         query.algorithms.push(datum.value)
     }
+    console.table(query)
 
     jsonBodyQuery('POST', '/api/experiment/start-hash-experiment','nil', query)
     swal({

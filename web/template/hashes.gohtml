@@ -20,6 +20,15 @@
 
         <form id="hash-form" action="/api/experiment/start-hash-experiment" method="post">
             <h1>Выберите алгоритмы для сравнения</h1>
+
+            <strong>Установка пределов для графика</strong>
+            <div class="inputs">
+                <input type="text" id="from" class="plot-info" name="from" placeholder="От">
+                <input type="text" id="to" class="plot-info" name="to" placeholder="До">
+                <input type="text" id="step" class="plot-info" name="step" placeholder="Шаг">
+                <input type="text" id="num" class="plot-info" name="num" placeholder="Число замеров">
+            </div>
+
             <div class="select-wrapper">
                 <button id="-" type="button" class="quantity"  onclick="RemoveSelect()" disabled>Удалить</button>
                 <button id="+" type="button" class="quantity" onclick="AddSelect()">Добавить</button>
