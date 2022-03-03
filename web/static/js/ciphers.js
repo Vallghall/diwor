@@ -15,12 +15,10 @@ form.addEventListener('submit', (e) => {
         "algorithms": []
     }
 
-    console.table(query)
-    console.log(query)
-
     for (const datum of data) {
         query.algorithms.push(datum.value)
     }
+    console.table(query)
 
     jsonBodyQuery('POST', '/api/experiment/start-cipher-experiment','nil', query)
     swal({
