@@ -1,0 +1,44 @@
+name: Test-stg
+
+on:
+  push:
+    branches:
+      - "^ADD-[0-9]+$"
+
+jobs:
+
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: lint
+        uses: Jerome1337/golint-action@v1.0.2
+        with:
+          golint-path: "./..."
+
+      - name: imports
+        uses: Jerome1337/goimports-action@v1.0.2
+        with:
+          goimports-path: "./..."
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17.x
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -race -v ./...
+
+      - name: Stg-deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_STAGING}}
+          heroku_email: "romangusev2001@mail.ru"
