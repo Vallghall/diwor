@@ -18,7 +18,7 @@ const layout = {
         zeroline: true
     },
     yaxis: {
-        title: 'Продолжительность, с',
+        title: 'Продолжительность, мкс',
         showline: true,
         zeroline: true
     }
