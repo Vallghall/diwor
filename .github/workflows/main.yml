@@ -37,6 +37,10 @@ jobs:
       - name: Test
         run: go test -race -v ./...
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Stg-deploy
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
