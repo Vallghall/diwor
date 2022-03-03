@@ -38,12 +38,14 @@ jobs:
         run: go test -race -v ./...
 
   deploy:
-    needs: build
+    needs: [linter, build]
     runs-on: ubuntu-latest
     steps:
-      - name: Stg-deploy
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name:  Prod-deploy
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP_PRODUCTION}}
