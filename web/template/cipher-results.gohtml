@@ -18,10 +18,18 @@
             <button id="return-button" type="button" onclick="window.location.href='/api/experiment'">К выбору алгоритмов</button>
         </div>
 
-        <img class="altera" src="/image/altera.gif" alt="flex">
+        <script>let plot = {}</script>
 
         <div id="table-wrapper">
+            <div id="plot"></div>
             {{range $val := .Results.Results}}
+                <script>
+                    plot[{{$val.Algorithm}}] = {
+                        X : {{$val.Plot.X}},
+                        Y : {{$val.Plot.Y}}
+                    }
+                    console.table(plot)
+                </script>
                 <div class="result-wrapper">
                     <table class="table">
                         <tr class="row">
@@ -57,6 +65,8 @@
                 </div>
             {{end}}
         </div>
+        <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script>
+        <script src="/js/results.js"></script>
     </body>
 </html>
 
