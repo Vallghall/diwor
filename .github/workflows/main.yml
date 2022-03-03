@@ -1,9 +1,10 @@
-name: Test-stg
+name: Main
 
 on:
-  push:
+  pull_request:
+    types: [ closed ]
     branches:
-      - 'ADD-[0-9]+'
+      - main
 
 jobs:
 
