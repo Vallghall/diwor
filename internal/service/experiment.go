@@ -1,7 +1,9 @@
 package service
 
 import (
+	"crypto/aes"
 	"crypto/cipher"
+	"crypto/des"
 	"crypto/md5"
 	"crypto/sha256"
 	"crypto/sha512"
@@ -331,7 +333,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				kGCM, _ := cipher.NewGCM(kCipher)
 				kGCM.Open(dst[:0], nonce, dst, nil)
 
-				cipherDur += time.Since(start)
+				decipherDur += time.Since(start)
 			}
 
 			res = results.CipherExpResult{
@@ -339,7 +341,128 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				Type:      "Алгоритм шифрования симметричный",
 				KeyLength: 32,
 			}
+		case AES128_GCM:
+			key, _ := generateBytes(aes.BlockSize)
+			var dst, nonce []byte
 
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				aesCipher, _ := aes.NewCipher(key)
+				aesGCM, _ := cipher.NewGCM(aesCipher)
+				nonce, _ = generateBytes(aesGCM.NonceSize())
+				aesGCM.Seal(dst, nonce, textForCiphering, nil)
+
+				cipherDur += time.Since(start)
+			}
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				aesCipher, _ := aes.NewCipher(key)
+				aesGCM, _ := cipher.NewGCM(aesCipher)
+				aesGCM.Open(dst[:0], nonce, dst, nil)
+
+				decipherDur += time.Since(start)
+			}
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: aes.BlockSize,
+			}
+		case DES_GCM:
+			key, _ := generateBytes(des.BlockSize)
+			var dst, nonce []byte
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				desCipher, _ := des.NewCipher(key)
+				desGCM, _ := cipher.NewGCM(desCipher)
+				nonce, _ = generateBytes(desGCM.NonceSize())
+				desGCM.Seal(dst, nonce, textForCiphering, nil)
+
+				cipherDur += time.Since(start)
+			}
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				desCipher, _ := des.NewCipher(key)
+				desGCM, _ := cipher.NewGCM(desCipher)
+				desGCM.Open(dst[:0], nonce, dst, nil)
+
+				decipherDur += time.Since(start)
+			}
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: des.BlockSize,
+			}
+		case DES_CFB:
+			key, _ := generateBytes(des.BlockSize)
+			var dst, iv []byte
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				desCipher, _ := des.NewCipher(key)
+				iv, _ = generateBytes(des.BlockSize)
+
+				desEncrypter := cipher.NewCFBEncrypter(desCipher, iv)
+				desEncrypter.XORKeyStream(dst, textForCiphering)
+
+				cipherDur += time.Since(start)
+			}
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				desCipher, _ := des.NewCipher(key)
+				desDecrypter := cipher.NewCFBDecrypter(desCipher, iv)
+				desDecrypter.XORKeyStream(dst[:0], dst)
+
+				decipherDur += time.Since(start)
+			}
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: des.BlockSize,
+			}
+		case AES128_CFB:
+			key, _ := generateBytes(aes.BlockSize)
+			var dst, iv []byte
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				aesCipher, _ := aes.NewCipher(key)
+				iv, _ = generateBytes(aes.BlockSize)
+
+				aesEncrypter := cipher.NewCFBEncrypter(aesCipher, iv)
+				aesEncrypter.XORKeyStream(dst, textForCiphering)
+
+				cipherDur += time.Since(start)
+			}
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				aesCipher, _ := aes.NewCipher(key)
+				aesDecrypter := cipher.NewCFBDecrypter(aesCipher, iv)
+				aesDecrypter.XORKeyStream(dst[:0], dst)
+
+				decipherDur += time.Since(start)
+			}
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: aes.BlockSize,
+			}
 		}
 
 		res.CipheringDuration = cipherDur / time.Duration(conf.NumMeasurements)

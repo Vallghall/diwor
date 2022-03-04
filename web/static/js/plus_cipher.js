@@ -1,4 +1,4 @@
-const hashAlgorithms = ["Кузнечик"];
+const hashAlgorithms = ["Кузнечик", "AES128-GCM", "AES128-CFB", "DES-GCM", "DES-CFB"];
 let numOfSelects = 1;
 
 function AddSelect() {
