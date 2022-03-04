@@ -8,8 +8,11 @@ import (
 
 const (
 	Grasshopper = "Кузнечик"
-	DES         = "DES"
-	AES         = "AES"
+	DES_GCM     = "DES-GCM"
+	AES128_GCM  = "AES128-GCM"
+
+	DES_CFB    = "DES-CFB"
+	AES128_CFB = "AES128-CFB"
 )
 
 var (
