@@ -37,7 +37,7 @@ form.addEventListener('submit', (e) => {
     }
 
     for (const datum of data) {
-        if (datum.value === "") {
+        if (datum.value in cipherAlgorithms) {
             swal({
                 title : "Неверные значения полей",
                 text : 'Необходимо выбрать корректный алгоритм',

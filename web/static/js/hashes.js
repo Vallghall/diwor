@@ -37,13 +37,13 @@ form.addEventListener('submit', (e) => {
     }
 
     for (const datum of data) {
-        if (datum.value === "") {
+        if (datum.value in hashAlgorithms) {
             swal({
                 title : "Неверные значения полей",
                 text : 'Необходимо выбрать корректный алгоритм',
                 icon :"warning",
             });
-            throw new Error('Bad request');
+            return;
         }
         query.algorithms.push(datum.value)
     }
