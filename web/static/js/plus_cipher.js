@@ -1,4 +1,4 @@
-const hashAlgorithms = ["Кузнечик", "AES128-GCM", "AES128-CFB", "DES-GCM", "DES-CFB"];
+const cipherAlgorithms = ["Кузнечик", "AES128-GCM", "AES128-CFB", "DES-GCM", "DES-CFB"];
 let numOfSelects = 1;
 
 function AddSelect() {
@@ -23,7 +23,7 @@ function AddSelect() {
     defaultOption.textContent = "Выберите алгоритм шифрования";
     select.appendChild(defaultOption);
 
-    for (const alg of hashAlgorithms) {
+    for (const alg of cipherAlgorithms) {
         let option = document.createElement("option");
         option.value = alg;
         option.textContent = alg;

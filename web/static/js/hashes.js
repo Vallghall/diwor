@@ -1,11 +1,32 @@
 let form = document.getElementById("hash-form");
 
+const numPattern = /^[0-9]+$/g;
+
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const data = document.getElementsByClassName("select-alg");
     const formData = new FormData(e.target);
     const value = Object.fromEntries(formData.entries());
+
+    Object.entries(value).forEach(([_, val]) => {
+        if (val === "") {
+            swal({
+                title : "Неверные значения полей",
+                text : "Не должно быть пустых полей",
+                icon :"warning",
+            });
+            throw new Error('Bad request');
+        }
+        if (!val.match(numPattern)) {
+            swal({
+                title : "Неверные значения полей",
+                text : 'Значения полей "От", "До", "Шаг" и "Число замеров" должны быть числами',
+                icon :"warning",
+            });
+            throw new Error('Bad request');
+        }
+    })
 
     let query = {
         "from" : +value.from,
@@ -16,6 +37,14 @@ form.addEventListener('submit', (e) => {
     }
 
     for (const datum of data) {
+        if (!(datum.value in hashAlgorithms)) {
+            swal({
+                title : "Неверные значения полей",
+                text : 'Необходимо выбрать корректный алгоритм',
+                icon :"warning",
+            });
+            return;
+        }
         query.algorithms.push(datum.value)
     }
     console.table(query)
