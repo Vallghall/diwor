@@ -35,7 +35,7 @@ form.addEventListener('submit', (e) => {
         "num_measurements" : +value.num,
         "algorithms": []
     }
-
+    console.table(data)
     for (const datum of data) {
         if (datum.value === "") {
             swal({
