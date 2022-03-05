@@ -35,7 +35,7 @@ form.addEventListener('submit', (e) => {
         "num_measurements" : +value.num,
         "algorithms": []
     }
-    console.table(data)
+
     for (const datum of data) {
         if (datum.value === "") {
             swal({
@@ -43,7 +43,7 @@ form.addEventListener('submit', (e) => {
                 text : 'Необходимо выбрать корректный алгоритм',
                 icon :"warning",
             });
-            return;
+            throw new Error('Bad request');
         }
         query.algorithms.push(datum.value)
     }
