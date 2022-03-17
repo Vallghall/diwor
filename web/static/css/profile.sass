@@ -1,0 +1,86 @@
+*
+  background-color: #a27df3
+
+#profile-wrapper
+  display: grid
+  grid-template-columns: 250px 250px
+  grid-column-gap: 10px
+  grid-row-gap: 20px
+  grid-auto-rows: auto
+  grid-template-areas: "content content" "start start" "footer footer"
+
+  justify-content: center
+  align-content: center
+  text-align: center
+
+  font-size: 14pt
+
+.profile-component
+  border: solid 2px whitesmoke
+  border-radius: 12px
+
+  img
+    position: relative
+    border-radius: inherit
+    width: 100%
+
+#return-wrapper
+  position: relative
+  border: solid 2px whitesmoke
+  border-radius: 12px
+
+  padding-bottom: 5px
+  padding-top: 5px
+
+  grid-area: start
+
+  button
+    display: inline-block
+    cursor: pointer
+    background-color: mediumpurple
+    color: whitesmoke
+    font-size: 18px
+    font-weight: bold
+    border-radius: inherit
+    margin-left: 5%
+    width: 40%
+
+.logout
+  cursor: pointer
+  background-color: mediumpurple
+  color: whitesmoke
+  font-size: 18px
+  font-weight: bold
+  border-radius: inherit
+  margin-top: 20%
+  width: 40%
+
+.profile-component-footer
+  border: solid 2px whitesmoke
+  border-radius: 12px
+
+  grid-area: footer
+
+table
+  width: 100%
+  border-radius: 12px
+
+  tbody
+    color: white
+    background-color: inherit
+    border-radius: inherit
+
+    td, th
+      line-height: 1.8em
+
+table, td, th
+  text-align: center
+  border: whitesmoke solid 1px
+  border-collapse: collapse
+
+td
+  word-wrap: anywhere
+  max-width: 28px
+
+  a
+    color: white
