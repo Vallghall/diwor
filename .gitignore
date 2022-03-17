@@ -1,4 +1,11 @@
-.idea
-.vscode
+# Project stuff
+.idea/
+.vscode/
 .env
-configs/config.yml
+config.yml
+
+# SASS stuff
+.sass-cache/
+*.css.map
+*.sass.map
+*.scss.map

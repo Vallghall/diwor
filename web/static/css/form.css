@@ -1,14 +1,16 @@
 label, button, h1, a {
-    color: black;
-    font-family: "Times New Roman", sans-serif;
-    font-size: 12pt;
-    margin-left: 25pt;
+  color: black;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 12pt;
+  margin-left: 25pt;
 }
 
 input {
-    margin-left: 15pt;
+  margin-left: 15pt;
 }
 
 button {
-    align-content: center;
+  align-content: center;
 }
+
+/*# sourceMappingURL=form.css.map */

@@ -1,90 +1,78 @@
 #table-wrapper {
-    width: 50%;
-
-    margin-left: 25%;
-    margin-right: 25%;
-
-    display: grid;
-    grid-template-columns: auto auto;
-    grid-row-gap: 10px;
-    grid-column-gap: 10px;
-    grid-auto-rows: auto;
-    grid-template-areas:
-            "header header"
-            "content content";
-
-    justify-content: center;
-    align-content: center;
-    text-align: center;
-
-    font-size: 14pt;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  grid-auto-rows: auto;
+  grid-template-areas: "header header" "content content";
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  font-size: 14pt;
 }
 
 #plot {
-    grid-area: header;
+  grid-area: header;
 }
 
 .altera {
-    display: block;
-    margin-left: 80%;
-    margin-top: -8%;
+  display: block;
+  margin-left: 80%;
+  margin-top: -8%;
 }
 
 #return-wrapper {
-    display: block;
-    position: absolute;
-
-    border-radius: 12px;
-    width: 150pt;
-
-    margin-left: 10pt;
-    margin-top: 10pt;
+  display: block;
+  position: absolute;
+  border-radius: 12px;
+  width: 150pt;
+  margin-left: 10pt;
+  margin-top: 10pt;
 }
 
 #return-button {
-    position: relative;
-    display: block;
-    cursor: pointer;
-
-    background-color: mediumpurple;
-    color: whitesmoke;
-    font-size: 18px;
-    font-weight: bold;
-
-    border-radius: inherit;
-    width: 100%;
+  position: relative;
+  display: block;
+  cursor: pointer;
+  background-color: mediumpurple;
+  color: whitesmoke;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: inherit;
+  width: 100%;
 }
 
 .result-wrapper {
-    background-color: #9146ff;
-
-    display: inline-block;
-    justify-content: center;
-    text-align: center;
-    flex-grow: 3;
+  background-color: #9146ff;
+  display: inline-block;
+  justify-content: center;
+  text-align: center;
+  flex-grow: 3;
 }
-
-.result-wrapper > tbody {
-    color: white;
-    background-color: inherit;
-    border-radius: inherit;
+.result-wrapper tbody {
+  color: white;
+  background-color: inherit;
+  border-radius: inherit;
 }
-
-table, td, th {
-    text-align: center;
-    border: whitesmoke solid 1px;
-    border-collapse: collapse;
+.result-wrapper tbody table, .result-wrapper tbody td, .result-wrapper tbody th {
+  text-align: center;
+  border: whitesmoke solid 1px;
+  border-collapse: collapse;
 }
 
 td, th {
-    line-height: 1.8em;
+  line-height: 1.8em;
 }
 
 td {
-    word-wrap: break-word;
-    max-width: 250px;
+  word-wrap: break-word;
+  max-width: 250px;
+}
+td a {
+  color: white;
 }
 
-td > a {
-    color: white;
-}
+/*# sourceMappingURL=results.css.map */

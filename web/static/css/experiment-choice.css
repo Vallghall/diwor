@@ -1,44 +1,40 @@
 .altera {
-    display: inline-block;
-    margin-left: auto;
+  display: inline-block;
+  margin-left: auto;
 }
 
 #choice-panel {
-    width: 500pt;
-    height: 400pt;
-
-    display: inline-block;
-    text-align: center;
-    background-color: mediumpurple;
-
-    border: solid black 3px;
-    border-radius: 15px;
+  width: 500pt;
+  height: 400pt;
+  display: inline-block;
+  text-align: center;
+  background-color: mediumpurple;
+  border: solid black 3px;
+  border-radius: 15px;
+}
+#choice-panel .choose-between {
+  font-family: "Times New Roman", sans-serif;
+  font-size: 14pt;
+  color: black;
+  border: 4px solid #00001f;
+  border-radius: 12px;
+  height: 100pt;
+  width: 100pt;
+  position: relative;
+  top: -20%;
 }
 
 #choice-panel-wrapper {
-    text-align: center;
-    border-radius: 15px;
-}
-
-#choice-panel > .choose-between {
-    font-family: "Times New Roman", sans-serif;
-    font-size: 14pt;
-    color: black;
-
-    border: 4px solid #00001f;
-    border-radius: 12px;
-
-    height: 100pt;
-    width: 100pt;
-
-    position:relative;
-    top:-20%;
+  text-align: center;
+  border-radius: 15px;
 }
 
 #hash:hover {
-    box-shadow: 15px 15px 15px 5px rgba(255, 0, 0, 0.219);
+  box-shadow: 15px 15px 15px 5px rgba(255, 0, 0, 0.219);
 }
 
 #cipher:hover {
-    box-shadow: 15px 15px 15px 5px rgba(0, 0, 255, 0.219);
+  box-shadow: 15px 15px 15px 5px rgba(0, 0, 255, 0.219);
 }
+
+/*# sourceMappingURL=experiment-choice.css.map */
