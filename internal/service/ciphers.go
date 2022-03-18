@@ -13,6 +13,8 @@ const (
 
 	DES_CFB    = "DES-CFB"
 	AES128_CFB = "AES128-CFB"
+
+	RSA = "RSA"
 )
 
 var (

@@ -5,6 +5,8 @@ import (
 	"crypto/cipher"
 	"crypto/des"
 	"crypto/md5"
+	"crypto/rand"
+	"crypto/rsa"
 	"crypto/sha256"
 	"crypto/sha512"
 	"errors"
@@ -462,6 +464,35 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				Algorithm: alg,
 				Type:      "Алгоритм шифрования симметричный",
 				KeyLength: aes.BlockSize,
+			}
+		case RSA:
+			keyPair, _ := rsa.GenerateKey(rand.Reader, 2048)
+			logrus.Printf("%v\t%v", keyPair.E, keyPair.D)
+			var dst, label []byte
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				label = []byte("OAEP Encrypted")
+				rng := rand.Reader
+				dst, _ = rsa.EncryptOAEP(sha256.New(), rng, &keyPair.PublicKey, textForCiphering, label)
+
+				cipherDur += time.Since(start)
+			}
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				rng := rand.Reader
+				dst, _ = rsa.DecryptOAEP(sha256.New(), rng, keyPair, dst, label)
+
+				decipherDur += time.Since(start)
+			}
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования асимметричный",
+				KeyLength: 256,
 			}
 		}
 
