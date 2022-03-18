@@ -4,7 +4,6 @@ const cipherAlgorithms = [
     "AES128-CFB",
     "DES-GCM", "DES-CFB",
     "RSA",
-    "Blowfish-GCM",
     "Blowfish-CFB",
 ]
 

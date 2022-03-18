@@ -526,36 +526,6 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				Type:      "Алгоритм шифрования симметричный",
 				KeyLength: blowfish.BlockSize,
 			}
-		case BF_GCM:
-			key, _ := generateBytes(blowfish.BlockSize)
-			var dst, nonce []byte
-
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				bfCipher, _ := blowfish.NewCipher(key)
-				bfGCM, _ := cipher.NewGCM(bfCipher)
-				nonce, _ = generateBytes(bfGCM.NonceSize())
-				bfGCM.Seal(dst, nonce, textForCiphering, nil)
-
-				cipherDur += time.Since(start)
-			}
-
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				bfCipher, _ := blowfish.NewCipher(key)
-				bfGCM, _ := cipher.NewGCM(bfCipher)
-				bfGCM.Open(dst[:0], nonce, dst, nil)
-
-				decipherDur += time.Since(start)
-			}
-
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: blowfish.BlockSize,
-			}
 		}
 
 		res.CipheringDuration = cipherDur / time.Duration(conf.NumMeasurements)
