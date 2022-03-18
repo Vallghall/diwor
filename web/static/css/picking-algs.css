@@ -1,8 +1,8 @@
 #hash-form, #cipher-form {
-  margin-left: 35%;
-  margin-right: 35%;
+  margin-left: auto;
+  margin-right: auto;
   width: 30%;
-  height: 30%;
+  height: 50%;
   display: grid;
   grid-template-columns: minmax(40%, auto);
   grid-template-rows: minmax(auto, auto);
