@@ -1,4 +1,12 @@
-const cipherAlgorithms = ["Кузнечик", "AES128-GCM", "AES128-CFB", "DES-GCM", "DES-CFB", "RSA"];
+const cipherAlgorithms = [
+    "Кузнечик",
+    "AES128-GCM",
+    "AES128-CFB",
+    "DES-GCM", "DES-CFB",
+    "RSA",
+    "Blowfish-CFB",
+]
+
 let numOfSelects = 1;
 
 function AddSelect() {

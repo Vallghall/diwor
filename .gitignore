@@ -2,7 +2,7 @@
 .idea/
 .vscode/
 .env
-config.yml
+configs/config.yml
 
 # SASS stuff
 .sass-cache/

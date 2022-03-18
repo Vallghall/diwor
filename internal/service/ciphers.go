@@ -14,6 +14,9 @@ const (
 	DES_CFB    = "DES-CFB"
 	AES128_CFB = "AES128-CFB"
 
+	BF_CFB = "Blowfish-CFB"
+	BF_GCM = "Blowfish-GCM"
+
 	RSA = "RSA"
 )
 

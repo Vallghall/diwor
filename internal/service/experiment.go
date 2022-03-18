@@ -12,6 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"gitlab.com/Valghall/diwor/internal/plotconfig"
+	"golang.org/x/crypto/blowfish"
 	"time"
 
 	"github.com/bi-zone/ruwireguard-go/crypto/gosthopper"
@@ -467,7 +468,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 			}
 		case RSA:
 			keyPair, _ := rsa.GenerateKey(rand.Reader, 2048)
-			logrus.Printf("%v\t%v", keyPair.E, keyPair.D)
+
 			var dst, label []byte
 
 			for i := 0; i < conf.NumMeasurements; i++ {
@@ -493,6 +494,37 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				Algorithm: alg,
 				Type:      "Алгоритм шифрования асимметричный",
 				KeyLength: 256,
+			}
+		case BF_CFB:
+			key, _ := generateBytes(blowfish.BlockSize)
+			var dst, iv []byte
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				bfCipher, _ := blowfish.NewCipher(key)
+				iv, _ = generateBytes(blowfish.BlockSize)
+
+				bfEncrypter := cipher.NewCFBEncrypter(bfCipher, iv)
+				bfEncrypter.XORKeyStream(dst, textForCiphering)
+
+				cipherDur += time.Since(start)
+			}
+
+			for i := 0; i < conf.NumMeasurements; i++ {
+				start := time.Now()
+
+				bfCipher, _ := blowfish.NewCipher(key)
+				bfDecrypter := cipher.NewCFBDecrypter(bfCipher, iv)
+				bfDecrypter.XORKeyStream(dst[:0], dst)
+
+				decipherDur += time.Since(start)
+			}
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: blowfish.BlockSize,
 			}
 		}
 
