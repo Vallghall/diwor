@@ -4,8 +4,8 @@ const cipherAlgorithms = [
     "AES128-CFB",
     "DES-GCM", "DES-CFB",
     "RSA",
-    "BF-GCM",
-    "BF-CFB",
+    "Blowfish-GCM",
+    "Blowfish-CFB",
 ]
 
 let numOfSelects = 1;
