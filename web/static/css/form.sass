@@ -1,7 +1,7 @@
+@use 'definitions' as *
+
 label, button, h1, a
-  color: black
-  font-family: "Times New Roman", sans-serif
-  font-size: 12pt
+  @include font-stack(black, $font-small)
   margin-left: 25pt
 
 input

@@ -1,8 +1,18 @@
+.form {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
 body {
-  background-color: #d3cdff;
   font-family: "Times New Roman", sans-serif;
-  color: whitesmoke;
   font-size: 12pt;
+  color: whitesmoke;
+  background-color: #d3cdff;
 }
 
 .altera {
@@ -15,18 +25,18 @@ body {
   width: 150pt;
   height: 100px;
   background-color: mediumpurple;
-  border: black solid 3px;
-  border-radius: 15px;
+  border: solid 3px whitesmoke;
+  border-radius: 12px;
+  font-family: "Times New Roman", sans-serif;
   font-size: 18pt;
   color: whitesmoke;
-  font-family: "Times New Roman", sans-serif;
   padding: 10px;
 }
 #current-user-panel .img-wrapper {
   display: inline-block;
   height: 80px;
   width: 80px;
-  border-radius: 15px;
+  border-radius: 12px;
   cursor: pointer;
 }
 #current-user-panel #logout {
@@ -48,13 +58,11 @@ body {
 }
 
 .form {
-  border: darkorchid 5px;
+  border: solid 3px darkorchid;
+  border-radius: 12px;
   background: #fff;
   box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
-  border-radius: 15px;
   max-width: 480px;
-  margin-left: auto;
-  margin-right: auto;
   padding-top: 5px;
   padding-bottom: 5px;
   left: 0;
@@ -64,9 +72,10 @@ body {
 }
 
 .intro {
-  background-color: white;
-  color: black;
+  font-family: "Times New Roman", sans-serif;
   font-size: 14pt;
+  color: black;
+  background-color: white;
   position: absolute;
   top: 50%;
   text-align: center;
@@ -99,7 +108,7 @@ body {
   width: 200px;
   color: white;
   background-color: #0e3721;
-  font-size: 20px;
+  font-size: 20pt;
 }
 
 .submit:hover {

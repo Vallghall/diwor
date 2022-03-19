@@ -1,8 +1,10 @@
-#table-wrapper
-  width: 50%
+@use 'definitions' as *
 
-  margin-left: 25%
-  margin-right: 25%
+#table-wrapper
+  @extend %centralized-block
+  @include font-stack
+
+  width: 50%
 
   display: grid
   grid-template-columns: auto auto
@@ -10,12 +12,6 @@
   grid-column-gap: 10px
   grid-auto-rows: auto
   grid-template-areas: "header header" "content content"
-
-  justify-content: center
-  align-content: center
-  text-align: center
-
-  font-size: 14pt
 
 #plot
   grid-area: header
@@ -29,7 +25,7 @@
   display: block
   position: absolute
 
-  border-radius: 12px
+  border-radius: $radius
   width: 150pt
 
   margin-left: 10pt
@@ -40,13 +36,13 @@
   display: block
   cursor: pointer
 
+  @include font-stack
+
   background-color: mediumpurple
-  color: whitesmoke
-  font-size: 18px
   font-weight: bold
 
   border-radius: inherit
-  width: 100%
+  width: $full
 
 .result-wrapper
   background-color: #9146ff
