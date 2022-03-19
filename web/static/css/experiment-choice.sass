@@ -1,8 +1,12 @@
+@use 'definitions' as *
+
 .altera
   display: inline-block
   margin-left: auto
 
 #choice-panel
+  @include rounded-border(black)
+  
   width: 500pt
   height: 400pt
 
@@ -10,16 +14,9 @@
   text-align: center
   background-color: mediumpurple
 
-  border: solid black 3px
-  border-radius: 15px
-
   .choose-between
-    font-family: "Times New Roman", sans-serif
-    font-size: 14pt
-    color: black
-
-    border: 4px solid #00001f
-    border-radius: 12px
+    @include rounded-border(#00001f)
+    @include font-stack(black, $font-medium)
 
     height: 100pt
     width: 100pt
@@ -29,7 +26,7 @@
 
 #choice-panel-wrapper
   text-align: center
-  border-radius: 15px
+  border-radius: $radius
 
 #hash:hover
   box-shadow: 15px 15px 15px 5px rgba(255, 0, 0, 0.219)

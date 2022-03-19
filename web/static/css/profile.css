@@ -3,20 +3,22 @@
 }
 
 #profile-wrapper {
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 14pt;
+  color: whitesmoke;
   display: grid;
   grid-template-columns: 250px 250px;
   grid-column-gap: 10px;
   grid-row-gap: 20px;
   grid-auto-rows: auto;
   grid-template-areas: "content content" "start start" "footer footer";
-  justify-content: center;
-  align-content: center;
-  text-align: center;
-  font-size: 14pt;
 }
 
 .profile-component {
-  border: solid 2px whitesmoke;
+  border: solid 3px whitesmoke;
   border-radius: 12px;
 }
 .profile-component img {
@@ -27,7 +29,7 @@
 
 #return-wrapper {
   position: relative;
-  border: solid 2px whitesmoke;
+  border: solid 3px whitesmoke;
   border-radius: 12px;
   padding-bottom: 5px;
   padding-top: 5px;
@@ -37,8 +39,9 @@
   display: inline-block;
   cursor: pointer;
   background-color: mediumpurple;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 18pt;
   color: whitesmoke;
-  font-size: 18px;
   font-weight: bold;
   border-radius: inherit;
   margin-left: 5%;
@@ -48,8 +51,9 @@
 .logout {
   cursor: pointer;
   background-color: mediumpurple;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 18pt;
   color: whitesmoke;
-  font-size: 18px;
   font-weight: bold;
   border-radius: inherit;
   margin-top: 20%;
@@ -57,7 +61,7 @@
 }
 
 .profile-component-footer {
-  border: solid 2px whitesmoke;
+  border: solid 3px whitesmoke;
   border-radius: 12px;
   grid-area: footer;
 }

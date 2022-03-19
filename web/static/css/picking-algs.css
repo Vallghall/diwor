@@ -1,17 +1,22 @@
 #hash-form, #cipher-form {
   margin-left: auto;
   margin-right: auto;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
+#hash-form, #cipher-form {
+  border: solid 3px whitesmoke;
+  border-radius: 12px;
   width: 50%;
-  height: 50%;
   display: grid;
   grid-template-columns: minmax(40%, auto);
   grid-template-rows: minmax(auto, auto);
   grid-row-gap: 10px;
-  justify-content: center;
-  align-content: center;
   background-color: #a27df3;
-  border: solid black 3px;
-  border-radius: 15px;
 }
 
 #return-wrapper {
@@ -29,16 +34,16 @@
   cursor: pointer;
   background-color: mediumpurple;
   color: whitesmoke;
-  font-size: 18px;
+  font-size: 18pt;
   font-weight: bold;
   border-radius: inherit;
   width: 100%;
 }
 
 .select-wrapper {
-  background-color: #c7a5fd;
   border: solid 3px #c7a5fd;
   border-radius: 12px;
+  background-color: #c7a5fd;
   display: inline-block;
   justify-content: center;
   margin-bottom: 10px;
@@ -56,7 +61,7 @@
   cursor: pointer;
   background-color: #a27df3;
   color: whitesmoke;
-  font-size: 18px;
+  font-size: 18pt;
   font-weight: bold;
   border-radius: inherit;
   margin-left: 5%;
@@ -72,9 +77,9 @@
 }
 
 strong {
-  font-size: 18px;
   margin-left: auto;
   margin-right: auto;
+  font-size: 18pt;
 }
 
 /*# sourceMappingURL=picking-algs.css.map */

@@ -1,17 +1,24 @@
 #table-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
+#table-wrapper {
+  font-family: "Times New Roman", sans-serif;
+  font-size: 18pt;
+  color: whitesmoke;
   width: 50%;
-  margin-left: 25%;
-  margin-right: 25%;
   display: grid;
   grid-template-columns: auto auto;
   grid-row-gap: 10px;
   grid-column-gap: 10px;
   grid-auto-rows: auto;
   grid-template-areas: "header header" "content content";
-  justify-content: center;
-  align-content: center;
-  text-align: center;
-  font-size: 14pt;
 }
 
 #plot {
@@ -37,9 +44,10 @@
   position: relative;
   display: block;
   cursor: pointer;
-  background-color: mediumpurple;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 18pt;
   color: whitesmoke;
-  font-size: 18px;
+  background-color: mediumpurple;
   font-weight: bold;
   border-radius: inherit;
   width: 100%;
