@@ -11,6 +11,7 @@
 #hash-form, #cipher-form {
   border: solid 3px whitesmoke;
   border-radius: 12px;
+  width: 50%;
   display: grid;
   grid-template-columns: minmax(40%, auto);
   grid-template-rows: minmax(auto, auto);
