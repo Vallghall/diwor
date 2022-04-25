@@ -1,0 +1,36 @@
+.wrapper {
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 14pt;
+  color: black;
+  border: solid 3px whitesmoke;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  margin: 5% auto auto auto;
+  padding: 5px;
+  width: fit-content;
+}
+.wrapper table {
+  width: 100%;
+  border-radius: 12px;
+}
+.wrapper table tbody {
+  background-color: inherit;
+  border-radius: inherit;
+}
+.wrapper table tbody td, .wrapper table tbody th {
+  line-height: 1.8em;
+}
+.wrapper table, .wrapper td, .wrapper th {
+  text-align: center;
+  border: #c8c800 solid 1px;
+  border-collapse: collapse;
+}
+.wrapper table a, .wrapper td a, .wrapper th a {
+  color: black;
+  margin: 0;
+}
+
+/*# sourceMappingURL=History.module.css.map */

@@ -1,0 +1,28 @@
+@use "../../../public/stylesheets/definitions" as *
+
+.choice_panel
+  @include rounded-border($border-color)
+
+  width: auto
+  height: auto
+  display: inline-block
+  text-align: center
+
+  margin: 10% 40%
+  padding: 20px 0
+  background: rgba(255,255,255,0.9)
+
+  .choose_between
+    @include rounded-border($border-color)
+    @include font-stack(black, $font-medium)
+
+    margin: 0 10px
+    height: 100pt
+    width: 100pt
+
+
+.hash:hover
+  box-shadow: 15px 15px 15px 5px rgba(255, 0, 0, 0.219)
+
+.cipher:hover
+  box-shadow: 15px 15px 15px 5px rgba(0, 0, 255, 0.219)

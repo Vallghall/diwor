@@ -1,0 +1,38 @@
+.form {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
+.form {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
+  max-width: 600px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 10%;
+  text-align: left;
+}
+
+label, button, h1, a {
+  font-family: "Times New Roman", sans-serif;
+  font-size: 12pt;
+  color: black;
+  margin-left: 25pt;
+}
+
+input {
+  margin-left: 15pt;
+}
+
+button {
+  align-content: center;
+}
+
+/*# sourceMappingURL=SignIn.module.css.map */

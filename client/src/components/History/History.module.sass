@@ -1,0 +1,31 @@
+@use "../../../public/stylesheets/definitions" as *
+
+.wrapper
+  @include centralize-content
+  @include font-stack($color: black, $size: $font-medium)
+  @include rounded-border
+  background: rgba(255,255,255,0.9)
+  margin: 5% auto auto auto
+  padding: 5px
+  width: fit-content
+
+
+  table
+    width: $full
+    border-radius: $radius
+
+    tbody
+      background-color: inherit
+      border-radius: inherit
+
+      td, th
+        line-height: 1.8em
+
+  table, td, th
+    text-align: center
+    border: $border-color solid 1px
+    border-collapse: collapse
+
+    a
+      color: black
+      margin: 0

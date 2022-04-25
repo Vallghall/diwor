@@ -1,0 +1,16 @@
+@use "../../../public/stylesheets/definitions" as *
+
+.form
+  @include form
+  margin-top: 10%
+  text-align: left
+
+label, button, h1, a
+  @include font-stack(black, $font-small)
+  margin-left: 25pt
+
+input
+  margin-left: 15pt
+
+button
+  align-content: center

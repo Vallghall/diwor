@@ -1,0 +1,50 @@
+.wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
+.wrapper {
+  font-family: "Times New Roman", sans-serif;
+  font-size: 14pt;
+  color: black;
+  width: 50%;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  grid-auto-rows: auto;
+  grid-template-areas: "header header" "content content";
+}
+.wrapper .result_wrapper {
+  background-color: rgba(255, 255, 255, 0.9);
+  display: inline-block;
+  justify-content: center;
+  text-align: center;
+  flex-grow: 3;
+}
+.wrapper .result_wrapper table {
+  width: 100%;
+}
+.wrapper .result_wrapper table, .wrapper .result_wrapper td, .wrapper .result_wrapper th {
+  text-align: center;
+  border: #c8c800 solid 2px;
+  border-collapse: collapse;
+}
+.wrapper .result_wrapper td, .wrapper .result_wrapper th {
+  line-height: 1.8em;
+  border: #c8c800 solid 2px;
+}
+.wrapper .result_wrapper td {
+  word-wrap: anywhere;
+  max-width: 300px;
+}
+.wrapper .result_wrapper td a {
+  color: black;
+}
+
+/*# sourceMappingURL=Results.module.css.map */

@@ -1,0 +1,73 @@
+.wrapper {
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 14pt;
+  color: black;
+  border: solid 3px whitesmoke;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  margin: 5% auto auto auto;
+  padding: 5px;
+  width: fit-content;
+  display: grid;
+  grid-template-columns: 250px 250px;
+  grid-column-gap: 10px;
+  grid-row-gap: 20px;
+  grid-auto-rows: auto;
+  grid-template-areas: "header header" "footer footer";
+}
+
+.profile_header {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  grid-area: header;
+  padding: 10px 0;
+}
+
+.logout, .history {
+  font-family: "Times New Roman", sans-serif;
+  font-size: 18pt;
+  color: black;
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  width: fit-content;
+  padding: 4px;
+  margin: 0 10px;
+}
+
+.profile_component_footer {
+  border: solid 3px whitesmoke;
+  border-radius: 12px;
+  grid-area: footer;
+}
+.profile_component_footer table {
+  width: 100%;
+  border-radius: 12px;
+}
+.profile_component_footer table tbody {
+  background-color: inherit;
+  border-radius: inherit;
+}
+.profile_component_footer table tbody td, .profile_component_footer table tbody th {
+  line-height: 1.8em;
+}
+.profile_component_footer table, .profile_component_footer td, .profile_component_footer th {
+  text-align: center;
+  border: #c8c800 solid 1px;
+  border-collapse: collapse;
+}
+.profile_component_footer td {
+  word-wrap: anywhere;
+  max-width: 28px;
+}
+.profile_component_footer td a {
+  color: black;
+  margin: 0;
+}
+
+/*# sourceMappingURL=Profile.module.css.map */

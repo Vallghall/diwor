@@ -1,0 +1,47 @@
+.footer {
+  background: #57a4e3;
+}
+
+.logo {
+  display: inline-flex;
+  width: 100px;
+  height: 100px;
+  padding: 10px 10px;
+  vertical-align: middle;
+  margin-right: 7vw;
+}
+
+.navigation {
+  width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation__items {
+  display: inline-flex;
+  list-style: none;
+  margin: 0;
+}
+
+.navigation__item {
+  display: inline-flex;
+  padding: 4vh 0;
+  margin: 0 5vw;
+}
+.navigation__item a {
+  font-family: "Anton", sans-serif;
+  font-size: 28pt;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  padding: 0 6px;
+}
+.navigation__item a:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: #57a4e3;
+  border-radius: 12px;
+}
+
+/*# sourceMappingURL=NavBar.module.css.map */

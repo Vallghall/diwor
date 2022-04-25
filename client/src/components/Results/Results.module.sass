@@ -1,0 +1,40 @@
+@use "../../../public/stylesheets/definitions" as *
+
+.wrapper
+  @extend %centralized-block
+  @include font-stack($color: black, $size: $font-medium)
+
+  width: 50%
+
+  display: grid
+  grid-template-columns: auto auto
+  grid-row-gap: 10px
+  grid-column-gap: 10px
+  grid-auto-rows: auto
+  grid-template-areas: "header header" "content content"
+
+  .result_wrapper
+    background-color: rgba(255,255,255,0.9)
+
+    display: inline-block
+    justify-content: center
+    text-align: center
+    flex-grow: 3
+    table
+      width: 100%
+
+    table, td, th
+      text-align: center
+      border: $border-color solid 2px
+      border-collapse: collapse
+
+    td, th
+      line-height: 1.8em
+      border: $border-color solid 2px
+
+    td
+      word-wrap: anywhere
+      max-width: 300px
+
+      a
+        color: black
