@@ -1,0 +1,47 @@
+$font-large: 18pt
+$font-medium: 14pt
+$font-small: 12pt
+
+$default-color: whitesmoke
+$border-color: rgba(200, 200, 0, 1)
+$radius: 12px
+$full: 100%
+
+$mtuci: "https://uv-kurier.ru/wp-content/uploads/2020/09/06.-Aviamotornaya-ulitsa-8-auditornyj-korpus-MTUSI..jpg"
+
+@mixin rounded-border($color: $default-color)
+  border: solid 3px $color
+  border-radius: $radius
+
+@mixin font-stack($color: $default-color, $size: $font-large)
+  font-family: "Times New Roman", sans-serif
+  font-size: $size
+  color: $color
+
+@mixin centralize
+  margin-left: auto
+  margin-right: auto
+
+@mixin centralize-content
+  justify-content: center
+  align-content: center
+  text-align: center
+
+%centralized-block
+  @include centralize
+  @include centralize-content
+
+  width: auto
+  height: auto
+
+@mixin form
+  @extend %centralized-block
+  @include rounded-border($border-color)
+
+  background: rgba(255,255,255,0.9)
+  box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4)
+  max-width: 600px
+  padding-top: 5px
+  padding-bottom: 5px
+
+

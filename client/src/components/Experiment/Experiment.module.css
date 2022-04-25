@@ -1,0 +1,82 @@
+.form {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
+
+.form {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  width: 50%;
+  margin-top: 10%;
+  display: grid;
+  grid-template-columns: minmax(40%, auto);
+  grid-template-rows: minmax(auto, auto);
+  grid-row-gap: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.select_wrapper {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.select_wrapper select {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+.select_wrapper button, .select_wrapper #begin {
+  display: inline-block;
+  cursor: pointer;
+  color: whitesmoke;
+  font-size: 18pt;
+  font-weight: bold;
+  border-radius: inherit;
+  margin-left: 5%;
+  width: 40%;
+}
+.select_wrapper .operators {
+  width: 30px;
+  height: 30px;
+  padding: 0 6px 11px 6px;
+}
+
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(4, 200px);
+}
+.inputs input {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  display: inline-block;
+  font-size: 16px;
+  text-align: center;
+}
+
+strong {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 18pt;
+}
+
+.quantity_controller {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20pt;
+  padding: 5px;
+  margin: 0 10px;
+}
+.quantity_controller:hover {
+  background: #d7d700;
+  color: white;
+}
+
+/*# sourceMappingURL=Experiment.module.css.map */

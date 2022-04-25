@@ -1,0 +1,75 @@
+@use "../../../public/stylesheets/definitions" as *
+
+
+.form
+  @extend %centralized-block
+  @include rounded-border($border-color)
+
+  width: 50%
+
+  margin-top: 10%
+  display: grid
+  grid-template-columns: minmax(40%, auto)
+  grid-template-rows: minmax(auto, auto)
+  grid-row-gap: 10px
+  background-color: rgba(255,255,255,0.9)
+
+
+.select_wrapper
+  display: inline-block
+
+  margin-bottom: 10px
+
+  select
+    @include rounded-border($border-color)
+
+    cursor: pointer
+    text-align: center
+    width: $full
+
+  button, #begin
+    display: inline-block
+    cursor: pointer
+
+    color: whitesmoke
+    font-size: $font-large
+    font-weight: bold
+
+    border-radius: inherit
+
+    margin-left: 5%
+    width: 40%
+
+  .operators
+    width: 30px
+    height: 30px
+    padding: 0 6px 11px 6px
+
+.inputs
+  display: grid
+  grid-template-columns: repeat(4, 200px)
+  input
+    @include rounded-border($border-color)
+    display: inline-block
+
+    font-size: 16px
+    text-align: center
+
+strong
+  @include centralize
+  font-size: $font-large
+
+.quantity_controller
+  @include rounded-border($border-color)
+
+  cursor: pointer
+  display: inline-block
+  font-size: 20pt
+
+  padding: 5px
+  margin: 0 10px
+
+
+  &:hover
+    background: lighten($border-color, 3)
+    color: white

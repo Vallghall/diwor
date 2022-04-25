@@ -1,0 +1,15 @@
+.intro {
+  font-family: "Times New Roman", sans-serif;
+  font-size: 18pt;
+  color: black;
+  background-color: white;
+  border: solid 3px #c8c800;
+  text-align: center;
+  overflow: auto;
+  padding: 10px;
+  border-radius: 15px;
+  width: fit-content;
+  margin: 10% auto auto;
+}
+
+/*# sourceMappingURL=Intro.module.css.map */

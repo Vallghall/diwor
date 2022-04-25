@@ -1,0 +1,31 @@
+.choice_panel {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  width: auto;
+  height: auto;
+  display: inline-block;
+  text-align: center;
+  margin: 10% 40%;
+  padding: 20px 0;
+  background: rgba(255, 255, 255, 0.9);
+}
+.choice_panel .choose_between {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  font-family: "Times New Roman", sans-serif;
+  font-size: 14pt;
+  color: black;
+  margin: 0 10px;
+  height: 100pt;
+  width: 100pt;
+}
+
+.hash:hover {
+  box-shadow: 15px 15px 15px 5px rgba(255, 0, 0, 0.219);
+}
+
+.cipher:hover {
+  box-shadow: 15px 15px 15px 5px rgba(0, 0, 255, 0.219);
+}
+
+/*# sourceMappingURL=ExperimentChoice.module.css.map */
