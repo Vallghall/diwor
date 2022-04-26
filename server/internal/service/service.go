@@ -12,7 +12,7 @@ type Authorization interface {
 	ValidateUserCredentials(user users.User) (bool, error)
 	CreateUser(user users.User) (int, error)
 	GetUserById(id int) (users.User, error)
-	GenerateToken(username, password string) (string, error)
+	GenerateTokenPair(username, password string) (string, string, error)
 	ParseToken(token string) (int, error)
 }
 
