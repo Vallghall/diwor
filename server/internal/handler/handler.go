@@ -19,7 +19,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	router.LoadHTMLFiles("client/build/index.html")
-	router.StaticFile("/favicon.ico", "assets/logo/favicon.ico")
+	router.StaticFile("/client/public/favicon.ico", "assets/logo/favicon.ico")
 	router.Static("/static", "client/build/static")
 
 	router.GET("/", func(c *gin.Context) {
@@ -33,6 +33,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		auth.POST("/sign-up", h.signUp)
 		auth.POST("/sign-in", h.signIn)
+		auth.POST("/refresh", h.refresh)
 
 		auth.GET("/logout", h.logout)
 	}
@@ -50,12 +51,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		ex := api.Group("/experiment")
 		{
 			ex.GET("/", h.indexPage)
-
-			ex.GET("/hashes", h.pickHashingAlgorithms)
-			ex.GET("/hash-results", h.hashResults)
-
-			ex.GET("/ciphers", h.pickCipheringAlgorithms)
-			ex.GET("/cipher-results", h.cipherResults)
 
 			ex.POST("/start-hash-experiment", h.researchHashAlgorithms)
 			ex.POST("/start-cipher-experiment", h.researchCipherAlgorithm)

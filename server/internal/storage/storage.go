@@ -18,7 +18,7 @@ type Experiment interface {
 	SaveCipherAlgorithmResults(userId int, algType string, results results.CipherAlgorithmsResults)
 	GetLastHashExperimentResults(userId int) (res results.HashAlgorithmsResults)
 	GetLastCipherExperimentResults(userId int) (res results.CipherAlgorithmsResults)
-	GetRecentExperiments(id, quantity int) []results.ExperimentDigest
+	GetRecentExperiments(id, quantity int) ([]results.ExperimentDigest, error)
 	GetAllUserExperiments(id int) []results.ExperimentDigest
 	GetUserHashExperimentResultBySortedId(userId, sortedId int) (results.HashAlgorithmsResults, error)
 	GetUserCipherExperimentResultBySortedId(userId, sortedId int) (results.CipherAlgorithmsResults, error)

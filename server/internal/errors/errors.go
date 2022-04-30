@@ -11,4 +11,5 @@ var (
 	ErrInvalidLoginOrPassword     = errors.New("неверный логин или пароль")
 	ErrUserCtxNotFound            = errors.New("User context not found")
 	ErrInvalidHashAlgorithmInput  = errors.New("введен(-ы) некорректные тип(-ы) алгоритмов хэширования")
+	ErrTokenExpired               = errors.New("token has expired")
 )

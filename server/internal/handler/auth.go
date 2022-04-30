@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const RefreshTokenCookieName = "not-a-token"
+
 func (h *Handler) signUp(c *gin.Context) {
 	var input users.User
 
@@ -53,7 +55,7 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 
-	token, err := h.service.Authorization.GenerateToken(input.Username, input.Password)
+	accessToken, refreshToken, err := h.service.Authorization.GenerateTokenPair(input.Username, input.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			newErrorResponse(c, http.StatusBadRequest, myerr.ErrInvalidLoginOrPassword.Error())
@@ -64,21 +66,57 @@ func (h *Handler) signIn(c *gin.Context) {
 	}
 
 	http.SetCookie(c.Writer, &http.Cookie{
-		Name:     "diwor-access-token",
-		Value:    token,
+		Name:     RefreshTokenCookieName,
+		Value:    refreshToken,
 		Expires:  time.Now().Add(12 * time.Hour),
 		Path:     "/",
 		HttpOnly: true,
 	})
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"token": token,
+		"token": accessToken,
+	})
+}
+
+func (h *Handler) refresh(c *gin.Context) {
+	refreshToken, err := c.Request.Cookie(RefreshTokenCookieName)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "no refresh token")
+		return
+	}
+
+	userId, err := h.service.ParseToken(refreshToken.Value)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	newAccessToken, newRefreshToken, err := h.service.Authorization.RegenerateTokenPair(userId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			newErrorResponse(c, http.StatusBadRequest, myerr.ErrInvalidLoginOrPassword.Error())
+			return
+		}
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     RefreshTokenCookieName,
+		Value:    newRefreshToken,
+		Expires:  time.Now().Add(12 * time.Hour),
+		Path:     "/",
+		HttpOnly: true,
+	})
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"token": newAccessToken,
 	})
 }
 
 func (h *Handler) logout(c *gin.Context) {
 	cookie := &http.Cookie{
-		Name:    "diwor-access-token",
+		Name:    RefreshTokenCookieName,
 		Value:   "",
 		Path:    "/",
 		Expires: time.Unix(0, 0),
@@ -88,5 +126,7 @@ func (h *Handler) logout(c *gin.Context) {
 
 	http.SetCookie(c.Writer, cookie)
 
-	c.Redirect(http.StatusTemporaryRedirect, "/auth/login")
+	c.JSON(http.StatusOK, map[string]string{
+		"message": "logged out",
+	})
 }

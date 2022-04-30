@@ -108,7 +108,7 @@ func (ep *ExperimentPostgres) GetLastCipherExperimentResults(userId int) (res re
 	return
 }
 
-func (ep *ExperimentPostgres) GetRecentExperiments(id, quantity int) (res []results.ExperimentDigest) {
+func (ep *ExperimentPostgres) GetRecentExperiments(id, quantity int) (res []results.ExperimentDigest, err error) {
 	query := fmt.Sprintf(
 		`SELECT
 					ROW_NUMBER () OVER (ORDER BY started_at DESC) AS id,

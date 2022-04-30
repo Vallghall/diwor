@@ -12,7 +12,8 @@ type Authorization interface {
 	ValidateUserCredentials(user users.User) (bool, error)
 	CreateUser(user users.User) (int, error)
 	GetUserById(id int) (users.User, error)
-	GenerateToken(username, password string) (string, error)
+	GenerateTokenPair(username, password string) (string, string, error)
+	RegenerateTokenPair(userId int) (string, string, error)
 	ParseToken(token string) (int, error)
 }
 
@@ -26,7 +27,7 @@ type Experiment interface {
 	SaveResults(userId int, algType string, results Result)
 	GetLastHashExperimentResults(userId int) results.HashAlgorithmsResults
 	GetLastCipherExperimentResults(userId int) results.CipherAlgorithmsResults
-	GetRecentExperiments(id int) []results.ExperimentDigest
+	GetRecentExperiments(id int) ([]results.ExperimentDigest, error)
 	GetAllUserExperiments(id int) []results.ExperimentDigest
 	GetUserExperimentResultBySortedId(alg string, userId, sortedId int) (Result, error)
 }

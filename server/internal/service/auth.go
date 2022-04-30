@@ -6,6 +6,7 @@ import (
 	myerr "gitlab.com/Valghall/diwor/server/internal/errors"
 	"gitlab.com/Valghall/diwor/server/internal/storage"
 	"gitlab.com/Valghall/diwor/server/internal/users"
+	"math/rand"
 	"os"
 	"regexp"
 	"time"
@@ -15,7 +16,8 @@ import (
 )
 
 const (
-	TokenTTL = 12 * time.Hour
+	AccessTokenTTL  = 5 * time.Minute
+	RefreshTokenTTL = 24 * 7 * time.Hour
 
 	NamePatternRU   = `^[а-яА-Я]+$`
 	NamePatternEN   = `^[a-zA-Z]+$`
@@ -28,7 +30,8 @@ var (
 
 type tokenClaims struct {
 	jwt.StandardClaims
-	UserId int `json:"user_id"`
+	UserId  int     `json:"user_id"`
+	Marcant float64 `json:"marcant"`
 }
 
 type AuthService struct {
@@ -71,20 +74,68 @@ func (as *AuthService) CreateUser(user users.User) (int, error) {
 	return as.storage.CreateUser(user)
 }
 
-func (as *AuthService) GenerateToken(username, password string) (string, error) {
+func (as *AuthService) GenerateTokenPair(username, password string) (string, string, error) {
 	user, err := as.storage.GetUser(username, generatePasswordHash(password))
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(TokenTTL).Unix(),
+			ExpiresAt: time.Now().Add(AccessTokenTTL).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
-		UserId: user.Id,
+		UserId:  user.Id,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
 	})
-	return token.SignedString([]byte(signingKey))
+
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(RefreshTokenTTL).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+		UserId:  user.Id,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
+	})
+
+	ATString, err := accessToken.SignedString([]byte(signingKey))
+	if err != nil {
+		return "", "", err
+	}
+
+	RTString, err := refreshToken.SignedString([]byte(signingKey))
+
+	return ATString, RTString, nil
+}
+
+func (as *AuthService) RegenerateTokenPair(userId int) (string, string, error) {
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(AccessTokenTTL).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+		UserId:  userId,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
+	})
+
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(RefreshTokenTTL).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+		UserId:  userId,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
+	})
+
+	ATString, err := accessToken.SignedString([]byte(signingKey))
+	if err != nil {
+		return "", "", err
+	}
+
+	RTString, err := refreshToken.SignedString([]byte(signingKey))
+
+	return ATString, RTString, nil
 }
 
 func generatePasswordHash(password string) string {
@@ -129,6 +180,10 @@ func (as *AuthService) ParseToken(accessToken string) (int, error) {
 	})
 	if err != nil {
 		return 0, err
+	}
+
+	if !token.Valid {
+		return 0, errors.New(myerr.ErrTokenExpired.Error())
 	}
 
 	claims, ok := token.Claims.(*tokenClaims)
