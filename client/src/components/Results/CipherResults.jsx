@@ -3,41 +3,37 @@ import classes from "./Results.module.css"
 import Plot from "../Plot/Plot"
 import { useNavigate } from "react-router-dom"
 import ResultRow from "../ResultRow/ResultRow";
+import {tokenEffect} from "../../token";
 
-const CipherResults = ({token, params}) => {
+const CipherResults = ({token, params, renewToken}) => {
     const [results, setResults] = useState({})
     const [plotConfigs, setPlotConfigs] = useState({})
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if (token === "") {
-            navigate("/c/auth/login")
-            return
-        }
+    const query = (t = token) => fetch(`/api/profile/fetch-result?sorted-id=${params.id}&alg-type=${params.alg}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: t,
+            }
+        })
+        .then(resp => resp.json())
+        .then(body => {
+            const Results = body["Results"].results
+            console.log(Results)
+            setResults(Results)
+            Object.values(Results).forEach(res => setPlotConfigs(p => (
+                    {
+                        ...p,
+                        [res.algorithm]: res.plot
+                    }
+                )
+            ))
 
-        fetch(`/api/profile/fetch-result?sorted-id=${params.id}&alg-type=${params.alg}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: token,
-                }
-            })
-            .then(resp => resp.json())
-            .then(body => {
-                const Results = body["Results"].results
-                console.log(Results)
-                setResults(Results)
-                Object.values(Results).forEach(res => setPlotConfigs(p => (
-                        {
-                            ...p,
-                            [res.algorithm]: res.plot
-                        }
-                    )
-                ))
+        })
+        .catch(e => console.log(e))
 
-            })
-            .catch(e => console.log(e))
-    },[])
+    useEffect(() => tokenEffect(token, query, navigate, renewToken),[])
 
     return (
         <div className={classes.wrapper}>

@@ -13,7 +13,11 @@ func (h *Handler) userProfile(c *gin.Context) {
 	name := c.GetString(userName)
 	username := c.GetString(userLogin)
 
-	recentExps := h.service.Experiment.GetRecentExperiments(id)
+	recentExps, err := h.service.Experiment.GetRecentExperiments(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	c.JSON(
 		http.StatusOK,

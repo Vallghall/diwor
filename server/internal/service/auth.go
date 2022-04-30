@@ -86,7 +86,7 @@ func (as *AuthService) GenerateTokenPair(username, password string) (string, str
 			IssuedAt:  time.Now().Unix(),
 		},
 		UserId:  user.Id,
-		Marcant: rand.Float64() * 1000.0,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
 	})
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
@@ -95,7 +95,37 @@ func (as *AuthService) GenerateTokenPair(username, password string) (string, str
 			IssuedAt:  time.Now().Unix(),
 		},
 		UserId:  user.Id,
-		Marcant: rand.Float64() * 1000.0,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
+	})
+
+	ATString, err := accessToken.SignedString([]byte(signingKey))
+	if err != nil {
+		return "", "", err
+	}
+
+	RTString, err := refreshToken.SignedString([]byte(signingKey))
+
+	return ATString, RTString, nil
+}
+
+func (as *AuthService) RegenerateTokenPair(userId int) (string, string, error) {
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(AccessTokenTTL).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+		UserId:  userId,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
+	})
+
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(RefreshTokenTTL).Unix(),
+			IssuedAt:  time.Now().Unix(),
+		},
+		UserId:  userId,
+		Marcant: rand.Float64() * rand.Float64() * 1000.0,
 	})
 
 	ATString, err := accessToken.SignedString([]byte(signingKey))

@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const RefreshTokenCookieName = "d1sgu$t1пg-пav3"
+const RefreshTokenCookieName = "not-a-token"
 
 func (h *Handler) signUp(c *gin.Context) {
 	var input users.User
@@ -75,6 +75,42 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"token": accessToken,
+	})
+}
+
+func (h *Handler) refresh(c *gin.Context) {
+	refreshToken, err := c.Request.Cookie(RefreshTokenCookieName)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "no refresh token")
+		return
+	}
+
+	userId, err := h.service.ParseToken(refreshToken.Value)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	newAccessToken, newRefreshToken, err := h.service.Authorization.RegenerateTokenPair(userId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			newErrorResponse(c, http.StatusBadRequest, myerr.ErrInvalidLoginOrPassword.Error())
+			return
+		}
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     RefreshTokenCookieName,
+		Value:    newRefreshToken,
+		Expires:  time.Now().Add(12 * time.Hour),
+		Path:     "/",
+		HttpOnly: true,
+	})
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"token": newAccessToken,
 	})
 }
 

@@ -1,37 +1,36 @@
 import React, {useEffect, useState} from 'react'
 import classes from "./Profile.module.css"
 import { useNavigate } from "react-router-dom"
-import DigestTable from "../DigestTable/DigestTable";
+import DigestTable from "../DigestTable/DigestTable"
+import {tokenEffect} from "../../token"
 
-const Profile = ({token, logout}) => {
+const Profile = ({token, logout, renewToken}) => {
     const [credentials, setCredentials] = useState({name: "", username: ""})
     const [digests, setDigests] = useState({})
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if (!token) {
-            navigate("/c/auth/login")
-            return
+    const query = (t = token) => fetch("/api/profile/", {
+        method: "GET",
+        headers: {
+            Authorization: t
         }
-
-        fetch("/api/profile/", {
-            method: "GET",
-            headers: {
-                Authorization: token
-            }
+    })
+        .then(resp => {
+            if (resp.status > 200) throw new Error(`StatusError: ${resp.error}`)
+            return resp.json()
         })
-            .then(resp => resp.json())
-            .then(body => {
-                setCredentials(
-                    {
-                        username: body.username,
-                        name: body.name,
-                    })
-                setDigests(body.Digests)
+        .then(body => {
+            setCredentials(
+                {
+                    username: body.username,
+                    name: body.name,
+                })
+            setDigests(body.Digests)
 
-            })
-            .catch(e => console.log(e))
-    }, [])
+        })
+        .catch(e => console.log(`FetchError: ${e}`))
+
+    useEffect(() => tokenEffect(token, query, navigate, renewToken),[])
 
     return (
         <div className={classes.wrapper}>

@@ -37,7 +37,7 @@ func NewExperimentService(storage storage.Experiment) *ExperimentService {
 	return &ExperimentService{storage: storage}
 }
 
-func (es *ExperimentService) GetRecentExperiments(id int) []results.ExperimentDigest {
+func (es *ExperimentService) GetRecentExperiments(id int) ([]results.ExperimentDigest, error) {
 	return es.storage.GetRecentExperiments(id, 5)
 }
 

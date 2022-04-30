@@ -4,18 +4,16 @@ import "./Experiment.module.css"
 import Selection from "./Selection"
 import SweetAlert from "sweetalert"
 import {useNavigate} from "react-router-dom"
+import {tokenEffect} from "../../token";
 
 
 
-const Experiment = ({list, token}) => {
+const Experiment = ({list, token, renewToken}) => {
     const [algs, setAlgs] = useState([""])
     const [startDisability, setStartDisability] = useState(true)
     const [plotInfo, setPlotInfo] = useState({from: 0, to: 0, step: 0, num_measurements: 0})
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if (token === "") navigate("/c/auth/login")
-    }, [])
 
     useEffect(() => {
         for (const alg of algs) {
@@ -25,6 +23,9 @@ const Experiment = ({list, token}) => {
                 setStartDisability(false)
         }
     }, [algs])
+
+    useEffect(() => tokenEffect(token, async () => {}, navigate, renewToken), [])
+    useEffect(() => tokenEffect(token, async () => {}, navigate, renewToken), [startDisability])
 
     const addAlg = (alg, i) => {
         const arr =[...algs]
