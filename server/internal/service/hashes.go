@@ -1,5 +1,9 @@
 package service
 
+import (
+	hash2 "hash"
+)
+
 const (
 	Streebog256 = "Streebog-256"
 	Streebog512 = "Streebog-512"
@@ -13,3 +17,9 @@ const (
 	RIPEMD320   = "RIPEMD-320"
 	MD5         = "MD5"
 )
+
+func hash(h hash2.Hash, text []byte) (res []byte) {
+	h.Write(text)
+	res = h.Sum(nil)
+	return
+}

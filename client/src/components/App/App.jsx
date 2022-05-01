@@ -22,8 +22,9 @@ const App = () => {
 
     const cipherAlgorithms =
         [
-            "Кузнечик", "AES128-GCM", "AES128-CFB",
-            "DES-GCM", "DES-CFB", "RSA", "Blowfish-CFB",
+            "Кузнечик-ECB", "AES128-ECB", "DES-ECB", "Blowfish-ECB",
+            "Кузнечик-CFB", "AES128-GCM", "AES128-CFB",
+            "DES-CFB", "RSA", "Blowfish-CFB",
         ]
 
     const hashAlgorithms =

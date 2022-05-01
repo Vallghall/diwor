@@ -49,7 +49,7 @@
 
 .inputs {
   display: grid;
-  grid-template-columns: repeat(4, 200px);
+  grid-template-columns: repeat(3, auto);
 }
 .inputs input {
   border: solid 3px #c8c800;

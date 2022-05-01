@@ -1,0 +1,6 @@
+@charset "UTF-8";
+.duration::after {
+  content: " нс/Б";
+}
+
+/*# sourceMappingURL=ResultRow.module.css.map */

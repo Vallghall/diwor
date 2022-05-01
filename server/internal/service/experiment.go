@@ -5,24 +5,32 @@ import (
 	"crypto/cipher"
 	"crypto/des"
 	"crypto/md5"
-	"crypto/rand"
+	rand2 "crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
 	"crypto/sha512"
 	"errors"
 	"fmt"
+	"github.com/andreburgaud/crypt2go/ecb"
+	streebog512 "github.com/martinlindhe/gogost/gost34112012512"
 	"gitlab.com/Valghall/diwor/server/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/server/internal/results"
 	"gitlab.com/Valghall/diwor/server/internal/storage"
 	"golang.org/x/crypto/blowfish"
+	"golang.org/x/tools/benchmark/parse"
+	"math/rand"
+	"strconv"
+	"strings"
+	"testing"
 	"time"
 
-	streebog256 "github.com/bi-zone/ruwireguard-go/crypto/gost/gost34112012256"
-	streebog512 "github.com/bi-zone/ruwireguard-go/crypto/gost/gost34112012512"
 	"github.com/bi-zone/ruwireguard-go/crypto/gosthopper"
 	"github.com/maoxs2/go-ripemd"
+	streebog256 "github.com/martinlindhe/gogost/gost34112012256"
 	"github.com/sirupsen/logrus"
 )
+
+var letters = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 type ExperimentService struct {
 	storage storage.Experiment
@@ -54,48 +62,38 @@ func (es *ExperimentService) SaveResults(userId int, algType string, reses Resul
 
 func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfig.Config) results.HashExpResult {
 	var res results.HashExpResult
+	var bench func(b *testing.B)
+	var br testing.BenchmarkResult
+
 	x, y := make([]int, 0), make([]int, 0)
 
 	for l := conf.From; l <= conf.To; l += conf.Step {
-		dur := time.Duration(0)
 		textForHashing, _ := generateBytes(l)
 
 		switch alg {
 		case Streebog256:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := streebog256.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(streebog256.New(), textForHashing)
+				}
 			}
-
-			hash := streebog256.New()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
 
 			res = results.HashExpResult{
 				Algorithm: Streebog256,
 				Size:      streebog256.Size,
 				BlockSize: streebog256.BlockSize,
-				Sample:    sum,
+				Sample:    fmt.Sprintf("%x", hash(streebog256.New(), textForHashing)),
 			}
 		case Streebog512:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := streebog512.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(streebog512.New(), textForHashing)
+				}
 			}
+			br = testing.Benchmark(bench)
 
-			hash := streebog512.New()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			sum := fmt.Sprintf("%x", hash(streebog512.New(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: Streebog512,
@@ -104,19 +102,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case SHA224:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := sha256.New224()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha256.New224(), textForHashing)
+				}
 			}
-
-			hash := sha256.New224()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(sha256.New224(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: SHA224,
@@ -125,19 +117,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case SHA256:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := sha256.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha256.New(), textForHashing)
+				}
 			}
-
-			hash := sha256.New()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(sha256.New(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: SHA256,
@@ -146,19 +132,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case SHA384:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := sha512.New384()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha512.New384(), textForHashing)
+				}
 			}
-
-			hash := sha512.New384()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(sha512.New384(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: SHA384,
@@ -167,19 +147,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case SHA512:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := sha512.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha512.New(), textForHashing)
+				}
 			}
-
-			hash := sha512.New()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(sha512.New(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: SHA512,
@@ -188,19 +162,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case RIPEMD128:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := ripemd.New128()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(ripemd.New128(), textForHashing)
+				}
 			}
-
-			hash := ripemd.New128()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(ripemd.New128(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: RIPEMD128,
@@ -209,19 +177,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case RIPEMD160:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := ripemd.New160()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(ripemd.New160(), textForHashing)
+				}
 			}
-
-			hash := ripemd.New160()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(ripemd.New160(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: RIPEMD160,
@@ -230,19 +192,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case RIPEMD256:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := ripemd.New256()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(ripemd.New256(), textForHashing)
+				}
 			}
-
-			hash := ripemd.New256()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(ripemd.New256(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: RIPEMD256,
@@ -251,19 +207,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case RIPEMD320:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				hash := ripemd.New320()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(ripemd.New320(), textForHashing)
+				}
 			}
-
-			hash := ripemd.New320()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(ripemd.New320(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: RIPEMD320,
@@ -272,18 +222,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				Sample:    sum,
 			}
 		case MD5:
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-				hash := md5.New()
-				hash.Write(textForHashing)
-				hash.Sum(nil)
-
-				dur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(md5.New(), textForHashing)
+				}
 			}
-
-			hash := md5.New()
-			hash.Write(textForHashing)
-			sum := fmt.Sprintf("%x", hash.Sum(nil))
+			br = testing.Benchmark(bench)
+			sum := fmt.Sprintf("%x", hash(md5.New(), textForHashing))
 
 			res = results.HashExpResult{
 				Algorithm: MD5,
@@ -293,9 +238,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 			}
 		}
 
-		res.Duration = dur / time.Duration(conf.NumMeasurements)
+		b, err := parse.ParseLine("Benchmark" + br.String() + br.MemString())
+		if err != nil {
+			logrus.Error(err)
+		}
+		fmt.Println(b.String())
+		res.Duration = time.Duration(int(b.NsPerOp) / l)
 		x = append(x, l)
-		y = append(y, int(res.Duration.Microseconds()))
+		y = append(y, int(b.NsPerOp))
 	}
 
 	res.Plot.X = x
@@ -306,37 +256,41 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 
 func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotconfig.Config) results.CipherExpResult {
 	var res results.CipherExpResult
+	var bench func(b *testing.B)
+	var br struct {
+		ciphering   testing.BenchmarkResult
+		deciphering testing.BenchmarkResult
+	}
+
 	x, y := make([]int, 0), make([]int, 0)
 
 	for l := conf.From; l <= conf.To; l += conf.Step {
-		cipherDur := time.Duration(0)
-		decipherDur := time.Duration(0)
+		textForCiphering, _ := generateBytes(l)
 
 		switch alg {
 		case Grasshopper:
 			key, _ := generateBytes(32)
-			var dst, nonce []byte
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			kCipher, _ := gosthopper.NewCipher(key)
+			kGCM, _ := cipher.NewGCM(kCipher)
+			nonce, _ := generateBytes(kGCM.NonceSize())
+			ciphered := GCMSeal(kGCM, nonce, textForCiphering)
 
-				kCipher, _ := gosthopper.NewCipher(key)
-				kGCM, _ := cipher.NewGCM(kCipher)
-				nonce, _ = generateBytes(kGCM.NonceSize())
-				kGCM.Seal(dst, nonce, textForCiphering, nil)
-
-				cipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					GCMSeal(kGCM, nonce, textForCiphering)
+				}
 			}
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			br.ciphering = testing.Benchmark(bench)
 
-				kCipher, _ := gosthopper.NewCipher(key)
-				kGCM, _ := cipher.NewGCM(kCipher)
-				kGCM.Open(dst[:0], nonce, dst, nil)
-
-				decipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					GCMOpen(kGCM, nonce, ciphered)
+				}
 			}
+
+			br.deciphering = testing.Benchmark(bench)
 
 			res = results.CipherExpResult{
 				Algorithm: "Кузнечик",
@@ -345,89 +299,54 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 			}
 		case AES128_GCM:
 			key, _ := generateBytes(aes.BlockSize)
-			var dst, nonce []byte
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			aesCipher, _ := aes.NewCipher(key)
+			aesGCM, _ := cipher.NewGCM(aesCipher)
+			nonce, _ := generateBytes(aesGCM.NonceSize())
+			ciphered := GCMSeal(aesGCM, nonce, textForCiphering)
 
-				aesCipher, _ := aes.NewCipher(key)
-				aesGCM, _ := cipher.NewGCM(aesCipher)
-				nonce, _ = generateBytes(aesGCM.NonceSize())
-				aesGCM.Seal(dst, nonce, textForCiphering, nil)
-
-				cipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					GCMSeal(aesGCM, nonce, textForCiphering)
+				}
 			}
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			br.ciphering = testing.Benchmark(bench)
 
-				aesCipher, _ := aes.NewCipher(key)
-				aesGCM, _ := cipher.NewGCM(aesCipher)
-				aesGCM.Open(dst[:0], nonce, dst, nil)
-
-				decipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					GCMOpen(aesGCM, nonce, ciphered)
+				}
 			}
+
+			br.deciphering = testing.Benchmark(bench)
 
 			res = results.CipherExpResult{
 				Algorithm: alg,
 				Type:      "Алгоритм шифрования симметричный",
 				KeyLength: aes.BlockSize,
 			}
-		case DES_GCM:
-			key, _ := generateBytes(des.BlockSize)
-			var dst, nonce []byte
-
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				desCipher, _ := des.NewCipher(key)
-				desGCM, _ := cipher.NewGCM(desCipher)
-				nonce, _ = generateBytes(desGCM.NonceSize())
-				desGCM.Seal(dst, nonce, textForCiphering, nil)
-
-				cipherDur += time.Since(start)
-			}
-
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				desCipher, _ := des.NewCipher(key)
-				desGCM, _ := cipher.NewGCM(desCipher)
-				desGCM.Open(dst[:0], nonce, dst, nil)
-
-				decipherDur += time.Since(start)
-			}
-
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: des.BlockSize,
-			}
 		case DES_CFB:
 			key, _ := generateBytes(des.BlockSize)
-			var dst, iv []byte
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			desCipher, _ := des.NewCipher(key)
+			ciphered := CFBSeal(desCipher, des.BlockSize, textForCiphering)
 
-				desCipher, _ := des.NewCipher(key)
-				iv, _ = generateBytes(des.BlockSize)
-
-				desEncrypter := cipher.NewCFBEncrypter(desCipher, iv)
-				desEncrypter.XORKeyStream(dst, textForCiphering)
-
-				cipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					CFBSeal(desCipher, des.BlockSize, textForCiphering)
+				}
 			}
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			br.ciphering = testing.Benchmark(bench)
 
-				desCipher, _ := des.NewCipher(key)
-				desDecrypter := cipher.NewCFBDecrypter(desCipher, iv)
-				desDecrypter.XORKeyStream(dst[:0], dst)
-
-				decipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					CFBOpen(desCipher, des.BlockSize, ciphered)
+				}
 			}
+
+			br.deciphering = testing.Benchmark(bench)
 
 			res = results.CipherExpResult{
 				Algorithm: alg,
@@ -436,29 +355,25 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 			}
 		case AES128_CFB:
 			key, _ := generateBytes(aes.BlockSize)
-			var dst, iv []byte
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			aesCipher, _ := aes.NewCipher(key)
+			ciphered := CFBSeal(aesCipher, aes.BlockSize, textForCiphering)
 
-				aesCipher, _ := aes.NewCipher(key)
-				iv, _ = generateBytes(aes.BlockSize)
-
-				aesEncrypter := cipher.NewCFBEncrypter(aesCipher, iv)
-				aesEncrypter.XORKeyStream(dst, textForCiphering)
-
-				cipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					CFBSeal(aesCipher, aes.BlockSize, textForCiphering)
+				}
 			}
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			br.ciphering = testing.Benchmark(bench)
 
-				aesCipher, _ := aes.NewCipher(key)
-				aesDecrypter := cipher.NewCFBDecrypter(aesCipher, iv)
-				aesDecrypter.XORKeyStream(dst[:0], dst)
-
-				decipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					CFBOpen(aesCipher, aes.BlockSize, ciphered)
+				}
 			}
+
+			br.deciphering = testing.Benchmark(bench)
 
 			res = results.CipherExpResult{
 				Algorithm: alg,
@@ -466,71 +381,189 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				KeyLength: aes.BlockSize,
 			}
 		case RSA:
-			keyPair, _ := rsa.GenerateKey(rand.Reader, 2048)
+			keyPair, _ := rsa.GenerateKey(rand2.Reader, 2048)
+			label := []byte("OAEP Encrypted")
+			dst, _ := rsa.EncryptOAEP(sha256.New(), rand2.Reader, &keyPair.PublicKey, textForCiphering, label)
 
-			var dst, label []byte
-
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
-
-				label = []byte("OAEP Encrypted")
-				rng := rand.Reader
-				dst, _ = rsa.EncryptOAEP(sha256.New(), rng, &keyPair.PublicKey, textForCiphering, label)
-
-				cipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					rsa.EncryptOAEP(sha256.New(), rand2.Reader, &keyPair.PublicKey, textForCiphering, label)
+				}
 			}
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			br.ciphering = testing.Benchmark(bench)
 
-				rng := rand.Reader
-				dst, _ = rsa.DecryptOAEP(sha256.New(), rng, keyPair, dst, label)
-
-				decipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					rsa.DecryptOAEP(sha256.New(), rand2.Reader, keyPair, dst, label)
+				}
 			}
+
+			br.deciphering = testing.Benchmark(bench)
 
 			res = results.CipherExpResult{
 				Algorithm: alg,
 				Type:      "Алгоритм шифрования асимметричный",
-				KeyLength: 256,
+				KeyLength: keyPair.Size(),
 			}
 		case BF_CFB:
 			key, _ := generateBytes(blowfish.BlockSize)
-			var dst, iv []byte
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			bfCipher, _ := blowfish.NewCipher(key)
+			ciphered := CFBSeal(bfCipher, blowfish.BlockSize, textForCiphering)
 
-				bfCipher, _ := blowfish.NewCipher(key)
-				iv, _ = generateBytes(blowfish.BlockSize)
-
-				bfEncrypter := cipher.NewCFBEncrypter(bfCipher, iv)
-				bfEncrypter.XORKeyStream(dst, textForCiphering)
-
-				cipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					CFBSeal(bfCipher, blowfish.BlockSize, textForCiphering)
+				}
 			}
 
-			for i := 0; i < conf.NumMeasurements; i++ {
-				start := time.Now()
+			br.ciphering = testing.Benchmark(bench)
 
-				bfCipher, _ := blowfish.NewCipher(key)
-				bfDecrypter := cipher.NewCFBDecrypter(bfCipher, iv)
-				bfDecrypter.XORKeyStream(dst[:0], dst)
-
-				decipherDur += time.Since(start)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					CFBOpen(bfCipher, blowfish.BlockSize, ciphered)
+				}
 			}
+
+			br.deciphering = testing.Benchmark(bench)
 
 			res = results.CipherExpResult{
 				Algorithm: alg,
 				Type:      "Алгоритм шифрования симметричный",
 				KeyLength: blowfish.BlockSize,
 			}
+		case DES_ECB:
+			key, _ := generateBytes(des.BlockSize)
+
+			block, _ := des.NewCipher(key)
+			mode := ecb.NewECBEncrypter(block)
+			decMode := ecb.NewECBDecrypter(block)
+			ciphered := ECBSeal(mode, textForCiphering)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBSeal(mode, textForCiphering)
+				}
+			}
+
+			br.ciphering = testing.Benchmark(bench)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBOpen(decMode, ciphered)
+				}
+			}
+
+			br.deciphering = testing.Benchmark(bench)
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: des.BlockSize,
+			}
+		case AES128_ECB:
+			key, _ := generateBytes(aes.BlockSize)
+
+			block, _ := aes.NewCipher(key)
+			mode := ecb.NewECBEncrypter(block)
+			decMode := ecb.NewECBDecrypter(block)
+			ciphered := ECBSeal(mode, textForCiphering)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBSeal(mode, textForCiphering)
+				}
+			}
+
+			br.ciphering = testing.Benchmark(bench)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBOpen(decMode, ciphered)
+				}
+			}
+
+			br.deciphering = testing.Benchmark(bench)
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: aes.BlockSize,
+			}
+		case BF_ECB:
+			key, _ := generateBytes(blowfish.BlockSize)
+
+			block, _ := blowfish.NewCipher(key)
+			mode := ecb.NewECBEncrypter(block)
+			decMode := ecb.NewECBDecrypter(block)
+			ciphered := ECBSeal(mode, textForCiphering)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBSeal(mode, textForCiphering)
+				}
+			}
+
+			br.ciphering = testing.Benchmark(bench)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBOpen(decMode, ciphered)
+				}
+			}
+
+			br.deciphering = testing.Benchmark(bench)
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: blowfish.BlockSize,
+			}
+		case Grasshopper_ECB:
+			key, _ := generateBytes(gosthopper.BlockSize * 2)
+
+			block, _ := gosthopper.NewCipher(key)
+			mode := ecb.NewECBEncrypter(block)
+			decMode := ecb.NewECBDecrypter(block)
+			ciphered := ECBSeal(mode, textForCiphering)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBSeal(mode, textForCiphering)
+				}
+			}
+
+			br.ciphering = testing.Benchmark(bench)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					ECBOpen(decMode, ciphered)
+				}
+			}
+
+			br.deciphering = testing.Benchmark(bench)
+
+			res = results.CipherExpResult{
+				Algorithm: alg,
+				Type:      "Алгоритм шифрования симметричный",
+				KeyLength: gosthopper.BlockSize,
+			}
 		}
 
-		res.CipheringDuration = cipherDur / time.Duration(conf.NumMeasurements)
-		res.DecipheringDuration = decipherDur / time.Duration(conf.NumMeasurements)
+		b1, err := strconv.ParseFloat(strings.Fields(br.ciphering.String())[1], 64)
+		if err != nil {
+			logrus.Print("cipher bench parse error:", err)
+		}
+
+		b2, err := strconv.ParseFloat(strings.Fields(br.deciphering.String())[1], 64)
+		if err != nil {
+			logrus.Print("cipher bench parse error:", err)
+		}
+		res.CipheringDuration = time.Duration(int(b1) / l)
+		res.DecipheringDuration = time.Duration(int(b2) / l)
 		x = append(x, l)
-		y = append(y, int(res.CipheringDuration.Microseconds()))
+		y = append(y, int(b1))
 	}
 
 	res.Plot.X = x
@@ -560,4 +593,15 @@ func (es *ExperimentService) GetUserExperimentResultBySortedId(alg string, userI
 	default:
 		return nil, errors.New("error wile fetching user user's results by sortedId")
 	}
+}
+
+func generateBytes(n int) ([]byte, time.Duration) {
+	start := time.Now()
+
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+
+	return b, time.Since(start)
 }

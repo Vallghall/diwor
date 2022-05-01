@@ -1,0 +1,14 @@
+.sysinfo {
+  border: solid 3px #c8c800;
+  border-radius: 12px;
+  position: fixed;
+  color: black;
+  font-size: 14pt;
+  width: auto;
+  height: auto;
+  padding: 3px;
+  top: 20%;
+  left: 10%;
+}
+
+/*# sourceMappingURL=SysInfo.module.css.map */

@@ -6,6 +6,7 @@ import (
 	"gitlab.com/Valghall/diwor/server/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/server/internal/results"
 	"net/http"
+	"runtime"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -55,6 +56,9 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 	algResults.StartedAt = begin
 	algResults.FinishedAt = end
 
+	algResults.OS = runtime.GOOS
+	algResults.Arch = runtime.GOARCH
+
 	h.service.Experiment.SaveResults(userId, HashAlgorithm, algResults)
 
 	c.JSON(http.StatusOK, algResults)
@@ -81,6 +85,9 @@ func (h *Handler) researchCipherAlgorithm(c *gin.Context) {
 
 	algResults.StartedAt = begin
 	algResults.FinishedAt = end
+
+	algResults.OS = runtime.GOOS
+	algResults.Arch = runtime.GOARCH
 
 	h.service.Experiment.SaveResults(userId, CipherAlgorithm, algResults)
 
