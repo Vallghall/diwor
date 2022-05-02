@@ -19,6 +19,7 @@ body #root {
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   height: 100%;
 }
 

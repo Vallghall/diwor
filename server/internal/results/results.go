@@ -26,6 +26,8 @@ type HashAlgorithmsResults struct {
 	Results    []HashExpResult `json:"results"`
 	StartedAt  time.Time       `json:"started_at"`
 	FinishedAt time.Time       `json:"finished_at"`
+	OS         string          `json:"os"`
+	Arch       string          `json:"arch"`
 }
 
 type Plot struct {
@@ -59,6 +61,8 @@ type CipherAlgorithmsResults struct {
 	Results    []CipherExpResult `json:"results"`
 	StartedAt  time.Time         `json:"started_at"`
 	FinishedAt time.Time         `json:"finished_at"`
+	OS         string            `json:"os"`
+	Arch       string            `json:"arch"`
 }
 
 func (c CipherAlgorithmsResults) Value() (driver.Value, error) {

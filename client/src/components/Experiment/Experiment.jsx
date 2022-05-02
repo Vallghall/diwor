@@ -11,7 +11,7 @@ import {tokenEffect} from "../../token";
 const Experiment = ({list, token, renewToken}) => {
     const [algs, setAlgs] = useState([""])
     const [startDisability, setStartDisability] = useState(true)
-    const [plotInfo, setPlotInfo] = useState({from: 0, to: 0, step: 0, num_measurements: 0})
+    const [plotInfo, setPlotInfo] = useState({from: 0, to: 0, step: 0})
     const navigate = useNavigate()
 
 
@@ -66,6 +66,12 @@ const Experiment = ({list, token, renewToken}) => {
             algorithms: algs,
         })
 
+        SweetAlert(
+            "Запуск расчетов",
+            "Вы сможете ознакомиться с результатами эксперимента через Ваш профиль, когда они будут готовы",
+            "success"
+        ).catch()
+
         fetch((window.location.pathname === "/c/experiment/hashes")
             ? "/api/experiment/start-hash-experiment"
             : "/api/experiment/start-cipher-experiment",
@@ -75,13 +81,6 @@ const Experiment = ({list, token, renewToken}) => {
                     Authorization: token,
                 },
                 body: query,
-            })
-            .then(_ => {
-                SweetAlert(
-                    "Запуск расчетов",
-                    "Вы сможете ознакомиться с результатами эксперимента через Ваш профиль, когда они будут готовы",
-                    "success"
-                    ).catch()
             })
             .catch()
     }
@@ -100,9 +99,6 @@ const Experiment = ({list, token, renewToken}) => {
                 }}/>
                 <input type="text" name="step" placeholder="Шаг" onChange={(e) => {
                     setPlotInfo({...plotInfo, step: +e.target.value})
-                }}/>
-                <input type="text" name="num" placeholder="Число замеров" onChange={(e) => {
-                    setPlotInfo({...plotInfo, num_measurements: +e.target.value})
                 }}/>
             </div>
 
