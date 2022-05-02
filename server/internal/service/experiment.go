@@ -12,7 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/andreburgaud/crypt2go/ecb"
-	streebog512 "github.com/martinlindhe/gogost/gost34112012512"
+	streebog512 "github.com/pedroalbanese/gogost/gost34112012512"
 	"gitlab.com/Valghall/diwor/server/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/server/internal/results"
 	"gitlab.com/Valghall/diwor/server/internal/storage"
@@ -26,7 +26,7 @@ import (
 
 	"github.com/bi-zone/ruwireguard-go/crypto/gosthopper"
 	"github.com/maoxs2/go-ripemd"
-	streebog256 "github.com/martinlindhe/gogost/gost34112012256"
+	streebog256 "github.com/pedroalbanese/gogost/gost34112012256"
 	"github.com/sirupsen/logrus"
 )
 
