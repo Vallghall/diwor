@@ -12,8 +12,6 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/lib/pq v1.10.4
 	github.com/maoxs2/go-ripemd v0.0.0-20200326052756-bd1759ad7d10
-	github.com/martinlindhe/gogost v0.0.0-20170914195721-31862914ae20
-	github.com/pedroalbanese/gogost v0.0.0-20220417104440-4d34dbc5957c
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.9.0
 	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd
@@ -48,3 +46,7 @@ require (
 	gopkg.in/ini.v1 v1.63.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+require go.cypherpunks.ru/gogost/v5 v5.9.0
+
+replace go.cypherpunks.ru/gogost/v5 => ./weird-downloadable-dependency/gogost-5.9.0

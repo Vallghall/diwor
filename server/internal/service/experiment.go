@@ -12,10 +12,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/andreburgaud/crypt2go/ecb"
-	streebog512 "github.com/pedroalbanese/gogost/gost34112012512"
 	"gitlab.com/Valghall/diwor/server/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/server/internal/results"
 	"gitlab.com/Valghall/diwor/server/internal/storage"
+	streebog512 "go.cypherpunks.ru/gogost/v5/gost34112012512"
 	"golang.org/x/crypto/blowfish"
 	"golang.org/x/tools/benchmark/parse"
 	"math/rand"
@@ -26,8 +26,8 @@ import (
 
 	"github.com/bi-zone/ruwireguard-go/crypto/gosthopper"
 	"github.com/maoxs2/go-ripemd"
-	streebog256 "github.com/pedroalbanese/gogost/gost34112012256"
 	"github.com/sirupsen/logrus"
+	streebog256 "go.cypherpunks.ru/gogost/v5/gost34112012256"
 )
 
 var letters = []byte("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

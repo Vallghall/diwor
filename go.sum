@@ -227,8 +227,6 @@ github.com/magiconair/properties v1.8.5 h1:b6kJs+EmPFMYGkow9GiUyCyOvIwYetYJ3fSaW
 github.com/magiconair/properties v1.8.5/go.mod h1:y3VJvCyxH9uVvJTWEGAELF3aiYNyPKd5NZ3oSwXrF60=
 github.com/maoxs2/go-ripemd v0.0.0-20200326052756-bd1759ad7d10 h1:NnHXwmmj75BfHY6QjueamfFOWyoiHRNG65zt2bBx7F0=
 github.com/maoxs2/go-ripemd v0.0.0-20200326052756-bd1759ad7d10/go.mod h1:RPN95RsGHNuR+OUN9pD6OKS7yE3Q966yIMSXYZsgnbI=
-github.com/martinlindhe/gogost v0.0.0-20170914195721-31862914ae20 h1:NgvNvoe91W36nQwPNvM8KSyvN7Tgfrp1gGhNqp6iuK8=
-github.com/martinlindhe/gogost v0.0.0-20170914195721-31862914ae20/go.mod h1:QWtANgYYeIaHYj7lc8bygiTdXt3t3bQHH6ObdVMIC2s=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
 github.com/mattn/go-colorable v0.1.4/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVcfRqFIhoBtE=
 github.com/mattn/go-colorable v0.1.6/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
@@ -256,8 +254,6 @@ github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lN
 github.com/modern-go/reflect2 v1.0.1 h1:9f412s+6RmYXLWZSEzVVgPGK7C2PphHj5RJrvfx9AWI=
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
-github.com/pedroalbanese/gogost v0.0.0-20220417104440-4d34dbc5957c h1:ZTaxii+Lx3DYndAJyT+j/33lFbcGi5KegVJ8fksd8QA=
-github.com/pedroalbanese/gogost v0.0.0-20220417104440-4d34dbc5957c/go.mod h1:OE57eDVJnUjrOz821fgDD0maXt4RmTXjoXTaTv7f3wM=
 github.com/pelletier/go-toml v1.9.4 h1:tjENF6MfZAg8e4ZmZTeWaWiT2vXtsoO6+iuOjFhECwM=
 github.com/pelletier/go-toml v1.9.4/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
