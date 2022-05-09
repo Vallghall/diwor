@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .duration::after {
-  content: " нс/Б";
+  content: " нс/МБ";
 }
 
 /*# sourceMappingURL=ResultRow.module.css.map */

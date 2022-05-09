@@ -16,6 +16,7 @@ export const tokenEffect = (token, query, navigate, renewToken) => {
             })
             .then(body => {
                 renewToken(body.token)
+                localStorage.setItem("toketoken", body.token)
                 return `Bearer ${body.token}`
             })
             .catch(_ => {

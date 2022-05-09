@@ -3,8 +3,8 @@ import Plotly from "react-plotly.js"
 import classes from "./Plot.module.css"
 
 
-const Plot = ({congigs}) => {
-    const data = Object.entries(congigs).map(([alg, points]) =>
+const Plot = ({configs}) => {
+    const data = Object.entries(configs).map(([alg, points]) =>
     ({
         x: points.x,
         y: points.y,
@@ -20,7 +20,7 @@ const Plot = ({congigs}) => {
             zeroline: true
         },
         yaxis: {
-            title: 'Продолжительность, мкс',
+            title: 'Продолжительность, нс',
             showline: true,
             zeroline: true
         }

@@ -11,7 +11,7 @@ import {tokenEffect} from "../../token";
 const Experiment = ({list, token, renewToken}) => {
     const [algs, setAlgs] = useState([""])
     const [startDisability, setStartDisability] = useState(true)
-    const [plotInfo, setPlotInfo] = useState({from: 0, to: 0, step: 0})
+    const [plotInfo, setPlotInfo] = useState({from: 256, to: 512, step: 32})
     const navigate = useNavigate()
 
 
@@ -56,15 +56,19 @@ const Experiment = ({list, token, renewToken}) => {
         e.preventDefault()
 
         for (const pi of Object.values(plotInfo))
-            if (!Number(pi)) {
+            if (!Number(pi) && pi !== 0) {
                 SweetAlert("Некорректные значения", "Введеные параметры графика являются некорректными!", "warning").catch()
                 return
             }
 
         const query = JSON.stringify({
-            ...plotInfo,
-            algorithms: algs,
+            from: plotInfo.from * 1024,
+            to: plotInfo.to * 1024,
+            step: plotInfo.step * 1024,
+            algorithms: Array.from(new Set(algs)),
         })
+
+        console.log(query)
 
         SweetAlert(
             "Запуск расчетов",
@@ -89,15 +93,16 @@ const Experiment = ({list, token, renewToken}) => {
         <form className={classes.form} onSubmit={handleSubmit}>
             <h1>Выберите алгоритмы для сравнения</h1>
 
-            <strong>Установка пределов для графика</strong>
+            <strong>Установка пределов для графика (в килобайтах)</strong>
             <div className={classes.inputs}>
-                <input type="text" name="from" placeholder="От" onChange={(e) => {
+                <span>От</span><span>До</span><span>Шаг</span>
+                <input type="text" name="from" defaultValue={plotInfo.from} onChange={(e) => {
                     setPlotInfo({...plotInfo, from: +e.target.value})
                 }}/>
-                <input type="text" name="to" placeholder="До" onChange={(e) => {
+                <input type="text" name="to" defaultValue={plotInfo.to} onChange={(e) => {
                     setPlotInfo({...plotInfo, to: +e.target.value})
                 }}/>
-                <input type="text" name="step" placeholder="Шаг" onChange={(e) => {
+                <input type="text" name="step" defaultValue={plotInfo.step} onChange={(e) => {
                     setPlotInfo({...plotInfo, step: +e.target.value})
                 }}/>
             </div>
