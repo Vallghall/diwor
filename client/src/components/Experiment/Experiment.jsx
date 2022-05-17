@@ -11,7 +11,7 @@ import {tokenEffect} from "../../token";
 const Experiment = ({list, token, renewToken}) => {
     const [algs, setAlgs] = useState([""])
     const [startDisability, setStartDisability] = useState(true)
-    const [plotInfo, setPlotInfo] = useState({from: 256, to: 512, step: 32})
+    const [plotInfo, setPlotInfo] = useState({from: 0, to: 128, step: 16})
     const navigate = useNavigate()
 
 
@@ -67,8 +67,6 @@ const Experiment = ({list, token, renewToken}) => {
             step: plotInfo.step * 1024,
             algorithms: Array.from(new Set(algs)),
         })
-
-        console.log(query)
 
         SweetAlert(
             "Запуск расчетов",

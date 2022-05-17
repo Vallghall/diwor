@@ -2,16 +2,14 @@ import React, {useEffect, useState} from 'react'
 import classes from "./Results.module.css"
 import Plot from "../Plot/Plot"
 import { useNavigate } from "react-router-dom"
-import ResultRow from "../ResultRow/ResultRow";
-import {tokenEffect} from "../../token";
-import SysInfo from "../SysInfo/SysInfo";
-import Hyst from "../Hyst/Hyst";
+import ResultRow from "../ResultRow/ResultRow"
+import {tokenEffect} from "../../token"
+import SysInfo from "../SysInfo/SysInfo"
 
 const CipherResults = ({token, params, renewToken}) => {
     const [results, setResults] = useState({})
     const [sysInfo, setSysInfo] = useState({os:"",arch:""})
     const [plotConfigs, setPlotConfigs] = useState({})
-    const [histConfigs, setHistConfigs] = useState({})
     const navigate = useNavigate()
 
     const query = (t = token) => fetch(`/api/profile/fetch-result?sorted-id=${params.id}&alg-type=${params.alg}`,
@@ -37,13 +35,6 @@ const CipherResults = ({token, params, renewToken}) => {
                     }
                 )
             ))
-            Object.values(Results.results).forEach(res => setHistConfigs(p => (
-                    {
-                        ...p,
-                        [res.algorithm]: res.hyst
-                    }
-                )
-            ))
 
         })
         .catch(e => console.log(e))
@@ -58,7 +49,6 @@ const CipherResults = ({token, params, renewToken}) => {
             <div className={classes.wrapper}>
 
                 <Plot configs={plotConfigs}/>
-                <Hyst configs={histConfigs}/>
                 {Object.values(results).map(res => (
                     <div className={classes.result_wrapper}>
                         <table>

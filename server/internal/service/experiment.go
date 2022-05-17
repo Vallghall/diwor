@@ -242,8 +242,9 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 
 		b, _ = parse.ParseLine("Benchmark" + br.String() + br.MemString())
 
-		fmt.Println(b.String())
-		res.Duration = time.Duration((int(b.NsPerOp) / l) * 1024 * 1024)
+		if l == conf.To {
+			res.Duration = time.Duration((int(b.NsPerOp) / l) * 1024 * 1024)
+		}
 
 		x = append(x, l)
 		y = append(y, int(b.NsPerOp))
@@ -563,8 +564,11 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 		b = strings.Fields(br.ciphering.String() + br.ciphering.MemString())
 
-		res.CipheringDuration = time.Duration((int(b1) / l) * 1024 * 1024)
-		res.DecipheringDuration = time.Duration((int(b2) / l) * 1024 * 1024)
+		if l == conf.To {
+			res.CipheringDuration = time.Duration((int(b1) / l) * 1024 * 1024)
+			res.DecipheringDuration = time.Duration((int(b2) / l) * 1024 * 1024)
+		}
+
 		x = append(x, l)
 		y = append(y, int(b1))
 	}

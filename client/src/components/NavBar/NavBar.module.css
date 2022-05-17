@@ -1,5 +1,5 @@
 .footer {
-  background: #57a4e3;
+  background: #2A0257FF;
 }
 
 .logo {
@@ -9,10 +9,11 @@
   padding: 10px 10px;
   vertical-align: middle;
   margin-right: 7vw;
+  margin-bottom: 10px;
 }
 
 .navigation {
-  width: 100%;
+  width: 1868px;
   display: inline-block;
   vertical-align: middle;
   margin: 0;
@@ -40,7 +41,7 @@
 }
 .navigation__item a:hover {
   background: rgba(255, 255, 255, 0.9);
-  color: #57a4e3;
+  color: #2A0257FF;
   border-radius: 12px;
 }
 
