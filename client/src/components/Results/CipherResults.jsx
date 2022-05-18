@@ -8,7 +8,7 @@ import SysInfo from "../SysInfo/SysInfo"
 
 const CipherResults = ({token, params, renewToken}) => {
     const [results, setResults] = useState({})
-    const [sysInfo, setSysInfo] = useState({os:"",arch:""})
+    const [sysInfo, setSysInfo] = useState({os:"",arch:"",proc:""})
     const [plotConfigs, setPlotConfigs] = useState({})
     const navigate = useNavigate()
 
@@ -25,6 +25,7 @@ const CipherResults = ({token, params, renewToken}) => {
             setSysInfo({
                 os: Results.os,
                 arch: Results.arch,
+                proc: Results.processor
             })
             setResults(Results.results)
 
@@ -43,8 +44,8 @@ const CipherResults = ({token, params, renewToken}) => {
 
     return (
         <>
-            {(sysInfo.os !== "" && sysInfo.arch !== ""
-                ? <SysInfo os={sysInfo.os} arch={sysInfo.arch}/>
+            {(sysInfo.os !== "" && sysInfo.arch !== "" && sysInfo.proc !== ""
+                ? <SysInfo os={sysInfo.os} arch={sysInfo.arch} proc={sysInfo.proc}/>
                 : "")}
             <div className={classes.wrapper}>
 

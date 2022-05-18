@@ -29,6 +29,7 @@ type HashAlgorithmsResults struct {
 	FinishedAt time.Time       `json:"finished_at"`
 	OS         string          `json:"os"`
 	Arch       string          `json:"arch"`
+	Processor  string          `json:"processor"`
 }
 
 type Plot struct {
