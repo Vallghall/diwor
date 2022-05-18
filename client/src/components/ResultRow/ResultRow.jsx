@@ -5,7 +5,7 @@ const ResultRow = ({fst, snd}) => {
     return (
         <tr>
             <td>{fst}</td>
-            <td className={(fst?.startsWith("Продолжительность") ? classes.duration : "")}>{snd}</td>
+            <td className={(fst?.startsWith("Скорость") ? classes.duration : "")}>{snd}</td>
         </tr>
     )
 }

@@ -18,6 +18,7 @@ import (
 	"gitlab.com/Valghall/diwor/server/internal/storage"
 	"golang.org/x/crypto/blowfish"
 	"golang.org/x/tools/benchmark/parse"
+	"math"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -243,7 +244,8 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 		b, _ = parse.ParseLine("Benchmark" + br.String() + br.MemString())
 
 		if l == conf.To {
-			res.Duration = time.Duration((int(b.NsPerOp) / l) * 1024 * 1024)
+			d := (float64(l) * 1_000_000_000) / (b.NsPerOp * 1024 * 1024)
+			res.Duration = math.Round(d*100) / 100
 		}
 
 		x = append(x, l)
@@ -565,8 +567,11 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 		b = strings.Fields(br.ciphering.String() + br.ciphering.MemString())
 
 		if l == conf.To {
-			res.CipheringDuration = time.Duration((int(b1) / l) * 1024 * 1024)
-			res.DecipheringDuration = time.Duration((int(b2) / l) * 1024 * 1024)
+			cd := (float64(l) * 1_000_000_000) / (b1 * 1024 * 1024)
+			dd := (float64(l) * 1_000_000_000) / (b2 * 1024 * 1024)
+
+			res.CipheringDuration = math.Round(cd*100) / 100
+			res.DecipheringDuration = math.Round(dd*100) / 100
 		}
 
 		x = append(x, l)

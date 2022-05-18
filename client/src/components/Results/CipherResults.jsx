@@ -58,8 +58,8 @@ const CipherResults = ({token, params, renewToken}) => {
                             </tr>
                             <ResultRow fst={"Алгоритм"} snd={res.algorithm}/>
                             <ResultRow fst={"Тип"} snd={res.type}/>
-                            <ResultRow fst={"Продолжительность шифрования"} snd={res.ciphering_duration}/>
-                            <ResultRow fst={"Продолжительность дешифрования"} snd={res.deciphering_duration}/>
+                            <ResultRow fst={"Скорость шифрования"} snd={res.ciphering_duration}/>
+                            <ResultRow fst={"Скорость дешифрования"} snd={res.deciphering_duration}/>
                             <ResultRow fst={"Длина ключа"} snd={res.key_length}/>
                         </table>
                     </div>

@@ -14,13 +14,13 @@ type ExperimentDigest struct {
 }
 
 type HashExpResult struct {
-	Algorithm string        `json:"algorithm"`
-	Duration  time.Duration `json:"duration"`
-	Size      int           `json:"size"`
-	BlockSize int           `json:"blockSize"`
-	Sample    string        `json:"sample"`
-	Plot      Plot          `json:"plot"`
-	Hyst      HystInfo      `json:"hyst"`
+	Algorithm string   `json:"algorithm"`
+	Duration  float64  `json:"duration"`
+	Size      int      `json:"size"`
+	BlockSize int      `json:"blockSize"`
+	Sample    string   `json:"sample"`
+	Plot      Plot     `json:"plot"`
+	Hyst      HystInfo `json:"hyst"`
 }
 
 type HashAlgorithmsResults struct {
@@ -56,13 +56,13 @@ func (h *HashAlgorithmsResults) Scan(value interface{}) error {
 }
 
 type CipherExpResult struct {
-	Algorithm           string        `json:"algorithm"`
-	Type                string        `json:"type"`
-	CipheringDuration   time.Duration `json:"ciphering_duration"`
-	DecipheringDuration time.Duration `json:"deciphering_duration"`
-	KeyLength           int           `json:"key_length"`
-	Plot                Plot          `json:"plot"`
-	Hyst                HystInfo      `json:"hyst"`
+	Algorithm           string   `json:"algorithm"`
+	Type                string   `json:"type"`
+	CipheringDuration   float64  `json:"ciphering_duration"`
+	DecipheringDuration float64  `json:"deciphering_duration"`
+	KeyLength           int      `json:"key_length"`
+	Plot                Plot     `json:"plot"`
+	Hyst                HystInfo `json:"hyst"`
 }
 
 type CipherAlgorithmsResults struct {

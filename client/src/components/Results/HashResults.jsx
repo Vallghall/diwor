@@ -57,7 +57,7 @@ const HashResults = ({token, params, renewToken}) => {
                                 <th>{"Результаты"}</th>
                             </tr>
                             <ResultRow fst={"Алгоритм"} snd={res.algorithm}/>
-                            <ResultRow fst={"Продолжительность"} snd={res.duration}/>
+                            <ResultRow fst={"Скорость"} snd={res.duration}/>
                             <ResultRow fst={"Длина дайждеста"} snd={res.size}/>
                             <ResultRow fst={"Размер блока"} snd={res.blockSize}/>
                             <ResultRow fst={"Пример хэша"} snd={res.sample}/>
