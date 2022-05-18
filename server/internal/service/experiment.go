@@ -16,6 +16,7 @@ import (
 	"gitlab.com/Valghall/diwor/server/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/server/internal/results"
 	"gitlab.com/Valghall/diwor/server/internal/storage"
+	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/blowfish"
 	"golang.org/x/tools/benchmark/parse"
 	"math"
@@ -40,6 +41,7 @@ type ExperimentService struct {
 const (
 	HashAlgorithm   = "Алгоритм хэширования"
 	CipherAlgorithm = "Алгоритм шифрования"
+	mul2MBperS      = 953.674
 )
 
 func NewExperimentService(storage storage.Experiment) *ExperimentService {
@@ -74,6 +76,21 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 		textForHashing, _ := generateBytes(l)
 
 		switch alg {
+		case BCRYPT:
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					bcrypt.GenerateFromPassword(textForHashing, 0)
+				}
+			}
+			br = testing.Benchmark(bench)
+
+			sample, _ := bcrypt.GenerateFromPassword(textForHashing, 0)
+			res = results.HashExpResult{
+				Algorithm: BCRYPT,
+				Size:      0,
+				BlockSize: 0,
+				Sample:    fmt.Sprintf("%x", sample),
+			}
 		case Streebog256:
 			bench = func(b *testing.B) {
 				for i := 0; i < b.N; i++ {
@@ -244,7 +261,7 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 		b, _ = parse.ParseLine("Benchmark" + br.String() + br.MemString())
 
 		if l == conf.To {
-			d := (float64(l) * 1_000_000_000) / (b.NsPerOp * 1024 * 1024)
+			d := (float64(l) * mul2MBperS) / (b.NsPerOp)
 			res.Duration = math.Round(d*100) / 100
 		}
 
@@ -257,6 +274,10 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 	res.Hyst.AlocX = b.AllocsPerOp
 	res.Hyst.OpX = b.N
 	res.Hyst.Alg = alg
+
+	if res.Duration == math.Inf(1) {
+		res.Duration = 0
+	}
 
 	return res
 }
@@ -567,8 +588,8 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 		b = strings.Fields(br.ciphering.String() + br.ciphering.MemString())
 
 		if l == conf.To {
-			cd := (float64(l) * 1_000_000_000) / (b1 * 1024 * 1024)
-			dd := (float64(l) * 1_000_000_000) / (b2 * 1024 * 1024)
+			cd := (float64(l) * mul2MBperS) / (b1)
+			dd := (float64(l) * mul2MBperS) / (b2)
 
 			res.CipheringDuration = math.Round(cd*100) / 100
 			res.DecipheringDuration = math.Round(dd*100) / 100

@@ -141,10 +141,19 @@ func (h *Handler) cipherResults(c *gin.Context) {
 
 func getProcessorInfo() (out []byte, err error) {
 	if runtime.GOOS == "windows" {
-		out, err = exec.Command("wmic cpu get", "name").Output()
+		out, err = exec.Command("wmic", "cpu", "get", "name").Output()
 		return
 	}
 
-	out, err = exec.Command(`lscpu | grep "Model name"`).Output()
+	grep := exec.Command("grep", "'Model name'")
+	lscpu := exec.Command("lscpu")
+
+	pipe, _ := lscpu.StdoutPipe()
+	defer pipe.Close()
+
+	grep.Stdin = pipe
+	lscpu.Start()
+
+	out, err = grep.Output()
 	return
 }

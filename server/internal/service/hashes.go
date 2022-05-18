@@ -16,6 +16,7 @@ const (
 	RIPEMD256   = "RIPEMD-256"
 	RIPEMD320   = "RIPEMD-320"
 	MD5         = "MD5"
+	BCRYPT      = "bcrypt"
 )
 
 func hash(h hash2.Hash, text []byte) (res []byte) {

@@ -15,7 +15,7 @@ require (
 	github.com/martinlindhe/gogost v0.0.0-20170914195721-31862914ae20
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.9.0
-	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd
+	golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898
 	golang.org/x/tools v0.1.10
 )
 
