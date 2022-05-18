@@ -20,6 +20,7 @@ type HashExpResult struct {
 	BlockSize int           `json:"blockSize"`
 	Sample    string        `json:"sample"`
 	Plot      Plot          `json:"plot"`
+	Hyst      HystInfo      `json:"hyst"`
 }
 
 type HashAlgorithmsResults struct {
@@ -33,6 +34,12 @@ type HashAlgorithmsResults struct {
 type Plot struct {
 	X []int `json:"x"`
 	Y []int `json:"y"`
+}
+
+type HystInfo struct {
+	OpX   int    `json:"op"`
+	AlocX uint64 `json:"aloc"`
+	Alg   string `json:"alg"`
 }
 
 func (h HashAlgorithmsResults) Value() (driver.Value, error) {
@@ -55,6 +62,7 @@ type CipherExpResult struct {
 	DecipheringDuration time.Duration `json:"deciphering_duration"`
 	KeyLength           int           `json:"key_length"`
 	Plot                Plot          `json:"plot"`
+	Hyst                HystInfo      `json:"hyst"`
 }
 
 type CipherAlgorithmsResults struct {

@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {BrowserRouter, Route, Routes} from "react-router-dom"
+import React, {useEffect, useState} from 'react'
+import {BrowserRouter, Link, Route, Routes} from "react-router-dom"
 
 import './App.css'
 
@@ -18,7 +18,21 @@ const App = () => {
     const [label, setLabel] = useState("Войдите")
 
     const updateToken = t => setToken("Bearer " + t)
-    const deleteToken = () => setToken("")
+    const deleteToken = () => {
+        fetch("/auth/logout")
+            .then(_ => setToken(""))
+            .then(_ => setLabel("Войдите"))
+            .then(_ => window.location.href="/c/auth/login")
+            .catch()
+    }
+
+    useEffect(() => {
+        if (token === "") {
+            const t = localStorage.getItem("toketoken")
+            if (t)
+                updateToken(t)
+        }
+    })
 
     const cipherAlgorithms =
         [

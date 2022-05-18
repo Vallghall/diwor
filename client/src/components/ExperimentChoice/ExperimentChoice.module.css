@@ -9,6 +9,9 @@
   padding: 20px 0;
   background: rgba(255, 255, 255, 0.9);
 }
+.choice_panel h1 {
+  margin: 0 20px 10px 20px;
+}
 .choice_panel .choose_between {
   border: solid 3px #c8c800;
   border-radius: 12px;

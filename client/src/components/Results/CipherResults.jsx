@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react'
 import classes from "./Results.module.css"
 import Plot from "../Plot/Plot"
 import { useNavigate } from "react-router-dom"
-import ResultRow from "../ResultRow/ResultRow";
-import {tokenEffect} from "../../token";
-import SysInfo from "../SysInfo/SysInfo";
+import ResultRow from "../ResultRow/ResultRow"
+import {tokenEffect} from "../../token"
+import SysInfo from "../SysInfo/SysInfo"
 
 const CipherResults = ({token, params, renewToken}) => {
     const [results, setResults] = useState({})
@@ -26,8 +26,8 @@ const CipherResults = ({token, params, renewToken}) => {
                 os: Results.os,
                 arch: Results.arch,
             })
-
             setResults(Results.results)
+
             Object.values(Results.results).forEach(res => setPlotConfigs(p => (
                     {
                         ...p,
@@ -48,7 +48,7 @@ const CipherResults = ({token, params, renewToken}) => {
                 : "")}
             <div className={classes.wrapper}>
 
-                <Plot congigs={plotConfigs}/>
+                <Plot configs={plotConfigs}/>
                 {Object.values(results).map(res => (
                     <div className={classes.result_wrapper}>
                         <table>

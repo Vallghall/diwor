@@ -30,6 +30,7 @@
   cursor: pointer;
   text-align: center;
   width: 100%;
+  margin-bottom: 20px;
 }
 .select_wrapper button, .select_wrapper #begin {
   display: inline-block;
@@ -57,6 +58,9 @@
   display: inline-block;
   font-size: 16px;
   text-align: center;
+}
+.inputs span {
+  margin-left: 20px;
 }
 
 strong {

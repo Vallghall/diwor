@@ -28,3 +28,6 @@ server/configs/config.yml
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# diagrams
+*.puml

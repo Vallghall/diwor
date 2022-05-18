@@ -64,6 +64,8 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 	var res results.HashExpResult
 	var bench func(b *testing.B)
 	var br testing.BenchmarkResult
+	var b *parse.Benchmark
+	logrus.Println(conf.From)
 
 	x, y := make([]int, 0), make([]int, 0)
 
@@ -238,18 +240,21 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 			}
 		}
 
-		b, err := parse.ParseLine("Benchmark" + br.String() + br.MemString())
-		if err != nil {
-			logrus.Error(err)
+		b, _ = parse.ParseLine("Benchmark" + br.String() + br.MemString())
+
+		if l == conf.To {
+			res.Duration = time.Duration((int(b.NsPerOp) / l) * 1024 * 1024)
 		}
-		fmt.Println(b.String())
-		res.Duration = time.Duration(int(b.NsPerOp) / l)
+
 		x = append(x, l)
 		y = append(y, int(b.NsPerOp))
 	}
 
 	res.Plot.X = x
 	res.Plot.Y = y
+	res.Hyst.AlocX = b.AllocsPerOp
+	res.Hyst.OpX = b.N
+	res.Hyst.Alg = alg
 
 	return res
 }
@@ -261,6 +266,8 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 		ciphering   testing.BenchmarkResult
 		deciphering testing.BenchmarkResult
 	}
+
+	var b []string
 
 	x, y := make([]int, 0), make([]int, 0)
 
@@ -551,23 +558,30 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 			}
 		}
 
-		b1, err := strconv.ParseFloat(strings.Fields(br.ciphering.String())[1], 64)
-		if err != nil {
-			logrus.Print("cipher bench parse error:", err)
+		b1, _ := strconv.ParseFloat(strings.Fields(br.ciphering.String())[1], 64)
+
+		b2, _ := strconv.ParseFloat(strings.Fields(br.deciphering.String())[1], 64)
+
+		b = strings.Fields(br.ciphering.String() + br.ciphering.MemString())
+
+		if l == conf.To {
+			res.CipheringDuration = time.Duration((int(b1) / l) * 1024 * 1024)
+			res.DecipheringDuration = time.Duration((int(b2) / l) * 1024 * 1024)
 		}
 
-		b2, err := strconv.ParseFloat(strings.Fields(br.deciphering.String())[1], 64)
-		if err != nil {
-			logrus.Print("cipher bench parse error:", err)
-		}
-		res.CipheringDuration = time.Duration(int(b1) / l)
-		res.DecipheringDuration = time.Duration(int(b2) / l)
 		x = append(x, l)
 		y = append(y, int(b1))
 	}
 
 	res.Plot.X = x
 	res.Plot.Y = y
+
+	n, _ := strconv.ParseInt(b[0], 10, 32)
+	a, _ := strconv.ParseInt(b[5], 10, 32)
+
+	res.Hyst.AlocX = uint64(a)
+	res.Hyst.OpX = int(n)
+	res.Hyst.Alg = alg
 
 	return res
 }

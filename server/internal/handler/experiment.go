@@ -39,7 +39,7 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 	var initials AlgorithmsInput
 	err := c.BindJSON(&initials)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 

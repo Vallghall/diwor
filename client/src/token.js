@@ -1,4 +1,10 @@
-const isTokenExpired = token => Date.now() >= (JSON.parse(window.atob(token.split('.')[1]))).exp * 1000
+const isTokenExpired = token => {
+    try {
+        return Date.now() >= (JSON.parse(window.atob(token.split('.')[1]))).exp * 1000
+    } catch (e) {
+        return true
+    }
+}
 
 const getNewToken = async () => await fetch('/auth/refresh', {method: "POST", credentials: 'same-origin'})
 
@@ -16,6 +22,7 @@ export const tokenEffect = (token, query, navigate, renewToken) => {
             })
             .then(body => {
                 renewToken(body.token)
+                localStorage.setItem("toketoken", body.token)
                 return `Bearer ${body.token}`
             })
             .catch(_ => {
