@@ -25,6 +25,7 @@ const HashResults = ({token, params, renewToken}) => {
             setSysInfo({
                 os: Results.os,
                 arch: Results.arch,
+                proc: Results.processor
             })
             setResults(Results.results)
 
