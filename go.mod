@@ -1,7 +1,7 @@
 module gitlab.com/Valghall/diwor
 
-// +heroku goVersion go1.17
-go 1.17
+// +heroku goVersion go1.18
+go 1.18
 
 require (
 	github.com/andreburgaud/crypt2go v1.0.0

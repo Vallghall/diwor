@@ -18,6 +18,7 @@ import (
 	"gitlab.com/Valghall/diwor/server/internal/storage"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/blowfish"
+	"golang.org/x/crypto/sha3"
 	"golang.org/x/tools/benchmark/parse"
 	"math"
 	"math/rand"
@@ -84,12 +85,14 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 			}
 			br = testing.Benchmark(bench)
 
-			sample, _ := bcrypt.GenerateFromPassword(textForHashing, 0)
-			res = results.HashExpResult{
-				Algorithm: BCRYPT,
-				Size:      0,
-				BlockSize: 0,
-				Sample:    fmt.Sprintf("%x", sample),
+			if l >= conf.To {
+				sample, _ := bcrypt.GenerateFromPassword(textForHashing, 0)
+				res = results.HashExpResult{
+					Algorithm: BCRYPT,
+					Size:      0,
+					BlockSize: 0,
+					Sample:    fmt.Sprintf("%x", sample),
+				}
 			}
 		case Streebog256:
 			bench = func(b *testing.B) {
@@ -99,11 +102,13 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 			}
 			br = testing.Benchmark(bench)
 
-			res = results.HashExpResult{
-				Algorithm: Streebog256,
-				Size:      streebog256.Size,
-				BlockSize: streebog256.BlockSize,
-				Sample:    fmt.Sprintf("%x", hash(streebog256.New(), textForHashing)),
+			if l >= conf.To {
+				res = results.HashExpResult{
+					Algorithm: Streebog256,
+					Size:      streebog256.Size,
+					BlockSize: streebog256.BlockSize,
+					Sample:    fmt.Sprintf("%x", hash(streebog256.New(), textForHashing)),
+				}
 			}
 		case Streebog512:
 			bench = func(b *testing.B) {
@@ -113,13 +118,15 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 			}
 			br = testing.Benchmark(bench)
 
-			sum := fmt.Sprintf("%x", hash(streebog512.New(), textForHashing))
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(streebog512.New(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: Streebog512,
-				Size:      streebog512.Size,
-				BlockSize: streebog512.BlockSize,
-				Sample:    sum,
+				res = results.HashExpResult{
+					Algorithm: Streebog512,
+					Size:      streebog512.Size,
+					BlockSize: streebog512.BlockSize,
+					Sample:    sum,
+				}
 			}
 		case SHA224:
 			bench = func(b *testing.B) {
@@ -128,13 +135,16 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(sha256.New224(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: SHA224,
-				Size:      sha256.Size224,
-				BlockSize: sha256.BlockSize,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(sha256.New224(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA224,
+					Size:      sha256.Size224,
+					BlockSize: sha256.BlockSize,
+					Sample:    sum,
+				}
 			}
 		case SHA256:
 			bench = func(b *testing.B) {
@@ -143,13 +153,16 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(sha256.New(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: SHA256,
-				Size:      sha256.Size,
-				BlockSize: sha256.BlockSize,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(sha256.New(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA256,
+					Size:      sha256.Size,
+					BlockSize: sha256.BlockSize,
+					Sample:    sum,
+				}
 			}
 		case SHA384:
 			bench = func(b *testing.B) {
@@ -158,13 +171,16 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(sha512.New384(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: SHA384,
-				Size:      sha512.Size384,
-				BlockSize: sha512.BlockSize,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(sha512.New384(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA384,
+					Size:      sha512.Size384,
+					BlockSize: sha512.BlockSize,
+					Sample:    sum,
+				}
 			}
 		case SHA512:
 			bench = func(b *testing.B) {
@@ -173,13 +189,92 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(sha512.New(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: SHA512,
-				Size:      sha512.Size,
-				BlockSize: sha512.BlockSize,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(sha512.New(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA512,
+					Size:      sha512.Size,
+					BlockSize: sha512.BlockSize,
+					Sample:    sum,
+				}
+			}
+		case SHA3_224:
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha3.New224(), textForHashing)
+				}
+			}
+			br = testing.Benchmark(bench)
+
+			if l >= conf.To {
+				h := sha3.New224()
+				sum := fmt.Sprintf("%x", hash(h, textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA3_224,
+					Size:      h.Size(),
+					BlockSize: h.BlockSize(),
+					Sample:    sum,
+				}
+			}
+		case SHA3_256:
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha3.New256(), textForHashing)
+				}
+			}
+			br = testing.Benchmark(bench)
+
+			if l >= conf.To {
+				h := sha3.New256()
+				sum := fmt.Sprintf("%x", hash(h, textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA3_256,
+					Size:      h.Size(),
+					BlockSize: h.BlockSize(),
+					Sample:    sum,
+				}
+			}
+		case SHA3_384:
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha3.New384(), textForHashing)
+				}
+			}
+			br = testing.Benchmark(bench)
+			h := sha3.New384()
+
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(h, textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA3_384,
+					Size:      h.Size(),
+					BlockSize: h.BlockSize(),
+					Sample:    sum,
+				}
+			}
+		case SHA3_512:
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					hash(sha3.New512(), textForHashing)
+				}
+			}
+			br = testing.Benchmark(bench)
+
+			if l >= conf.To {
+				h := sha3.New512()
+				sum := fmt.Sprintf("%x", hash(h, textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: SHA3_512,
+					Size:      h.Size(),
+					BlockSize: h.BlockSize(),
+					Sample:    sum,
+				}
 			}
 		case RIPEMD128:
 			bench = func(b *testing.B) {
@@ -188,13 +283,16 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(ripemd.New128(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: RIPEMD128,
-				Size:      ripemd.Size128,
-				BlockSize: ripemd.BlockSize128,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(ripemd.New128(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: RIPEMD128,
+					Size:      ripemd.Size128,
+					BlockSize: ripemd.BlockSize128,
+					Sample:    sum,
+				}
 			}
 		case RIPEMD160:
 			bench = func(b *testing.B) {
@@ -203,13 +301,16 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(ripemd.New160(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: RIPEMD160,
-				Size:      ripemd.Size160,
-				BlockSize: ripemd.BlockSize160,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(ripemd.New160(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: RIPEMD160,
+					Size:      ripemd.Size160,
+					BlockSize: ripemd.BlockSize160,
+					Sample:    sum,
+				}
 			}
 		case RIPEMD256:
 			bench = func(b *testing.B) {
@@ -218,13 +319,16 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(ripemd.New256(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: RIPEMD256,
-				Size:      ripemd.Size256,
-				BlockSize: ripemd.BlockSize256,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(ripemd.New256(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: RIPEMD256,
+					Size:      ripemd.Size256,
+					BlockSize: ripemd.BlockSize256,
+					Sample:    sum,
+				}
 			}
 		case RIPEMD320:
 			bench = func(b *testing.B) {
@@ -233,13 +337,16 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(ripemd.New320(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: RIPEMD320,
-				Size:      ripemd.Size320,
-				BlockSize: ripemd.BlockSize320,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(ripemd.New320(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: RIPEMD320,
+					Size:      ripemd.Size320,
+					BlockSize: ripemd.BlockSize320,
+					Sample:    sum,
+				}
 			}
 		case MD5:
 			bench = func(b *testing.B) {
@@ -248,19 +355,22 @@ func (es *ExperimentService) ResearchHashingAlgorithm(alg string, conf plotconfi
 				}
 			}
 			br = testing.Benchmark(bench)
-			sum := fmt.Sprintf("%x", hash(md5.New(), textForHashing))
 
-			res = results.HashExpResult{
-				Algorithm: MD5,
-				Size:      md5.Size,
-				BlockSize: md5.BlockSize,
-				Sample:    sum,
+			if l >= conf.To {
+				sum := fmt.Sprintf("%x", hash(md5.New(), textForHashing))
+
+				res = results.HashExpResult{
+					Algorithm: MD5,
+					Size:      md5.Size,
+					BlockSize: md5.BlockSize,
+					Sample:    sum,
+				}
 			}
 		}
 
 		b, _ = parse.ParseLine("Benchmark" + br.String() + br.MemString())
 
-		if l == conf.To {
+		if l >= conf.To {
 			d := (float64(l) * mul2MBperS) / (b.NsPerOp)
 			res.Duration = math.Round(d*100) / 100
 		}
@@ -322,10 +432,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: "Кузнечик",
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: 32,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: "Кузнечик",
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: 32,
+				}
 			}
 		case AES128_GCM:
 			key, _ := generateBytes(aes.BlockSize)
@@ -351,10 +463,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: aes.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: aes.BlockSize,
+				}
 			}
 		case DES_CFB:
 			key, _ := generateBytes(des.BlockSize)
@@ -378,10 +492,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: des.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: des.BlockSize,
+				}
 			}
 		case AES128_CFB:
 			key, _ := generateBytes(aes.BlockSize)
@@ -405,10 +521,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: aes.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: aes.BlockSize,
+				}
 			}
 		case RSA:
 			keyPair, _ := rsa.GenerateKey(rand2.Reader, 2048)
@@ -431,10 +549,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования асимметричный",
-				KeyLength: keyPair.Size(),
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования асимметричный",
+					KeyLength: keyPair.Size(),
+				}
 			}
 		case BF_CFB:
 			key, _ := generateBytes(blowfish.BlockSize)
@@ -458,10 +578,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: blowfish.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: blowfish.BlockSize,
+				}
 			}
 		case DES_ECB:
 			key, _ := generateBytes(des.BlockSize)
@@ -487,10 +609,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: des.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: des.BlockSize,
+				}
 			}
 		case AES128_ECB:
 			key, _ := generateBytes(aes.BlockSize)
@@ -516,10 +640,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: aes.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: aes.BlockSize,
+				}
 			}
 		case BF_ECB:
 			key, _ := generateBytes(blowfish.BlockSize)
@@ -545,10 +671,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: blowfish.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: blowfish.BlockSize,
+				}
 			}
 		case Grasshopper_ECB:
 			key, _ := generateBytes(gosthopper.BlockSize * 2)
@@ -574,10 +702,12 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			br.deciphering = testing.Benchmark(bench)
 
-			res = results.CipherExpResult{
-				Algorithm: alg,
-				Type:      "Алгоритм шифрования симметричный",
-				KeyLength: gosthopper.BlockSize,
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования симметричный",
+					KeyLength: gosthopper.BlockSize,
+				}
 			}
 		}
 

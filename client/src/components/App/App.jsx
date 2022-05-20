@@ -43,10 +43,10 @@ const App = () => {
 
     const hashAlgorithms =
         [
-            "Streebog-256","Streebog-512","SHA-224",
-            "SHA-256","SHA-384","SHA-512","RIPEMD-128",
-            "RIPEMD-160","RIPEMD-256","RIPEMD-320","MD5",
-            "bcrypt",
+            "Streebog-256", "Streebog-512", "bcrypt", "MD5",
+            "SHA-224", "SHA-256", "SHA-384", "SHA-512",
+            "SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512",
+            "RIPEMD-128", "RIPEMD-160", "RIPEMD-256", "RIPEMD-320",
         ]
 
 
