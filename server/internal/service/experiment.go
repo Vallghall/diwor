@@ -13,12 +13,14 @@ import (
 	"fmt"
 	"github.com/andreburgaud/crypt2go/ecb"
 	streebog512 "github.com/martinlindhe/gogost/gost34112012512"
+	eg "github.com/mirzazhar/elgamal"
 	magma "github.com/pedroalbanese/gogost/gost341264"
 	"gitlab.com/Valghall/diwor/server/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/server/internal/results"
 	"gitlab.com/Valghall/diwor/server/internal/storage"
 	"golang.org/x/crypto/bcrypt"
 	"golang.org/x/crypto/blowfish"
+	"golang.org/x/crypto/openpgp/elgamal"
 	"golang.org/x/crypto/sha3"
 	"golang.org/x/tools/benchmark/parse"
 	"math"
@@ -450,7 +452,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 		switch alg {
 		case Grasshopper_GCM:
-			key, _ := generateBytes(gosthopper.BlockSize)
+			key, _ := generateBytes(gosthopper.BlockSize * 2)
 
 			kCipher, _ := gosthopper.NewCipher(key)
 			kGCM, _ := cipher.NewGCM(kCipher)
@@ -481,7 +483,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				}
 			}
 		case Grasshopper_ECB:
-			key, _ := generateBytes(gosthopper.BlockSize)
+			key, _ := generateBytes(gosthopper.BlockSize * 2)
 
 			block, _ := gosthopper.NewCipher(key)
 			mode := ecb.NewECBEncrypter(block)
@@ -512,7 +514,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				}
 			}
 		case Grasshopper_OFB:
-			key, _ := generateBytes(gosthopper.BlockSize)
+			key, _ := generateBytes(gosthopper.BlockSize * 2)
 
 			block, _ := gosthopper.NewCipher(key)
 
@@ -540,7 +542,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				}
 			}
 		case Grasshopper_CFB:
-			key, _ := generateBytes(gosthopper.BlockSize)
+			key, _ := generateBytes(gosthopper.BlockSize * 2)
 
 			ghCipher, _ := gosthopper.NewCipher(key)
 			ciphered := CFBSeal(ghCipher, gosthopper.BlockSize, textForCiphering)
@@ -569,7 +571,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 				}
 			}
 		case Grasshopper_CTR:
-			key, _ := generateBytes(gosthopper.BlockSize)
+			key, _ := generateBytes(gosthopper.BlockSize * 2)
 
 			block, _ := gosthopper.NewCipher(key)
 			ciphered := CTRSeal(block, gosthopper.BlockSize, textForCiphering)
@@ -1009,6 +1011,40 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 					Algorithm: alg,
 					Type:      "Алгоритм шифрования асимметричный",
 					KeyLength: keyPair.Size(),
+				}
+			}
+		case EG:
+			key, _ := eg.GenerateKey(64, 1)
+
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					elgamal.Encrypt(rand2.Reader, &elgamal.PublicKey{
+						G: key.G,
+						P: key.P,
+						Y: key.Y,
+					}, textForCiphering)
+				}
+			}
+
+			br.ciphering = testing.Benchmark(bench)
+			c1, c2, _ := elgamal.Encrypt(rand2.Reader, &elgamal.PublicKey{
+				G: key.G,
+				P: key.P,
+				Y: key.Y,
+			}, textForCiphering)
+			bench = func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					elgamal.Decrypt(&elgamal.PrivateKey{}, c1, c2)
+				}
+			}
+
+			br.deciphering = testing.Benchmark(bench)
+
+			if l >= conf.To {
+				res = results.CipherExpResult{
+					Algorithm: alg,
+					Type:      "Алгоритм шифрования асимметричный",
+					KeyLength: -1,
 				}
 			}
 

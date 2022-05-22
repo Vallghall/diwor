@@ -42,7 +42,7 @@ const App = () => {
             "DES-ECB", "DES-CFB", "DES-OFB", "DES-CTR",
             "Blowfish-ECB", "Blowfish-CFB", "Blowfish-OFB", "Blowfish-CTR",
 
-            "RSA",
+            "RSA", "Эль-Гамаль",
         ]
 
     const hashAlgorithms =

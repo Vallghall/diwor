@@ -36,6 +36,7 @@ const (
 	BF_CTR = "Blowfish-CTR"
 
 	RSA = "RSA"
+	EG  = "Эль-Гамаль"
 )
 
 func GCMSeal(gcm cipher.AEAD, nonce, text []byte) (res []byte) {
