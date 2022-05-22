@@ -13,6 +13,7 @@ require (
 	github.com/lib/pq v1.10.4
 	github.com/maoxs2/go-ripemd v0.0.0-20200326052756-bd1759ad7d10
 	github.com/martinlindhe/gogost v0.0.0-20170914195721-31862914ae20
+	github.com/pedroalbanese/gogost v0.0.0-20220417104440-4d34dbc5957c
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.9.0
 	golang.org/x/crypto v0.0.0-20220518034528-6f7dac969898

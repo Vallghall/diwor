@@ -36,9 +36,13 @@ const App = () => {
 
     const cipherAlgorithms =
         [
-            "Кузнечик-ECB", "AES128-ECB", "DES-ECB", "Blowfish-ECB",
-            "Кузнечик-CFB", "AES128-GCM", "AES128-CFB",
-            "DES-CFB", "RSA", "Blowfish-CFB",
+            "Кузнечик-ECB", "Кузнечик-CFB", "Кузнечик-GCM", "Кузнечик-OFB", "Кузнечик-CTR",
+            "AES128-ECB", "AES128-GCM", "AES128-CFB", "AES128-OFB", "AES128-CTR",
+            "Магма-ECB", "Магма-CFB", "Магма-OFB", "Магма-CTR",
+            "DES-ECB", "DES-CFB", "DES-OFB", "DES-CTR",
+            "Blowfish-ECB", "Blowfish-CFB", "Blowfish-OFB", "Blowfish-CTR",
+
+            "RSA",
         ]
 
     const hashAlgorithms =
@@ -46,6 +50,7 @@ const App = () => {
             "Streebog-256", "Streebog-512", "bcrypt", "MD5",
             "SHA-224", "SHA-256", "SHA-384", "SHA-512",
             "SHA3-224", "SHA3-256", "SHA3-384", "SHA3-512",
+            "SHA3-SHAKE128", "SHA3-SHAKE256",
             "RIPEMD-128", "RIPEMD-160", "RIPEMD-256", "RIPEMD-320",
         ]
 
