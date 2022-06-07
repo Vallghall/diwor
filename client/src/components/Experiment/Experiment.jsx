@@ -34,8 +34,8 @@ const Experiment = ({list, token, renewToken}) => {
     }
 
     const plus = () => {
-        if (algs.length === 6) {
-            SweetAlert("Стоп", "Больше шести нельзя!", "warning")
+        if (algs.length === 10) {
+            SweetAlert("Стоп", "Больше десяти экспериментов установить нельзя.", "warning")
             return
         }
 

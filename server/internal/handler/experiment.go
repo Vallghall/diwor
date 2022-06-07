@@ -6,6 +6,7 @@ import (
 	"gitlab.com/Valghall/diwor/server/internal/plotconfig"
 	"gitlab.com/Valghall/diwor/server/internal/results"
 	"net/http"
+	"os/exec"
 	"runtime"
 	"time"
 
@@ -58,6 +59,10 @@ func (h *Handler) researchHashAlgorithms(c *gin.Context) {
 
 	algResults.OS = runtime.GOOS
 	algResults.Arch = runtime.GOARCH
+	proc, err := getProcessorInfo()
+	if err == nil {
+		algResults.Processor = string(proc)
+	}
 
 	h.service.Experiment.SaveResults(userId, HashAlgorithm, algResults)
 
@@ -132,4 +137,23 @@ func (h *Handler) cipherResults(c *gin.Context) {
 		Name:    name,
 		Results: res,
 	})
+}
+
+func getProcessorInfo() (out []byte, err error) {
+	if runtime.GOOS == "windows" {
+		out, err = exec.Command("wmic", "cpu", "get", "name").Output()
+		return
+	}
+
+	grep := exec.Command("grep", "'Model name'")
+	lscpu := exec.Command("lscpu")
+
+	pipe, _ := lscpu.StdoutPipe()
+	defer pipe.Close()
+
+	grep.Stdin = pipe
+	lscpu.Start()
+
+	out, err = grep.Output()
+	return
 }

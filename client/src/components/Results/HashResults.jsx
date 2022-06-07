@@ -8,7 +8,7 @@ import SysInfo from "../SysInfo/SysInfo"
 
 const HashResults = ({token, params, renewToken}) => {
     const [results, setResults] = useState({})
-    const [sysInfo, setSysInfo] = useState({os:"",arch:""})
+    const [sysInfo, setSysInfo] = useState({os:"",arch:"", proc:""})
     const [plotConfigs, setPlotConfigs] = useState({})
     const navigate = useNavigate()
 
@@ -25,6 +25,7 @@ const HashResults = ({token, params, renewToken}) => {
             setSysInfo({
                 os: Results.os,
                 arch: Results.arch,
+                proc: Results.processor
             })
             setResults(Results.results)
 
@@ -42,8 +43,8 @@ const HashResults = ({token, params, renewToken}) => {
 
     return (
         <>
-            {(sysInfo.os !== "" && sysInfo.arch !== ""
-                ? <SysInfo os={sysInfo.os} arch={sysInfo.arch}/>
+            {(sysInfo.os !== "" && sysInfo.arch !== "" && sysInfo.proc !== ""
+                ? <SysInfo os={sysInfo.os} arch={sysInfo.arch} proc={sysInfo.proc}/>
                 : "")}
             <div className={classes.wrapper}>
 
@@ -57,7 +58,7 @@ const HashResults = ({token, params, renewToken}) => {
                                 <th>{"Результаты"}</th>
                             </tr>
                             <ResultRow fst={"Алгоритм"} snd={res.algorithm}/>
-                            <ResultRow fst={"Продолжительность"} snd={res.duration}/>
+                            <ResultRow fst={"Скорость"} snd={res.duration}/>
                             <ResultRow fst={"Длина дайждеста"} snd={res.size}/>
                             <ResultRow fst={"Размер блока"} snd={res.blockSize}/>
                             <ResultRow fst={"Пример хэша"} snd={res.sample}/>
