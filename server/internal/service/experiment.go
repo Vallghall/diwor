@@ -987,12 +987,15 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 		case RSA:
 			keyPair, _ := rsa.GenerateKey(rand2.Reader, 2048)
-			label := []byte("OAEP Encrypted")
-			dst, _ := rsa.EncryptOAEP(sha256.New(), rand2.Reader, &keyPair.PublicKey, textForCiphering, label)
+			dst, _ := rsa.EncryptPKCS1v15(rand2.Reader, &keyPair.PublicKey, textForCiphering)
 
 			bench = func(b *testing.B) {
 				for i := 0; i < b.N; i++ {
-					rsa.EncryptOAEP(sha256.New(), rand2.Reader, &keyPair.PublicKey, textForCiphering, label)
+					keyPair, _ := rsa.GenerateKey(rand2.Reader, 2048)
+					_, err := rsa.EncryptPKCS1v15(rand2.Reader, &keyPair.PublicKey, textForCiphering)
+					if err != nil {
+						logrus.Info(err)
+					}
 				}
 			}
 
@@ -1000,7 +1003,7 @@ func (es *ExperimentService) ResearchCipheringAlgorithm(alg string, conf plotcon
 
 			bench = func(b *testing.B) {
 				for i := 0; i < b.N; i++ {
-					rsa.DecryptOAEP(sha256.New(), rand2.Reader, keyPair, dst, label)
+					rsa.DecryptPKCS1v15(rand2.Reader, keyPair, dst)
 				}
 			}
 
